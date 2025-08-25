@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Cape Town → Kruger Safari → Victoria Falls — Garcia Gang Dossier</title>
+<title>Cape Town → Kruger Safari → Victoria Falls — Garcia Gang Takes on Africa!</title>
 <!-- Headings keep Playfair for the luxe vibe; body uses Aptos (with smart fallbacks) -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
@@ -181,6 +181,26 @@
   @media print{ .hero,.nav,.to-top,.carousel-controls,.btn,.lightbox{display:none !important} .wrap{padding:0} .card{box-shadow:none; border:1px solid #ddd} }
   @media (max-width:1100px){ .w{grid-column: span 12;} .w.small{grid-column: span 6;} }
   @media (max-width:720px){ .hero{height:68vh} .gallery{grid-template-columns:repeat(3,1fr)} .flip{ width:88px; height:60px; border-radius:12px } .flip .curr,.flip .next{ font-size:1.8rem } }
+
+  /* === Mobile friendly flip clock overrides === */
+  .flip-clock{ gap:.8rem; }
+  .flip{ width: clamp(64px, 22vw, 110px); height: clamp(44px, 14vw, 72px); border-radius:12px; }
+  .flip .curr, .flip .next{ font-size: clamp(1.25rem, 7vw, 2.1rem); letter-spacing:.4px; }
+  .flip-clock small{ font-size: clamp(.66rem, 2.3vw, .85rem); }
+  @media (max-width: 480px){
+    .flip-clock{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap:.75rem;
+      row-gap:.75rem;
+      align-items:start;
+    }
+    .flip-clock .unit{ align-items:center; }
+  }
+  @media (max-width: 360px){
+    .flip-clock{ column-gap:.6rem; row-gap:.6rem; }
+    .flip{ box-shadow:0 6px 12px rgba(0,0,0,.10); }
+  }
 </style>
 </head>
 <body>
@@ -238,7 +258,7 @@
   <!-- AT A GLANCE -->
   <section id="glance" class="card reveal" data-anim="fade-up" style="--d:.05s" aria-labelledby="glance-title">
     <h2 id="glance-title" class="section-title">At a Glance</h2>
-    <p class="muted"><span class="pill reveal" data-anim="zoom-in" style="--d:.12s">9 nights</span> <span class="pill reveal" data-anim="zoom-in" style="--d:.18s">Mid–Luxury</span> <span class="pill reveal" data-anim="zoom-in" style="--d:.24s">Private & Small‑Group</span></p>
+    <p class="muted"><span class="pill reveal" data-anim="zoom-in" style="--d:.12s">9 nights</span> <span class="pill reveal" data-anim="zoom-in" style="--d:.18s">Family Fun</span> <span class="pill reveal" data-anim="zoom-in" style="--d:.24s">Garcia Gang</span></p>
 
     <div class="row" style="margin:.6rem 0 1rem">
       <div class="muted" style="flex:0 0 auto; min-width:170px">Trip start date:</div>
@@ -265,16 +285,32 @@
       </div>
     </div>
 
-    <table class="reveal" data-anim="fade-up" style="--d:.12s">
-      <thead><tr><th>Days</th><th>Where</th><th>Key Notes</th></tr></thead>
-      <tbody>
-        <tr><td>1–3</td><td><a target="_blank" rel="noopener" href="https://goo.gl/maps/S7N1r8a5ZzL2">Cape Town</a></td><td>Table Mountain, Robben Island, Cape of Good Hope, Penguins</td></tr>
-        <tr><td>4–6</td><td><a target="_blank" rel="noopener" href="https://goo.gl/maps/XpWc3jQ9C8B2">Kruger Safari</a></td><td>Big Five game drives, luxury lodge, all meals</td></tr>
-        <tr><td>7–8</td><td><a target="_blank" rel="noopener" href="https://goo.gl/maps/6i3a2g1wS6S2">Victoria Falls</a></td><td>Guided Falls tour, Zambezi sunset cruise, helicopter optional</td></tr>
-        <tr><td>9</td><td>Return</td><td>Fly to Johannesburg, connect to Denver</td></tr>
-      </tbody>
-    </table>
-  </section>
+<table class="reveal" data-anim="fade-up" style="--d:.12s">
+  <thead><tr><th>Days</th><th>Where</th><th>Key Notes</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>1–3</td>
+      <td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Cape+Town,+South+Africa">Cape Town</a></td>
+      <td>Table Mountain, Robben Island, Cape of Good Hope, Penguins</td>
+    </tr>
+    <tr>
+      <td>4–6</td>
+      <td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Kruger+National+Park">Kruger Safari</a></td>
+      <td>Big Five game drives, luxury lodge, all meals</td>
+    </tr>
+    <tr>
+      <td>7–8</td>
+      <td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Victoria+Falls">Victoria Falls</a></td>
+      <td>Guided Falls tour, Zambezi sunset cruise, helicopter optional</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Return</td>
+      <td>Fly to Johannesburg, connect to Denver</td>
+    </tr>
+  </tbody>
+</table>
+
 
   <!-- FLIGHTS & COSTS -->
   <section id="flights" class="card reveal" data-anim="fade-up" style="--d:.08s" aria-labelledby="flights-title">
@@ -288,7 +324,7 @@
         <tr><td>Kruger → Victoria Falls (via Johannesburg)</td><td>~$700 total internal flights</td></tr>
       </tbody>
     </table>
-    <p class="muted reveal" data-anim="fade-up" style="--d:.22s"><em>Estimated Mid‑Luxury Total: $4,850–$6,500 per person (incl. flights)</em></p>
+    <p class="muted reveal" data-anim="fade-up" style="--d:.22s"><em>Estimated Mid Level Total: $4,850–$6,500 per person (incl. flights)</em></p>
   </section>
 
   <!-- HIGHLIGHTS -->
@@ -302,34 +338,34 @@
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.06s">
           <strong>Why it’s famous</strong>
           <ul class="mini">
-            <li><em>Table Mountain</em> — one of the New7Wonders of Nature, framing the city with epic views.</li>
-            <li><em>Robben Island</em> — Mandela’s prison; living museum of South Africa’s triumph.</li>
-            <li><em>Cape Peninsula</em> — Cape of Good Hope & Boulders Beach penguins.</li>
-            <li><em>Food & Wine</em> — world‑class restaurants; easy Winelands access.</li>
+            <li><em>Table Mountain</em> one of the New7Wonders of Nature, framing the city with epic views.</li>
+            <li><em>Robben Island</em> Mandela’s prison; living museum of South Africa’s triumph.</li>
+            <li><em>Cape Peninsula</em> Cape of Good Hope and Boulders Beach penguins.</li>
+            <li><em>Food & Wine</em> world class restaurants; easy Winelands access.</li>
           </ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.12s">
-          <strong>Perfect Day (Mini‑Itinerary)</strong>
+          <strong>Perfect Day (Mini Itinerary)</strong>
           <ul class="mini">
-            <li>Morning — Cable car up Table Mountain; coffee with views.</li>
-            <li>Midday — Bo‑Kaap walk; Malay lunch.</li>
-            <li>Afternoon — Kirstenbosch or V&A Waterfront.</li>
-            <li>Evening — Sundowners on Signal Hill; dinner on Waterfront.</li>
+            <li>Morning Cable car up Table Mountain; coffee with views.</li>
+            <li>Midday Bo Kaap walk; Malay lunch.</li>
+            <li>Afternoon Kirstenbosch or V&A Waterfront.</li>
+            <li>Evening Sundowners on Signal Hill; dinner on Waterfront.</li>
           </ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.18s">
-          <strong>Top 3 Must‑Dos</strong>
+          <strong>Top 3 Must Dos</strong>
           <ol class="mini">
-            <li>Sunrise/sunset on Table Mountain or Lion’s Head.</li>
-            <li>Cape Peninsula circuit: Chapman’s Peak → Cape Point → Penguins.</li>
-            <li>Robben Island tour with ex‑political prisoner guides.</li>
+            <li>Sunrise or sunset on Table Mountain or Lion’s Head.</li>
+            <li>Cape Peninsula circuit: Chapman’s Peak to Cape Point to Penguins.</li>
+            <li>Robben Island tour with ex political prisoner guides.</li>
           </ol>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.24s">
           <strong>Insider Tips</strong>
           <ul class="mini">
             <li>Book Robben Island early; weather can shift sailings.</li>
-            <li>Use Uber/driver for Peninsula day; parking is tight.</li>
+            <li>Use Uber or a driver for Peninsula day; parking is tight.</li>
           </ul>
         </div></div>
       </div>
@@ -345,31 +381,31 @@
           <strong>Why it’s famous</strong>
           <ul class="mini">
             <li><em>Big Five</em> density with reliable sightings (private reserves like Sabi Sands).</li>
-            <li><em>Guiding & tracking</em> traditions for close‑up, ethical encounters.</li>
-            <li><em>All‑inclusive lodges</em> — twice‑daily drives, great food, stargazing.</li>
+            <li><em>Guiding & tracking</em> traditions for close up, ethical encounters.</li>
+            <li><em>All inclusive lodges</em> twice daily drives, great food, stargazing.</li>
           </ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.12s">
-          <strong>Perfect Day (Mini‑Itinerary)</strong>
+          <strong>Perfect Day (Mini Itinerary)</strong>
           <ul class="mini">
-            <li>Pre‑dawn — Coffee & rusks; morning drive.</li>
-            <li>Late Morning — Brunch; siesta/pool.</li>
-            <li>Afternoon — High tea; evening drive.</li>
-            <li>Night — Dinner by fire; Southern Cross overhead.</li>
+            <li>Pre dawn Coffee and rusks; morning drive.</li>
+            <li>Late Morning Brunch and siesta or pool.</li>
+            <li>Afternoon High tea; evening drive.</li>
+            <li>Night Dinner by fire; Southern Cross overhead.</li>
           </ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.18s">
-          <strong>Top 3 Must‑Dos</strong>
+          <strong>Top 3 Must Dos</strong>
           <ol class="mini">
-            <li>Sunrise drive for predators & elephants.</li>
-            <li>Evening drive + bush dinner under stars.</li>
+            <li>Sunrise drive for predators and elephants.</li>
+            <li>Evening drive plus bush dinner under stars.</li>
             <li>Optional bush walk with armed ranger.</li>
           </ol>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.24s">
           <strong>Insider Tips</strong>
           <ul class="mini">
-            <li>June = dry season start: cooler mornings; pack layers.</li>
+            <li>June is dry season start: cooler mornings; pack layers.</li>
             <li>Message lodge to confirm bush strip timings.</li>
           </ul>
         </div></div>
@@ -385,33 +421,33 @@
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.06s">
           <strong>Why it’s famous</strong>
           <ul class="mini">
-            <li>Among the largest waterfalls (width × height) on Earth.</li>
-            <li><em>Mosi‑oa‑Tunya</em> — “The Smoke That Thunders” mist visible for miles.</li>
+            <li>Among the largest waterfalls by width times height on Earth.</li>
+            <li><em>Mosi oa Tunya</em> The Smoke That Thunders mist visible for miles.</li>
             <li>Adventure hub: cruises, heli flips, seasonal Devil’s Pool.</li>
           </ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.12s">
-          <strong>Perfect Day (Mini‑Itinerary)</strong>
+          <strong>Perfect Day (Mini Itinerary)</strong>
           <ul class="mini">
-            <li>Morning — Falls walk (Zimbabwe side) before crowds.</li>
-            <li>Midday — Market browse/café stop in town.</li>
-            <li>Afternoon — Optional helicopter; relax at hotel.</li>
-            <li>Evening — Zambezi sunset cruise; dinner with local cuisine.</li>
+            <li>Morning Falls walk on the Zimbabwe side before crowds.</li>
+            <li>Midday Market browse or café stop in town.</li>
+            <li>Afternoon Optional helicopter; relax at hotel.</li>
+            <li>Evening Zambezi sunset cruise; dinner with local cuisine.</li>
           </ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.18s">
-          <strong>Top 3 Must‑Dos</strong>
+          <strong>Top 3 Must Dos</strong>
           <ol class="mini">
-            <li>Guided Falls walk (raincoat for spray).</li>
+            <li>Guided Falls walk with a raincoat for spray.</li>
             <li>Sunset cruise on the Zambezi River.</li>
-            <li>Helicopter “Flight of Angels”.</li>
+            <li>Helicopter Flight of Angels.</li>
           </ol>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.24s">
           <strong>Insider Tips</strong>
           <ul class="mini">
-            <li>Park fee is per entry — plan one focused visit.</li>
-            <li>Zim = classic viewpoints; Zam = Devil’s Pool in dry season.</li>
+            <li>Park fee is per entry so plan one focused visit.</li>
+            <li>Zim for classic viewpoints; Zam for Devil’s Pool in dry season.</li>
           </ul>
         </div></div>
       </div>
@@ -439,7 +475,7 @@
       <div class="w" id="tasksCard">
         <div class="soft-card">
           <div class="widget-head"><h3>Task Board</h3>
-            <div class="row"><input id="taskInput" class="input" placeholder="Add a task (e.g., 'Book Robben Island')" /><button class="btn" id="addTaskBtn">Add</button></div></div>
+            <div class="row"><input id="taskInput" class="input" placeholder="Add a task e.g., Book Robben Island" /><button class="btn" id="addTaskBtn">Add</button></div></div>
           <div class="list" id="taskList"></div>
           <div class="progress" style="margin-top:.6rem"><span id="taskProgress"></span></div>
         </div>
@@ -492,8 +528,8 @@
     <div class="widget-head">
       <h2 id="budget-title" class="section-title">Budget Planner</h2>
       <div class="row" style="max-width:520px">
-        <input id="budgetItem" class="input" placeholder="Item (e.g., Robben Island tickets)" />
-        <input id="budgetAmt" class="input" type="number" min="0" step="0.01" placeholder="Amount (USD)" />
+        <input id="budgetItem" class="input" placeholder="Item e.g., Robben Island tickets" />
+        <input id="budgetAmt" class="input" type="number" min="0" step="0.01" placeholder="Amount USD" />
         <button class="btn" id="addBudget">Add</button>
       </div>
     </div>
@@ -504,18 +540,18 @@
     </table>
   </section>
 
-  <!-- HEALTH & VISAS (U.S. Citizens) -->
+  <!-- HEALTH & VISAS U.S. Citizens -->
   <section id="health" class="card reveal" data-anim="fade-up" aria-labelledby="health-title">
-    <h2 id="health-title" class="section-title">Health & Entry Info (U.S. Citizens)</h2>
+    <h2 id="health-title" class="section-title">Health & Entry Info U.S. Citizens</h2>
     <div class="widgets">
       <div class="w wide">
         <div class="soft-card">
           <div class="widget-head"><h3>Vaccines & Health</h3></div>
           <ul class="mini">
-            <li><strong>Yellow fever:</strong> <em>Not required</em> when arriving from the U.S. or South Africa. Required only if you arrive from a yellow-fever risk country.</li>
-            <li><strong>Malaria:</strong> Recommended prophylaxis for <em>Kruger</em> & <em>Victoria Falls</em>. Ask your clinician about atovaquone–proguanil, doxycycline, or mefloquine.</li>
-            <li><strong>Other shots:</strong> CDC commonly advises <em>Hepatitis A</em> & <em>Typhoid</em> for most travelers; keep routine vaccines current (tetanus, MMR, flu, COVID‑19).</li>
-            <li><strong>Water & food:</strong> Prefer bottled/treated water; avoid raw street foods; pack oral rehydration + basic meds.</li>
+            <li><strong>Yellow fever:</strong> <em>Not required</em> when arriving from the U.S. or South Africa. Required only if you arrive from a yellow fever risk country.</li>
+            <li><strong>Malaria:</strong> Recommended prophylaxis for <em>Kruger</em> and <em>Victoria Falls</em>. Ask your clinician about atovaquone proguanil, doxycycline, or mefloquine.</li>
+            <li><strong>Other shots:</strong> CDC commonly advises <em>Hepatitis A</em> and <em>Typhoid</em> for most travelers; keep routine vaccines current.</li>
+            <li><strong>Water & food:</strong> Prefer bottled or treated water; avoid raw street foods; pack oral rehydration plus basic meds.</li>
             <li><strong>References:</strong> <a href="https://wwwnc.cdc.gov/travel" target="_blank" rel="noopener">CDC Traveler’s Health</a></li>
           </ul>
         </div>
@@ -523,22 +559,22 @@
 
       <div class="w">
         <div class="soft-card">
-          <div class="widget-head"><h3>Visas — South Africa</h3></div>
+          <div class="widget-head"><h3>Visas South Africa</h3></div>
           <ul class="mini">
-            <li>U.S. citizens: <em>Visa‑exempt up to 90 days</em> for tourism.</li>
+            <li>U.S. citizens: <em>Visa exempt up to 90 days</em> for tourism.</li>
             <li>Passport validity: at least 30 days beyond departure; keep <em>2 blank pages</em>.</li>
-            <li>Links: <a href="https://www.dha.gov.za/" target="_blank" rel="noopener">Dept. of Home Affairs (SA)</a> · <a href="https://www.sa-embassy.org/" target="_blank" rel="noopener">South African Embassy (U.S.)</a></li>
+            <li>Links: <a href="https://www.dha.gov.za/" target="_blank" rel="noopener">Dept. of Home Affairs SA</a> · <a href="https://www.sa-embassy.org/" target="_blank" rel="noopener">South African Embassy U.S.</a></li>
           </ul>
         </div>
       </div>
 
       <div class="w">
         <div class="soft-card">
-          <div class="widget-head"><h3>Visas — Zimbabwe & Zambia</h3></div>
+          <div class="widget-head"><h3>Visas Zimbabwe & Zambia</h3></div>
           <ul class="mini">
-            <li><strong>Zimbabwe:</strong> Visa required; typically available on arrival (USD cash or card). Single/double entry options.</li>
-            <li><strong>Zambia (if crossing the bridge):</strong> Visa required; consider <em>KAZA Univisa</em> (~$50) covering both countries for up to 30 days.</li>
-            <li>Links: <a href="https://zimbabwe-embassy.us/" target="_blank" rel="noopener">Zimbabwe Embassy (U.S.)</a> · <a href="https://www.evisa.gov.zw/" target="_blank" rel="noopener">Zimbabwe eVisa</a> · <a href="https://eservices.zambiaimmigration.gov.zm/" target="_blank" rel="noopener">Zambia eServices (Immigration)</a> · <a href="https://zm.usembassy.gov/" target="_blank" rel="noopener">U.S. Embassy Zambia</a></li>
+            <li><strong>Zimbabwe:</strong> Visa required; typically available on arrival. Single or double entry options.</li>
+            <li><strong>Zambia if crossing the bridge:</strong> Visa required; consider <em>KAZA Univisa</em> about $50 covering both countries up to 30 days.</li>
+            <li>Links: <a href="https://zimbabwe-embassy.us/" target="_blank" rel="noopener">Zimbabwe Embassy U.S.</a> · <a href="https://www.evisa.gov.zw/" target="_blank" rel="noopener">Zimbabwe eVisa</a> · <a href="https://eservices.zambiaimmigration.gov.zm/" target="_blank" rel="noopener">Zambia eServices</a> · <a href="https://zm.usembassy.gov/" target="_blank" rel="noopener">U.S. Embassy Zambia</a></li>
           </ul>
         </div>
       </div>
@@ -553,7 +589,7 @@
       <img src="images/cape-town-africa.jpg" alt="Cape Town" />
       <img src="images/kruger-big5.jpg" alt="Kruger" />
       <img src="images/victoria-falls.jpg" alt="Victoria Falls" />
-      <img src="images/bo-kaap.jpg" alt="Bo-Kaap" />
+      <img src="images/bo-kaap.jpg" alt="Bo Kaap" />
       <img src="images/penguins.jpg" alt="Boulders Beach Penguins" />
       <img src="images/zambezi-sunset.jpg" alt="Zambezi Sunset" />
     </div>
@@ -649,7 +685,7 @@
   });
   printBtn.addEventListener('click', ()=> window.print());
 
-  // ===== FLIP CLOCK COUNTDOWN (Auto to June 1, 2027) =====
+  // ===== FLIP CLOCK COUNTDOWN Auto to June 1, 2027 =====
   const TARGET_DATE = new Date(2027, 5, 1, 0, 0, 0); // months 0-indexed
   const flipClock = document.getElementById('flipClock');
   function pad(n, len){ return String(n).padStart(len, '0'); }
@@ -689,63 +725,224 @@
   tick();
   setInterval(tick, 1000);
 
-  // ===== FAMILY HUB: RSVP & ROLES =====
-  const peopleList=document.getElementById('peopleList');
-  const addPersonBtn=document.getElementById('addPersonBtn');
-  let people=store.get(K.people, [
-    {name:'Primrose', status:'🤩 In', role:'Trip Captain'},
-    {name:'Shae', status:'👍 In', role:'Food & Vibes'},
-  ]);
-  function renderPeople(){
-    peopleList.innerHTML='';
-    people.forEach((p,idx)=>{
-      const row=document.createElement('div'); row.className='row';
-      row.innerHTML=`
-        <input class=\"input\" value=\"${p.name}\" aria-label=\"name\" />
-        <select class=\"input\" aria-label=\"status\">\n          <option ${p.status==='🤩 In'?'selected':''}>🤩 In</option>\n          <option ${p.status==='👍 In'?'selected':''}>👍 In</option>\n          <option ${p.status==='🤔 Maybe'?'selected':''}>🤔 Maybe</option>\n          <option ${p.status==='❌ Out'?'selected':''}>❌ Out</option>\n        </select>\n        <input class=\"input\" value=\"${p.role||''}\" placeholder=\"Role (e.g., Flights)\" aria-label=\"role\" />\n        <button class=\"btn\" aria-label=\"Delete\" data-del>🗑️</button>`;
-      row.querySelector('[data-del]').addEventListener('click',()=>{ people.splice(idx,1); savePeople(); renderPeople(); updateProgress(); });
-      row.querySelectorAll('input,select').forEach((el)=> el.addEventListener('input',()=>{
-        const [nameEl, statusEl, roleEl]=row.querySelectorAll('input,select');
-        people[idx]={ name:nameEl.value.trim(), status:statusEl.value, role:roleEl.value.trim() };
-        savePeople(); updateProgress();
-      }));
-      peopleList.appendChild(row);
+  // Abbreviate labels on very small screens, restore on larger
+  const labelMap = { Days: 'Days', Hours: 'Hours', Minutes: 'Min', Seconds: 'Sec' };
+  const shortMap = { Days: 'D', Hours: 'H', Minutes: 'M', Seconds: 'S' };
+  const units = [...document.querySelectorAll('#flipClock .unit')];
+  function relabel(){
+    const useShort = window.matchMedia('(max-width: 420px)').matches;
+    units.forEach(u=>{
+      const sm = u.querySelector('small');
+      if(!sm) return;
+      const key = sm.textContent.trim();
+      sm.textContent = useShort ? (shortMap[key] || sm.textContent) : (labelMap[key] || sm.textContent);
     });
   }
-  function savePeople(){ store.set(K.people, people); }
-  addPersonBtn.addEventListener('click', ()=>{ people.push({name:'', status:'🤔 Maybe', role:''}); savePeople(); renderPeople(); });
-  renderPeople();
+  relabel();
+  window.addEventListener('resize', relabel);
 
-  // ===== TASK BOARD =====
-  const taskInput=document.getElementById('taskInput');
-  const addTaskBtn=document.getElementById('addTaskBtn');
-  const taskList=document.getElementById('taskList');
-  const taskProgress=document.getElementById('taskProgress');
-  let tasks=store.get(K.tasks, [
-    {text:'Book Robben Island', done:false},
-    {text:'Hold safari lodge', done:true},
-    {text:'Confirm Zambezi cruise', done:false},
-  ]);
-  function renderTasks(){
-    taskList.innerHTML='';
-    tasks.forEach((t,idx)=>{
-      const el=document.createElement('div'); el.className='check';
-      el.innerHTML=`<input type=\"checkbox\" ${t.done?'checked':''} aria-label=\"toggle task\"><input class=\"input\" value=\"${t.text}\" aria-label=\"task text\"><button class=\"btn\" aria-label=\"Delete\">🗑️</button>`;
-      const [cb, txt, del]=el.querySelectorAll('input,button');
-      cb.addEventListener('change', ()=>{ tasks[idx].done=cb.checked; saveTasks(); updateTaskProgress(); updateProgress(); });
-      txt.addEventListener('input', ()=>{ tasks[idx].text=txt.value; saveTasks(); });
-      del.addEventListener('click', ()=>{ tasks.splice(idx,1); saveTasks(); renderTasks(); updateTaskProgress(); updateProgress(); });
-      taskList.appendChild(el);
+// ===== FAMILY HUB: RSVP & ROLES =====
+const peopleList = document.getElementById('peopleList');
+const addPersonBtn = document.getElementById('addPersonBtn');
+
+const APP_VERSION = 2;                 // bump when you change defaults
+const VERSION_KEY = 'garcia.version';
+
+let people = store.get(K.people, [
+  {name:'Primrose', status:'🤩 In', role:'Trip Captain'},
+  {name:'Shae',     status:'👍 In', role:'Showing up :)'},
+  {name:'Tracy',    status:'🍸 In', role:'Food & Vibes'},
+  {name:'LeRoy',    status:'👍 In', role:'Food & Vibes'},
+]);
+
+// One-time migration to update or seed people, then mark version
+(function migratePeople(){
+  const current = store.get(VERSION_KEY, 0);
+  if (current >= APP_VERSION) return;
+
+  const byName = new Map(people.map(p => [String(p.name||'').toLowerCase(), p]));
+  let changed = false;
+
+  function ensure(name, status, role){
+    const key = name.toLowerCase();
+    if (!byName.has(key)) { people.push({name, status, role}); changed = true; }
+  }
+  ensure('Primrose','🤩 In','Trip Captain');
+  ensure('Shae','👍 In','Showing up :)');
+  ensure('Tracy','🍸 In','Food & Vibes');
+  ensure('LeRoy','👍 In','Food & Vibes');
+
+  // Normalize any stored variants of Trip Captain to include the emoji
+  people = people.map(p => {
+    const role = String(p.role||'').trim();
+    const isCaptain = /(^|\s)trip\s*captain$/i.test(role.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,''));
+    return isCaptain && !role.includes('🧭') ? {...p, role:'🧭 Trip Captain'} : p;
+  });
+
+  if (changed) store.set(K.people, people);
+  store.set(VERSION_KEY, APP_VERSION);
+})();
+
+function renderPeople(){
+  peopleList.innerHTML = '';
+  people.forEach((p, idx) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    // Display with emoji if role is Trip Captain
+    const isCaptain = /trip\s*captain/i.test(String(p.role||''));
+    const roleDisplay = isCaptain ? '🧭 Trip Captain' : (p.role || '');
+
+    row.innerHTML = `
+      <input class="input" value="${p.name}" aria-label="name" />
+      <select class="input" aria-label="status">
+        <option ${p.status==='🤩 In'?'selected':''}>🤩 In</option>
+        <option ${p.status==='🍸 In'?'selected':''}>🍸 In</option>
+        <option ${p.status==='👍 In'?'selected':''}>👍 In</option>
+        <option ${p.status==='🤔 Maybe'?'selected':''}>🤔 Maybe</option>
+        <option ${p.status==='❌ Out'?'selected':''}>❌ Out</option>
+      </select>
+      <input class="input" value="${roleDisplay}" placeholder="Role e.g., Flights" aria-label="role" />
+      <button class="btn" aria-label="Delete" data-del>🗑️</button>`;
+
+    row.querySelector('[data-del]').addEventListener('click', () => {
+      people.splice(idx, 1);
+      savePeople();
+      renderPeople();
+      updateProgress();
     });
-    updateTaskProgress();
+
+    row.querySelectorAll('input,select').forEach((el) =>
+      el.addEventListener('input', () => {
+        const [nameEl, statusEl, roleEl] = row.querySelectorAll('input,select');
+        let roleVal = roleEl.value.trim();
+
+        // Normalize any typed Trip Captain to the emoji form
+        const plain = roleVal.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,'').trim();
+        if (/^trip\s*captain$/i.test(plain)) roleVal = '🧭 Trip Captain';
+
+        people[idx] = { 
+          name: nameEl.value.trim(), 
+          status: statusEl.value, 
+          role: roleVal 
+        };
+        savePeople();
+        updateProgress();
+      })
+    );
+
+    peopleList.appendChild(row);
+  });
+}
+
+function savePeople(){ store.set(K.people, people); }
+addPersonBtn.addEventListener('click', () => {
+  people.push({name:'', status:'🤔 Maybe', role:''});
+  savePeople();
+  renderPeople();
+});
+renderPeople();
+
+// ===== TASK BOARD =====
+const taskInput = document.getElementById('taskInput');
+const addTaskBtn = document.getElementById('addTaskBtn');
+const taskList = document.getElementById('taskList');
+const taskProgress = document.getElementById('taskProgress');
+
+const DEFAULT_TASKS = [
+  {text:'Confirm number of people going', done:false},
+  {text:'Book flights', done:false},
+  {text:'Book vacation package', done:false},
+  {text:'Confirm Cape Town Excursions', done:false},
+  {text:'Confirm Zambezi cruise', done:false},
+];
+
+let tasks = store.get(K.tasks, DEFAULT_TASKS);
+
+// One-time migration to the new defaults
+const TASKS_VERSION_KEY = 'garcia.tasks.version';
+const TASKS_VERSION = 1;
+
+(function migrateTasks(){
+  const current = store.get(TASKS_VERSION_KEY, 0);
+  if (current >= TASKS_VERSION) return;
+
+  const wanted = DEFAULT_TASKS.map(t => t.text.toLowerCase());
+  const doneMap = new Map(
+    (Array.isArray(tasks) ? tasks : []).map(t => [String(t.text || '').toLowerCase(), !!t.done])
+  );
+
+  // Keep done state on matching items, keep user-added extras
+  const nextDefaults = DEFAULT_TASKS.map(t => ({
+    text: t.text,
+    done: doneMap.get(t.text.toLowerCase()) || false
+  }));
+  const extras = (Array.isArray(tasks) ? tasks : []).filter(
+    t => !wanted.includes(String(t.text || '').toLowerCase())
+  );
+
+  tasks = [...nextDefaults, ...extras];
+
+  store.set(K.tasks, tasks);
+  store.set(TASKS_VERSION_KEY, TASKS_VERSION);
+})();
+
+function renderTasks(){
+  taskList.innerHTML = '';
+  tasks.forEach((t, idx) => {
+    const el = document.createElement('div'); 
+    el.className = 'check';
+    el.innerHTML = `
+      <input type="checkbox" ${t.done ? 'checked' : ''} aria-label="toggle task">
+      <input class="input" value="${t.text}" aria-label="task text">
+      <button class="btn" aria-label="Delete">🗑️</button>`;
+    const [cb, txt, del] = el.querySelectorAll('input,button');
+
+    cb.addEventListener('change', () => {
+      tasks[idx].done = cb.checked;
+      saveTasks(); 
+      updateTaskProgress(); 
+      updateProgress();
+    });
+    txt.addEventListener('input', () => {
+      tasks[idx].text = txt.value;
+      saveTasks();
+    });
+    del.addEventListener('click', () => {
+      tasks.splice(idx, 1);
+      saveTasks(); 
+      renderTasks(); 
+      updateTaskProgress(); 
+      updateProgress();
+    });
+
+    taskList.appendChild(el);
+  });
+  updateTaskProgress();
+}
+
+function saveTasks(){ store.set(K.tasks, tasks); }
+
+addTaskBtn.addEventListener('click', () => {
+  if (taskInput.value.trim()){
+    tasks.unshift({text: taskInput.value.trim(), done:false});
+    taskInput.value = '';
+    saveTasks(); 
+    renderTasks(); 
+    updateTaskProgress(); 
+    updateProgress();
   }
-  function saveTasks(){ store.set(K.tasks, tasks); }
-  addTaskBtn.addEventListener('click', ()=>{ if(taskInput.value.trim()){ tasks.unshift({text:taskInput.value.trim(), done:false}); taskInput.value=''; saveTasks(); renderTasks(); updateProgress(); } });
-  function updateTaskProgress(){
-    const total=tasks.length || 1; const done=tasks.filter(t=>t.done).length; const pct=Math.round(done/total*100);
-    taskProgress.style.width=pct+'%';
-  }
-  renderTasks();
+});
+
+function updateTaskProgress(){
+  const total = tasks.length || 1;
+  const done = tasks.filter(t => t.done).length;
+  const pct = Math.round(done / total * 100);
+  taskProgress.style.width = pct + '%';
+}
+
+renderTasks();
+
 
   // ===== SHARED NOTES =====
   const notes=document.getElementById('notes');
@@ -760,13 +957,13 @@
       'Passport + visas','Credit cards / USD cash','Travel insurance','Universal adapter','Phone + charger','Sunscreen SPF 30+','Sunglasses','Comfortable shoes'
     ],
     packSafari:[
-      'Neutral layers (khaki/olive)','Light down jacket','Hat (wide brim)','Binoculars','Camera + batteries','Insect repellent','Small torch/headlamp'
+      'Neutral layers khaki or olive','Light down jacket','Wide brim hat','Binoculars','Camera + batteries','Insect repellent','Small torch or headlamp'
     ],
     packFalls:[
-      'Light rain jacket','Quick-dry clothes','Waterproof pouch','Sandals / water shoes','Spare SD cards'
+      'Light rain jacket','Quick dry clothes','Waterproof pouch','Sandals or water shoes','Spare SD cards'
     ],
     packDocs:[
-      'Yellow Fever (if required)','Prescription meds','Copies of docs','Emergency contacts','Lodge confirmations'
+      'Yellow Fever if required','Prescription meds','Copies of docs','Emergency contacts','Lodge confirmations'
     ]
   };
   const packingState=store.get('garcia.packing', {});
@@ -776,7 +973,7 @@
     items.forEach((label, i)=>{
       const key=id+':'+i;
       const wrap=document.createElement('label'); wrap.className='check';
-      wrap.innerHTML=`<input type=\"checkbox\" ${packingState[key]?'checked':''}><span>${label}</span>`;
+      wrap.innerHTML=`<input type="checkbox" ${packingState[key]?'checked':''}><span>${label}</span>`;
       const cb=wrap.querySelector('input');
       cb.addEventListener('change',()=>{ packingState[key]=cb.checked; store.set('garcia.packing', packingState); updateProgress(); });
       box.appendChild(wrap);
@@ -794,15 +991,15 @@
   const budgetItem=document.getElementById('budgetItem');
   const budgetAmt=document.getElementById('budgetAmt');
   let budget=store.get(K.budget, [
-    {item:'Flights (per person est.)', amount:4850},
-    {item:'Robben Island tickets (2)', amount:60},
-    {item:'Zambezi sunset cruise (2)', amount:120}
+    {item:'Flights per person est.', amount:4850},
+    {item:'Robben Island tickets 2', amount:60},
+    {item:'Zambezi sunset cruise 2', amount:120}
   ]);
   function renderBudget(){
     budgetBody.innerHTML='';
     budget.forEach((b,idx)=>{
       const tr=document.createElement('tr');
-      tr.innerHTML=`<td><input class=\"input\" value=\"${b.item}\"></td><td><input class=\"input\" type=\"number\" min=\"0\" step=\"0.01\" value=\"${b.amount}\"></td><td><button class=\"btn\" aria-label=\"Delete\">🗑️</button></td>`;
+      tr.innerHTML=`<td><input class="input" value="${b.item}"></td><td><input class="input" type="number" min="0" step="0.01" value="${b.amount}"></td><td><button class="btn" aria-label="Delete">🗑️</button></td>`;
       const [itemEl, amtEl, del]=tr.querySelectorAll('input,button');
       const sync=()=>{ budget[idx].item=itemEl.value; budget[idx].amount=parseFloat(amtEl.value||0); saveBudget(); updateBudgetTotal(); };
       itemEl.addEventListener('input', sync); amtEl.addEventListener('input', sync);
@@ -833,7 +1030,7 @@
   // ===== PLANNING PROGRESS =====
   const progressText=document.getElementById('progressText');
   function updateProgress(){
-    const haveDate=true; // fixed date
+    const haveDate=true;
     const rsvpDone=people.some(p=>p.status.includes('In'));
     const tasksTotal=tasks.length; const tasksDone=tasks.filter(t=>t.done).length; const taskPct=tasksTotal? (tasksDone/tasksTotal) : 0;
     const packingChecked=Object.values(store.get('garcia.packing', {})).filter(Boolean).length; const packingTotal=Object.keys(store.get('garcia.packing', {})).length||1; const packPct=packingChecked/packingTotal;
