@@ -1,0 +1,27 @@
+{
+  "name": "africa-dossier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jest": "^30.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pvgarcia/africa-dossier.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pvgarcia/africa-dossier/issues"
+  },
+  "homepage": "https://github.com/pvgarcia/africa-dossier#readme",
+  "dependencies": {
+    "react": "^19.1.1"
+  }
+}
