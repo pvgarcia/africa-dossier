@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cape Town → Kruger Safari → Victoria Falls — Garcia Gang Takes on Africa!</title>
-<!-- Headings keep Playfair for the luxe vibe; body uses Aptos (with smart fallbacks) -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -17,9 +16,9 @@
     --accent:#9cc07e; --accent-2:#d8b56a; --accent-3:#88b8bd; --brown:#f7e1c0; --brown-dark:#ffe8c8;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
+  html, body { min-height:100%; height:auto; }
   body{
-    margin:0; 
+    margin:0;
     font-family: Aptos, "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
     background:linear-gradient(180deg, var(--bg), #EFEAE2 50%, var(--bg));
     color:var(--ink);
@@ -27,14 +26,13 @@
     transition:background .3s ease,color .3s ease;
   }
 
-  /* ===== HERO ===== */
-  .hero{position:relative; height:72vh; min-height:520px; overflow:hidden; border-bottom:1px solid var(--line); margin-bottom:0;}
+  /* HERO */
+  .hero{position:relative; height:72vh; min-height:520px; overflow:hidden; border-bottom:1px solid var(--line); margin-bottom:0; z-index:1;}
   .hero + *{margin-top:0 !important; padding-top:0 !important;}
   .slides{position:absolute; inset:0}
   .slide{position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity .9s ease-in-out;}
   .slide.active{opacity:1}
   .slide::after{content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.10) 40%, rgba(0,0,0,.20));}
-
   .slide-caption{ position:absolute; left:20px; bottom:22px; z-index:2; background:rgba(255,255,255,.72); color:var(--brown);
     padding:12px 16px; border-radius:10px; border:1px solid rgba(0,0,0,.08); box-shadow:0 6px 20px rgba(0,0,0,.12); max-width:76vw; }
   .slide-caption h2{margin:0 0 6px 0; font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(1rem,.7rem + 1.4vw,1.6rem)}
@@ -44,8 +42,8 @@
   .dot{width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.55); border:1px solid rgba(0,0,0,.15); cursor:pointer}
   .dot.active{background:rgba(255,255,255,.95)}
 
-  /* ===== NAV + LAYOUT ===== */
-  .nav{position:sticky; top:0; z-index:9; backdrop-filter:saturate(140%) blur(6px); background:rgba(242,238,230,.86); border-bottom:1px solid var(--line)}
+  /* NAV + LAYOUT */
+  .nav{position:sticky; top:0; z-index:1000; backdrop-filter:saturate(140%) blur(6px); background:rgba(242,238,230,.86); border-bottom:1px solid var(--line)}
   .nav-inner{max-width:1200px; margin:0 auto; display:flex; gap:.6rem; align-items:center; padding:.6rem 1.25rem; overflow:auto}
   .nav a{color:var(--ink-soft); text-decoration:none; padding:.4rem .65rem; border-radius:10px; border:1px solid transparent; white-space:nowrap}
   .nav a.active, .nav a:hover{border-color:var(--line); color:var(--ink)}
@@ -65,12 +63,12 @@
   [data-theme="dark"] .soft-card{background:#221e18}
   .mini{margin:.2rem 0 0} .mini li{margin:.25rem 0}
 
-  /* ===== Equal-height 2×2 grid per destination ===== */
+  /* Pair grid */
   .pair-grid{ display:grid; grid-template-columns: 1.2fr .8fr; grid-auto-rows: 1fr; gap: 1rem; }
   .pair-grid .cell{ display:flex; align-items:stretch; }
   .pair-grid .soft-card{ width:100%; display:flex; flex-direction:column; }
 
-  /* ===== SCROLL ANIMATIONS ===== */
+  /* Scroll animations */
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.show{ opacity:1; transform:none; }
   [data-anim="fade-up"]    { transform:translateY(16px); }
@@ -79,12 +77,10 @@
   [data-anim="zoom-in"]    { transform:scale(.96); }
   .reveal{ transition-delay: var(--d, 0s); }
 
-  /* ===== FLIP CLOCK STYLES ===== */
+  /* Flip clock */
   .flip-clock{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap }
   .flip-clock .unit{ display:flex; flex-direction:column; align-items:center; }
   .flip-clock small{ color:var(--ink-soft); margin-top:.35rem; letter-spacing:.02em }
-
-  /* 3D flip tiles with bevel + drop shadow */
   .flip{
     --tileGrad: linear-gradient(135deg,#fffaf0 0%,#f4efe6 60%,#efe6d9 100%);
     --edge: rgba(0,0,0,.12);
@@ -97,59 +93,18 @@
     transition:transform .2s ease, box-shadow .2s ease;
     filter: drop-shadow(0 8px 16px rgba(0,0,0,.08));
   }
-  .flip:hover{
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 2px 0 var(--edge) inset, 0 1px 0 #fff inset,
-                0 14px 26px rgba(0,0,0,.14), 0 6px 12px rgba(0,0,0,.10);
-  }
+  .flip:hover{ transform: translateY(-2px) scale(1.01); }
 
-  /* inner split + highlights */
-  .flip::before, .flip::after{
-    content:""; position:absolute; left:0; right:0; height:50%; pointer-events:none;
-  }
-  .flip::before{ top:0;
-    background:linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0));
-    border-bottom:1px solid rgba(0,0,0,.06);
-  }
-  .flip::after{ bottom:0;
-    background:linear-gradient(to top, rgba(0,0,0,.08), rgba(0,0,0,0));
-  }
+  .flip::before, .flip::after{ content:""; position:absolute; left:0; right:0; height:50%; pointer-events:none; }
+  .flip::before{ top:0; background:linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0)); border-bottom:1px solid rgba(0,0,0,.06); }
+  .flip::after{ bottom:0; background:linear-gradient(to top, rgba(0,0,0,.08), rgba(0,0,0,0)); }
+  .flip .curr, .flip .next{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:2.1rem; letter-spacing:.5px; color:var(--ink); backface-visibility:hidden; }
 
-  /* digits */
-  .flip .curr, .flip .next{
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-weight:800; font-size:2.1rem; letter-spacing:.5px; color:var(--ink);
-    text-shadow: 0 1px 0 rgba(255,255,255,.65);
-    backface-visibility:hidden;
-  }
-
-  /* flip motion + lighting tweaks */
-  .flip.animate .curr{ animation:fold .6s ease forwards; }
-  .flip.animate .next{ animation:unfold .6s ease forwards; }
-  @keyframes fold{ 0%{transform:rotateX(0)} 49%{filter:brightness(.85)} 100%{transform:rotateX(-90deg); filter:brightness(.75)} }
-  @keyframes unfold{ 0%{transform:rotateX(90deg); filter:brightness(.75)} 51%{filter:brightness(.95)} 100%{transform:rotateX(0); filter:brightness(1)} }
-
-  /* Back-to-top */
+  /* To top */
   .to-top{position:fixed; right:14px; bottom:18px; padding:.65rem .8rem; border-radius:12px; border:1px solid var(--line); background:#faf7f1; color:var(--ink); box-shadow:var(--shadow); cursor:pointer; display:none}
   .to-top.show{display:block}
 
-  /* dark theme tuning */
-  [data-theme="dark"] .flip{
-    --tileGrad: linear-gradient(135deg,#2c251e,#1f1a15 60%,#1a1611);
-    --edge: rgba(0,0,0,.5);
-    box-shadow: 0 2px 0 rgba(255,255,255,.06) inset, 0 1px 0 rgba(255,255,255,.03) inset,
-                0 10px 22px rgba(0,0,0,.5), 0 3px 10px rgba(0,0,0,.45);
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,.45));
-  }
-  [data-theme="dark"] .flip::before{
-    background:linear-gradient(to bottom, rgba(255,255,255,.12), rgba(255,255,255,0));
-    border-bottom-color:rgba(255,255,255,.06)
-  }
-  [data-theme="dark"] .flip::after{
-    background:linear-gradient(to top, rgba(0,0,0,.4), rgba(0,0,0,0));
-  }
-
-  /* ===== FAMILY HUB WIDGETS ===== */
+  /* Widgets */
   .widgets{display:grid; grid-template-columns: repeat(12, 1fr); gap:1rem}
   .w{grid-column: span 6;}
   .w.small{grid-column: span 4;}
@@ -165,36 +120,28 @@
   .progress{height:10px; background:#e7dfd3; border-radius:999px; overflow:hidden}
   .progress > span{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0}
 
-  /* Checklist */
   .checklist{display:grid; gap:.4rem}
   .check{display:flex; align-items:center; gap:.5rem}
   .check input[type="checkbox"]{width:18px; height:18px}
 
-  /* Gallery */
   .gallery{display:grid; grid-template-columns:repeat(6,1fr); gap:.5rem}
   .gallery img{width:100%; height:120px; object-fit:cover; border-radius:10px; cursor:pointer; border:1px solid var(--line)}
   .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:999}
   .lightbox.show{display:flex}
   .lightbox img{max-width:90vw; max-height:80vh; border-radius:12px; box-shadow:var(--shadow)}
 
-  /* Print */
+  /* Print and responsive */
   @media print{ .hero,.nav,.to-top,.carousel-controls,.btn,.lightbox{display:none !important} .wrap{padding:0} .card{box-shadow:none; border:1px solid #ddd} }
   @media (max-width:1100px){ .w{grid-column: span 12;} .w.small{grid-column: span 6;} }
   @media (max-width:720px){ .hero{height:68vh} .gallery{grid-template-columns:repeat(3,1fr)} .flip{ width:88px; height:60px; border-radius:12px } .flip .curr,.flip .next{ font-size:1.8rem } }
 
-  /* === Mobile friendly flip clock overrides === */
+  /* Flip clock mobile */
   .flip-clock{ gap:.8rem; }
   .flip{ width: clamp(64px, 22vw, 110px); height: clamp(44px, 14vw, 72px); border-radius:12px; }
   .flip .curr, .flip .next{ font-size: clamp(1.25rem, 7vw, 2.1rem); letter-spacing:.4px; }
   .flip-clock small{ font-size: clamp(.66rem, 2.3vw, .85rem); }
   @media (max-width: 480px){
-    .flip-clock{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap:.75rem;
-      row-gap:.75rem;
-      align-items:start;
-    }
+    .flip-clock{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap:.75rem; row-gap:.75rem; align-items:start; }
     .flip-clock .unit{ align-items:center; }
   }
   @media (max-width: 360px){
@@ -205,7 +152,6 @@
 </head>
 <body>
 
-<!-- ===== HERO ===== -->
 <header class="hero" aria-label="Destination banners">
   <div class="slides" aria-hidden="true">
     <div class="slide active" style="background-image:url('images/cape-town-africa.jpg')">
@@ -234,7 +180,6 @@
   </div>
 </header>
 
-<!-- ===== NAV ===== -->
 <nav class="nav reveal" data-anim="fade-down" style="--d:.05s" aria-label="Section navigation">
   <div class="nav-inner">
     <a href="#glance">At a Glance</a>
@@ -253,7 +198,6 @@
   </div>
 </nav>
 
-<!-- ===== MAIN ===== -->
 <main class="wrap">
   <!-- AT A GLANCE -->
   <section id="glance" class="card reveal" data-anim="fade-up" style="--d:.05s" aria-labelledby="glance-title">
@@ -310,7 +254,7 @@
     </tr>
   </tbody>
 </table>
-
+</section>
 
   <!-- FLIGHTS & COSTS -->
   <section id="flights" class="card reveal" data-anim="fade-up" style="--d:.08s" aria-labelledby="flights-title">
@@ -454,19 +398,26 @@
     </div>
   </section>
 
-  <!-- ===== FAMILY HUB ===== -->
+  <!-- FAMILY HUB -->
   <section id="family-hub" class="card reveal" data-anim="fade-up" aria-labelledby="hub-title">
     <div class="widget-head">
-      <h2 id="hub-title" class="section-title">Family Hub — Garcia Gang</h2>
-      <div class="pill" id="progressText">Planning Progress: 0%</div>
+      <h2 id="hub-title" class="section-title">Family Hub - Garcia Gang</h2>
+      <div class="row" style="gap:.5rem">
+        <div class="pill" id="progressText">Planning Progress: 0%</div>
+      </div>
     </div>
 
     <div class="widgets">
       <!-- RSVP & Roles -->
       <div class="w" id="rsvpCard">
         <div class="soft-card">
-          <div class="widget-head"><h3>RSVP & Roles</h3>
-            <button class="btn" id="addPersonBtn">＋ Add Person</button></div>
+          <div class="widget-head">
+            <h3>RSVP & Roles</h3>
+            <div class="row" style="flex:0 0 auto">
+              <button class="btn" id="seedPeople">Reset</button>
+              <button class="btn" id="addPersonBtn">＋ Add Person</button>
+            </div>
+          </div>
           <div class="list" id="peopleList" aria-live="polite"></div>
         </div>
       </div>
@@ -474,8 +425,14 @@
       <!-- Task Board -->
       <div class="w" id="tasksCard">
         <div class="soft-card">
-          <div class="widget-head"><h3>Task Board</h3>
-            <div class="row"><input id="taskInput" class="input" placeholder="Add a task e.g., Book Robben Island" /><button class="btn" id="addTaskBtn">Add</button></div></div>
+          <div class="widget-head">
+            <h3>Task Board</h3>
+            <div class="row" style="flex:0 0 auto">
+              <input id="taskInput" class="input" placeholder="Add a task" />
+              <button class="btn" id="addTaskBtn">Add</button>
+              <button class="btn" id="seedTasks">Reset</button>
+            </div>
+          </div>
           <div class="list" id="taskList"></div>
           <div class="progress" style="margin-top:.6rem"><span id="taskProgress"></span></div>
         </div>
@@ -492,7 +449,7 @@
     </div>
   </section>
 
-  <!-- PACKING CHECKLIST -->
+  <!-- PACKING -->
   <section id="packing" class="card reveal" data-anim="fade-up" aria-labelledby="pack-title">
     <h2 id="pack-title" class="section-title">Packing Checklist</h2>
     <div class="widgets">
@@ -540,7 +497,7 @@
     </table>
   </section>
 
-  <!-- HEALTH & VISAS U.S. Citizens -->
+  <!-- HEALTH & VISAS -->
   <section id="health" class="card reveal" data-anim="fade-up" aria-labelledby="health-title">
     <h2 id="health-title" class="section-title">Health & Entry Info U.S. Citizens</h2>
     <div class="widgets">
@@ -549,10 +506,9 @@
           <div class="widget-head"><h3>Vaccines & Health</h3></div>
           <ul class="mini">
             <li><strong>Yellow fever:</strong> <em>Not required</em> when arriving from the U.S. or South Africa. Required only if you arrive from a yellow fever risk country.</li>
-            <li><strong>Malaria:</strong> Recommended prophylaxis for <em>Kruger</em> and <em>Victoria Falls</em>. Ask your clinician about atovaquone proguanil, doxycycline, or mefloquine.</li>
-            <li><strong>Other shots:</strong> CDC commonly advises <em>Hepatitis A</em> and <em>Typhoid</em> for most travelers; keep routine vaccines current.</li>
-            <li><strong>Water & food:</strong> Prefer bottled or treated water; avoid raw street foods; pack oral rehydration plus basic meds.</li>
-            <li><strong>References:</strong> <a href="https://wwwnc.cdc.gov/travel" target="_blank" rel="noopener">CDC Traveler’s Health</a></li>
+            <li><strong>Malaria:</strong> Recommended prophylaxis for <em>Kruger</em> and <em>Victoria Falls</em>.</li>
+            <li><strong>Other shots:</strong> Hep A and Typhoid are commonly advised. Keep routine vaccines current.</li>
+            <li><strong>Water & food:</strong> Prefer bottled or treated water. Pack oral rehydration and basic meds.</li>
           </ul>
         </div>
       </div>
@@ -561,9 +517,8 @@
         <div class="soft-card">
           <div class="widget-head"><h3>Visas South Africa</h3></div>
           <ul class="mini">
-            <li>U.S. citizens: <em>Visa exempt up to 90 days</em> for tourism.</li>
-            <li>Passport validity: at least 30 days beyond departure; keep <em>2 blank pages</em>.</li>
-            <li>Links: <a href="https://www.dha.gov.za/" target="_blank" rel="noopener">Dept. of Home Affairs SA</a> · <a href="https://www.sa-embassy.org/" target="_blank" rel="noopener">South African Embassy U.S.</a></li>
+            <li>U.S. citizens: visa exempt up to 90 days for tourism.</li>
+            <li>Passport validity: at least 30 days beyond departure, with 2 blank pages.</li>
           </ul>
         </div>
       </div>
@@ -572,9 +527,8 @@
         <div class="soft-card">
           <div class="widget-head"><h3>Visas Zimbabwe & Zambia</h3></div>
           <ul class="mini">
-            <li><strong>Zimbabwe:</strong> Visa required; typically available on arrival. Single or double entry options.</li>
-            <li><strong>Zambia if crossing the bridge:</strong> Visa required; consider <em>KAZA Univisa</em> about $50 covering both countries up to 30 days.</li>
-            <li>Links: <a href="https://zimbabwe-embassy.us/" target="_blank" rel="noopener">Zimbabwe Embassy U.S.</a> · <a href="https://www.evisa.gov.zw/" target="_blank" rel="noopener">Zimbabwe eVisa</a> · <a href="https://eservices.zambiaimmigration.gov.zm/" target="_blank" rel="noopener">Zambia eServices</a> · <a href="https://zm.usembassy.gov/" target="_blank" rel="noopener">U.S. Embassy Zambia</a></li>
+            <li>Zimbabwe: visa on arrival available in most cases.</li>
+            <li>Zambia: if crossing, consider KAZA Univisa ~ $50 covering both for 30 days.</li>
           </ul>
         </div>
       </div>
@@ -597,7 +551,6 @@
       <img id="lightboxImg" alt="" />
     </div>
   </section>
-
 </main>
 
 <button class="to-top" aria-label="Back to top">▲ Top</button>
@@ -618,7 +571,12 @@
     packing:'garcia.packing'
   };
 
-  // Smooth scroll for anchor links
+  // Flags - only count progress after interaction
+  const FLAGS = 'garcia.flags';
+  let flags = store.get(FLAGS, { rsvp:false, tasks:false, pack:false, budget:false, date:false });
+  function saveFlags(){ store.set(FLAGS, flags); }
+
+  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
       const href=a.getAttribute('href');
@@ -626,7 +584,7 @@
     });
   });
 
-  // Active link highlighting
+  // Active link highlight
   const sections=[...document.querySelectorAll('main section')];
   const navLinks=[...document.querySelectorAll('.nav a')];
   function onScroll(){
@@ -662,7 +620,7 @@
     start();
   })();
 
-  // ===== SCROLL REVEAL OBSERVER =====
+  // Scroll reveal
   (function(){
     const items=[...document.querySelectorAll('.reveal')];
     if(!('IntersectionObserver' in window)||!items.length) { items.forEach(el=>el.classList.add('show')); return; }
@@ -672,7 +630,7 @@
     items.forEach(el=> io.observe(el));
   })();
 
-  // ===== THEME TOGGLE & SHARE & PRINT =====
+  // Theme, share, print
   const themeToggle=document.getElementById('themeToggle');
   const shareBtn=document.getElementById('shareBtn');
   const printBtn=document.getElementById('printBtn');
@@ -685,8 +643,8 @@
   });
   printBtn.addEventListener('click', ()=> window.print());
 
-  // ===== FLIP CLOCK COUNTDOWN Auto to June 1, 2027 =====
-  const TARGET_DATE = new Date(2027, 5, 1, 0, 0, 0); // months 0-indexed
+  // Flip clock countdown
+  const TARGET_DATE = new Date(2027, 5, 1, 0, 0, 0);
   const flipClock = document.getElementById('flipClock');
   function pad(n, len){ return String(n).padStart(len, '0'); }
   function diffParts(){
@@ -715,7 +673,7 @@
       if(last[ref.name] !== text){
         ref.next.textContent = text;
         ref.flip.classList.remove('animate');
-        void ref.flip.offsetWidth; // restart animation
+        void ref.flip.offsetWidth;
         ref.flip.classList.add('animate');
         setTimeout(()=>{ ref.curr.textContent = text; }, 580);
         last[ref.name] = text;
@@ -725,7 +683,7 @@
   tick();
   setInterval(tick, 1000);
 
-  // Abbreviate labels on very small screens, restore on larger
+  // Abbreviate flip labels on very small screens
   const labelMap = { Days: 'Days', Hours: 'Hours', Minutes: 'Min', Seconds: 'Sec' };
   const shortMap = { Days: 'D', Hours: 'H', Minutes: 'M', Seconds: 'S' };
   const units = [...document.querySelectorAll('#flipClock .unit')];
@@ -741,217 +699,229 @@
   relabel();
   window.addEventListener('resize', relabel);
 
-// ===== FAMILY HUB: RSVP & ROLES =====
-const peopleList = document.getElementById('peopleList');
-const addPersonBtn = document.getElementById('addPersonBtn');
+  // ===== FAMILY HUB: RSVP & ROLES =====
+  const peopleList = document.getElementById('peopleList');
+  const addPersonBtn = document.getElementById('addPersonBtn');
+  const seedPeopleBtn = document.getElementById('seedPeople');
 
-const APP_VERSION = 2;                 // bump when you change defaults
-const VERSION_KEY = 'garcia.version';
+  // Bump to force migrate on this version
+  const APP_VERSION = 3;
+  const VERSION_KEY = 'garcia.version';
 
-let people = store.get(K.people, [
-  {name:'Primrose', status:'🤩 In', role:'Trip Captain'},
-  {name:'Shae',     status:'👍 In', role:'Showing up :)'},
-  {name:'Tracy',    status:'🍸 In', role:'Food & Vibes'},
-  {name:'LeRoy',    status:'👍 In', role:'Food & Vibes'},
-]);
+  const DEFAULT_PEOPLE = [
+    {name:'Primrose',     status:'🤩 In', role:'Trip Captain'},
+    {name:'Shae',         status:'👍 In', role:'Showing up :)'},
+    {name:'Tracy',        status:'🍸 In', role:'Food & Vibes'},
+    {name:'LeRoy',        status:'👍 In', role:'Food & Vibes'},
+    {name:'Ash',          status:'🤔 Maybe', role:'Wakanda :)'},
+    {name:'Miss Ellison', status:'🤔 Maybe', role:'Food & Vibes'}
+  ];
 
-// One-time migration to update or seed people, then mark version
-(function migratePeople(){
-  const current = store.get(VERSION_KEY, 0);
-  if (current >= APP_VERSION) return;
+  let people = store.get(K.people, DEFAULT_PEOPLE);
 
-  const byName = new Map(people.map(p => [String(p.name||'').toLowerCase(), p]));
-  let changed = false;
-
-  function ensure(name, status, role){
-    const key = name.toLowerCase();
-    if (!byName.has(key)) { people.push({name, status, role}); changed = true; }
-  }
-  ensure('Primrose','🤩 In','Trip Captain');
-  ensure('Shae','👍 In','Showing up :)');
-  ensure('Tracy','🍸 In','Food & Vibes');
-  ensure('LeRoy','👍 In','Food & Vibes');
-
-  // Normalize any stored variants of Trip Captain to include the emoji
-  people = people.map(p => {
-    const role = String(p.role||'').trim();
-    const isCaptain = /(^|\s)trip\s*captain$/i.test(role.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,''));
-    return isCaptain && !role.includes('🧭') ? {...p, role:'🧭 Trip Captain'} : p;
-  });
-
-  if (changed) store.set(K.people, people);
-  store.set(VERSION_KEY, APP_VERSION);
-})();
-
-function renderPeople(){
-  peopleList.innerHTML = '';
-  people.forEach((p, idx) => {
-    const row = document.createElement('div');
-    row.className = 'row';
-
-    // Display with emoji if role is Trip Captain
-    const isCaptain = /trip\s*captain/i.test(String(p.role||''));
-    const roleDisplay = isCaptain ? '🧭 Trip Captain' : (p.role || '');
-
-    row.innerHTML = `
-      <input class="input" value="${p.name}" aria-label="name" />
-      <select class="input" aria-label="status">
-        <option ${p.status==='🤩 In'?'selected':''}>🤩 In</option>
-        <option ${p.status==='🍸 In'?'selected':''}>🍸 In</option>
-        <option ${p.status==='👍 In'?'selected':''}>👍 In</option>
-        <option ${p.status==='🤔 Maybe'?'selected':''}>🤔 Maybe</option>
-        <option ${p.status==='❌ Out'?'selected':''}>❌ Out</option>
-      </select>
-      <input class="input" value="${roleDisplay}" placeholder="Role e.g., Flights" aria-label="role" />
-      <button class="btn" aria-label="Delete" data-del>🗑️</button>`;
-
-    row.querySelector('[data-del]').addEventListener('click', () => {
-      people.splice(idx, 1);
-      savePeople();
-      renderPeople();
-      updateProgress();
+  function migratePeople(force=false){
+    const current = store.get(VERSION_KEY, 0);
+    if (!force && current >= APP_VERSION) return;
+    // Start from existing but ensure defaults exist
+    const byName = new Map(people.map(p => [String(p.name||'').toLowerCase(), p]));
+    let changed = false;
+    DEFAULT_PEOPLE.forEach(p=>{
+      const key = String(p.name).toLowerCase();
+      if(!byName.has(key)){ people.push({...p}); changed = true; }
     });
+    // Normalize Trip Captain emoji
+    people = people.map(p => {
+      const role = String(p.role||'').trim();
+      const isCaptain = /(^|\s)trip\s*captain$/i.test(role.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,''));
+      return isCaptain && !role.includes('🧭') ? {...p, role:'🧭 Trip Captain'} : p;
+    });
+    if (changed || force){ store.set(K.people, people); }
+    store.set(VERSION_KEY, APP_VERSION);
+  }
+  migratePeople(false);
 
-    row.querySelectorAll('input,select').forEach((el) =>
-      el.addEventListener('input', () => {
-        const [nameEl, statusEl, roleEl] = row.querySelectorAll('input,select');
-        let roleVal = roleEl.value.trim();
-
-        // Normalize any typed Trip Captain to the emoji form
-        const plain = roleVal.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,'').trim();
-        if (/^trip\s*captain$/i.test(plain)) roleVal = '🧭 Trip Captain';
-
-        people[idx] = { 
-          name: nameEl.value.trim(), 
-          status: statusEl.value, 
-          role: roleVal 
-        };
+  function renderPeople(){
+    peopleList.innerHTML = '';
+    people.forEach((p, idx) => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const isCaptain = /trip\s*captain/i.test(String(p.role||''));
+      const roleDisplay = isCaptain ? '🧭 Trip Captain' : (p.role || '');
+      row.innerHTML = `
+        <input class="input" value="${p.name}" aria-label="name" />
+        <select class="input" aria-label="status">
+          <option ${p.status==='🤩 In'?'selected':''}>🤩 In</option>
+          <option ${p.status==='🍸 In'?'selected':''}>🍸 In</option>
+          <option ${p.status==='👍 In'?'selected':''}>👍 In</option>
+          <option ${p.status==='🤔 Maybe'?'selected':''}>🤔 Maybe</option>
+          <option ${p.status==='❌ Out'?'selected':''}>❌ Out</option>
+        </select>
+        <input class="input" value="${roleDisplay}" placeholder="Role e.g., Flights" aria-label="role" />
+        <button class="btn" aria-label="Delete" data-del>🗑️</button>`;
+      row.querySelector('[data-del]').addEventListener('click', () => {
+        people.splice(idx, 1);
         savePeople();
+        flags.rsvp = true; saveFlags();
+        renderPeople();
         updateProgress();
-      })
-    );
-
-    peopleList.appendChild(row);
-  });
-}
-
-function savePeople(){ store.set(K.people, people); }
-addPersonBtn.addEventListener('click', () => {
-  people.push({name:'', status:'🤔 Maybe', role:''});
-  savePeople();
-  renderPeople();
-});
-renderPeople();
-
-// ===== TASK BOARD =====
-const taskInput = document.getElementById('taskInput');
-const addTaskBtn = document.getElementById('addTaskBtn');
-const taskList = document.getElementById('taskList');
-const taskProgress = document.getElementById('taskProgress');
-
-const DEFAULT_TASKS = [
-  {text:'Confirm number of people going', done:false},
-  {text:'Book flights', done:false},
-  {text:'Book vacation package', done:false},
-  {text:'Confirm Cape Town Excursions', done:false},
-  {text:'Confirm Zambezi cruise', done:false},
-];
-
-let tasks = store.get(K.tasks, DEFAULT_TASKS);
-
-// One-time migration to the new defaults
-const TASKS_VERSION_KEY = 'garcia.tasks.version';
-const TASKS_VERSION = 1;
-
-(function migrateTasks(){
-  const current = store.get(TASKS_VERSION_KEY, 0);
-  if (current >= TASKS_VERSION) return;
-
-  const wanted = DEFAULT_TASKS.map(t => t.text.toLowerCase());
-  const doneMap = new Map(
-    (Array.isArray(tasks) ? tasks : []).map(t => [String(t.text || '').toLowerCase(), !!t.done])
-  );
-
-  // Keep done state on matching items, keep user-added extras
-  const nextDefaults = DEFAULT_TASKS.map(t => ({
-    text: t.text,
-    done: doneMap.get(t.text.toLowerCase()) || false
-  }));
-  const extras = (Array.isArray(tasks) ? tasks : []).filter(
-    t => !wanted.includes(String(t.text || '').toLowerCase())
-  );
-
-  tasks = [...nextDefaults, ...extras];
-
-  store.set(K.tasks, tasks);
-  store.set(TASKS_VERSION_KEY, TASKS_VERSION);
-})();
-
-function renderTasks(){
-  taskList.innerHTML = '';
-  tasks.forEach((t, idx) => {
-    const el = document.createElement('div'); 
-    el.className = 'check';
-    el.innerHTML = `
-      <input type="checkbox" ${t.done ? 'checked' : ''} aria-label="toggle task">
-      <input class="input" value="${t.text}" aria-label="task text">
-      <button class="btn" aria-label="Delete">🗑️</button>`;
-    const [cb, txt, del] = el.querySelectorAll('input,button');
-
-    cb.addEventListener('change', () => {
-      tasks[idx].done = cb.checked;
-      saveTasks(); 
-      updateTaskProgress(); 
-      updateProgress();
+      });
+      row.querySelectorAll('input,select').forEach((el) =>
+        el.addEventListener('input', () => {
+          const [nameEl, statusEl, roleEl] = row.querySelectorAll('input,select');
+          let roleVal = roleEl.value.trim();
+          const plain = roleVal.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,'').trim();
+          if (/^trip\s*captain$/i.test(plain)) roleVal = '🧭 Trip Captain';
+          people[idx] = { name: nameEl.value.trim(), status: statusEl.value, role: roleVal };
+          savePeople();
+          flags.rsvp = true; saveFlags();
+          updateProgress();
+        })
+      );
+      peopleList.appendChild(row);
     });
-    txt.addEventListener('input', () => {
-      tasks[idx].text = txt.value;
-      saveTasks();
-    });
-    del.addEventListener('click', () => {
-      tasks.splice(idx, 1);
-      saveTasks(); 
-      renderTasks(); 
-      updateTaskProgress(); 
-      updateProgress();
-    });
-
-    taskList.appendChild(el);
-  });
-  updateTaskProgress();
-}
-
-function saveTasks(){ store.set(K.tasks, tasks); }
-
-addTaskBtn.addEventListener('click', () => {
-  if (taskInput.value.trim()){
-    tasks.unshift({text: taskInput.value.trim(), done:false});
-    taskInput.value = '';
-    saveTasks(); 
-    renderTasks(); 
-    updateTaskProgress(); 
-    updateProgress();
   }
-});
+  function savePeople(){ store.set(K.people, people); }
 
-function updateTaskProgress(){
-  const total = tasks.length || 1;
-  const done = tasks.filter(t => t.done).length;
-  const pct = Math.round(done / total * 100);
-  taskProgress.style.width = pct + '%';
-}
+  addPersonBtn.addEventListener('click', () => {
+    people.push({name:'', status:'🤔 Maybe', role:''});
+    savePeople();
+    flags.rsvp = true; saveFlags();
+    renderPeople();
+    updateProgress();
+  });
 
-renderTasks();
+  // Force reset seeds for people
+  seedPeopleBtn.addEventListener('click', ()=>{
+    people = JSON.parse(JSON.stringify(DEFAULT_PEOPLE));
+    savePeople();
+    store.set(VERSION_KEY, APP_VERSION);
+    flags.rsvp = true; saveFlags();
+    renderPeople();
+    updateProgress();
+  });
 
+  renderPeople();
 
-  // ===== SHARED NOTES =====
+  // ===== TASK BOARD =====
+  const taskInput = document.getElementById('taskInput');
+  const addTaskBtn = document.getElementById('addTaskBtn');
+  const taskList = document.getElementById('taskList');
+  const taskProgress = document.getElementById('taskProgress');
+  const seedTasksBtn = document.getElementById('seedTasks');
+
+  const TASKS_VERSION_KEY = 'garcia.tasks.version';
+  const TASKS_VERSION = 2; // bump to force update
+  const DEFAULT_TASKS = [
+    {text:'Confirm number of people going', done:false},
+    {text:'Book flights', done:false},
+    {text:'Book vacation package', done:false},
+    {text:'Confirm Cape Town excursions', done:false},
+    {text:'Confirm Zambezi cruise', done:false}
+  ];
+
+  let tasks = store.get(K.tasks, DEFAULT_TASKS);
+
+  function migrateTasks(force=false){
+    const current = store.get(TASKS_VERSION_KEY, 0);
+    if (!force && current >= TASKS_VERSION) return;
+
+    const wanted = DEFAULT_TASKS.map(t => t.text.toLowerCase());
+    const doneMap = new Map(
+      (Array.isArray(tasks) ? tasks : []).map(t => [String(t.text || '').toLowerCase(), !!t.done])
+    );
+    const nextDefaults = DEFAULT_TASKS.map(t => ({
+      text: t.text,
+      done: doneMap.get(t.text.toLowerCase()) || false
+    }));
+    const extras = (Array.isArray(tasks) ? tasks : []).filter(
+      t => !wanted.includes(String(t.text || '').toLowerCase())
+    );
+    tasks = [...nextDefaults, ...extras];
+
+    store.set(K.tasks, tasks);
+    store.set(TASKS_VERSION_KEY, TASKS_VERSION);
+  }
+  migrateTasks(false);
+
+  function renderTasks(){
+    taskList.innerHTML = '';
+    tasks.forEach((t, idx) => {
+      const el = document.createElement('div');
+      el.className = 'check';
+      el.innerHTML = `
+        <input type="checkbox" ${t.done ? 'checked' : ''} aria-label="toggle task">
+        <input class="input" value="${t.text}" aria-label="task text">
+        <button class="btn" aria-label="Delete">🗑️</button>`;
+      const [cb, txt, del] = el.querySelectorAll('input,button');
+
+      cb.addEventListener('change', () => {
+        tasks[idx].done = cb.checked;
+        saveTasks();
+        flags.tasks = true; saveFlags();
+        updateTaskProgress();
+        updateProgress();
+      });
+      txt.addEventListener('input', () => {
+        tasks[idx].text = txt.value;
+        saveTasks();
+        flags.tasks = true; saveFlags();
+        updateProgress();
+      });
+      del.addEventListener('click', () => {
+        tasks.splice(idx, 1);
+        saveTasks();
+        flags.tasks = true; saveFlags();
+        renderTasks();
+        updateTaskProgress();
+        updateProgress();
+      });
+
+      taskList.appendChild(el);
+    });
+    updateTaskProgress();
+  }
+
+  function saveTasks(){ store.set(K.tasks, tasks); }
+
+  addTaskBtn.addEventListener('click', () => {
+    if (taskInput.value.trim()){
+      tasks.unshift({text: taskInput.value.trim(), done:false});
+      taskInput.value = '';
+      saveTasks();
+      flags.tasks = true; saveFlags();
+      renderTasks();
+      updateTaskProgress();
+      updateProgress();
+    }
+  });
+
+  seedTasksBtn.addEventListener('click', ()=>{
+    tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+    saveTasks();
+    store.set(TASKS_VERSION_KEY, TASKS_VERSION);
+    flags.tasks = true; saveFlags();
+    renderTasks();
+    updateTaskProgress();
+    updateProgress();
+  });
+
+  function updateTaskProgress(){
+    const total = tasks.length || 1;
+    const done = tasks.filter(t => t.done).length;
+    const pct = Math.round(done / total * 100);
+    taskProgress.style.width = pct + '%';
+  }
+
+  renderTasks();
+
+  // ===== NOTES =====
   const notes=document.getElementById('notes');
   const clearNotes=document.getElementById('clearNotes');
   notes.value=store.get(K.notes,'');
   notes.addEventListener('input', ()=> store.set(K.notes, notes.value));
   clearNotes.addEventListener('click', ()=>{ if(confirm('Clear all notes?')){ notes.value=''; store.set(K.notes, ''); } });
 
-  // ===== PACKING CHECKLIST =====
+  // ===== PACKING =====
   const checklistData={
     packEssentials:[
       'Passport + visas','Credit cards / USD cash','Travel insurance','Universal adapter','Phone + charger','Sunscreen SPF 30+','Sunglasses','Comfortable shoes'
@@ -966,7 +936,7 @@ renderTasks();
       'Malaria meds','Prescription meds','Copies of docs','Emergency contacts','Lodge confirmations'
     ]
   };
-  const packingState=store.get('garcia.packing', {});
+  const packingState=store.get(K.packing, {});
   function renderChecklist(id, items){
     const box=document.getElementById(id);
     box.innerHTML='';
@@ -975,7 +945,7 @@ renderTasks();
       const wrap=document.createElement('label'); wrap.className='check';
       wrap.innerHTML=`<input type="checkbox" ${packingState[key]?'checked':''}><span>${label}</span>`;
       const cb=wrap.querySelector('input');
-      cb.addEventListener('change',()=>{ packingState[key]=cb.checked; store.set('garcia.packing', packingState); updateProgress(); });
+      cb.addEventListener('change',()=>{ packingState[key]=cb.checked; store.set(K.packing, packingState); flags.pack = true; saveFlags(); updateProgress(); });
       box.appendChild(wrap);
     });
   }
@@ -1001,9 +971,9 @@ renderTasks();
       const tr=document.createElement('tr');
       tr.innerHTML=`<td><input class="input" value="${b.item}"></td><td><input class="input" type="number" min="0" step="0.01" value="${b.amount}"></td><td><button class="btn" aria-label="Delete">🗑️</button></td>`;
       const [itemEl, amtEl, del]=tr.querySelectorAll('input,button');
-      const sync=()=>{ budget[idx].item=itemEl.value; budget[idx].amount=parseFloat(amtEl.value||0); saveBudget(); updateBudgetTotal(); };
+      const sync=()=>{ budget[idx].item=itemEl.value; budget[idx].amount=parseFloat(amtEl.value||0); saveBudget(); flags.budget = true; saveFlags(); updateBudgetTotal(); updateProgress(); };
       itemEl.addEventListener('input', sync); amtEl.addEventListener('input', sync);
-      del.addEventListener('click', ()=>{ budget.splice(idx,1); saveBudget(); renderBudget(); updateBudgetTotal(); updateProgress(); });
+      del.addEventListener('click', ()=>{ budget.splice(idx,1); saveBudget(); flags.budget = true; saveFlags(); renderBudget(); updateBudgetTotal(); updateProgress(); });
       budgetBody.appendChild(tr);
     });
     updateBudgetTotal();
@@ -1012,11 +982,15 @@ renderTasks();
   function updateBudgetTotal(){ const total=budget.reduce((s,b)=> s + (parseFloat(b.amount)||0),0); budgetTotal.textContent = new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(total); }
   addBudget.addEventListener('click', ()=>{
     const item=budgetItem.value.trim(); const amt=parseFloat(budgetAmt.value);
-    if(!item||isNaN(amt)) return; budget.push({item, amount:amt}); budgetItem.value=''; budgetAmt.value=''; saveBudget(); renderBudget(); updateBudgetTotal(); updateProgress();
+    if(!item||isNaN(amt)) return;
+    budget.push({item, amount:amt});
+    budgetItem.value=''; budgetAmt.value='';
+    saveBudget(); flags.budget = true; saveFlags();
+    renderBudget(); updateBudgetTotal(); updateProgress();
   });
   renderBudget();
 
-  // ===== GALLERY LIGHTBOX =====
+  // ===== LIGHTBOX =====
   const gallery=document.getElementById('galleryGrid');
   const lightbox=document.getElementById('lightbox');
   const lightboxImg=document.getElementById('lightboxImg');
@@ -1027,17 +1001,40 @@ renderTasks();
   lightbox.addEventListener('click', ()=> lightbox.classList.remove('show'));
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') lightbox.classList.remove('show'); });
 
-  // ===== PLANNING PROGRESS =====
+  // ===== PROGRESS =====
   const progressText=document.getElementById('progressText');
   function updateProgress(){
-    const haveDate=true;
-    const rsvpDone=people.some(p=>p.status.includes('In'));
-    const tasksTotal=tasks.length; const tasksDone=tasks.filter(t=>t.done).length; const taskPct=tasksTotal? (tasksDone/tasksTotal) : 0;
-    const packingChecked=Object.values(store.get('garcia.packing', {})).filter(Boolean).length; const packingTotal=Object.keys(store.get('garcia.packing', {})).length||1; const packPct=packingChecked/packingTotal;
-    const budgetHas=budget.length>0;
-    const score=Math.round(( (haveDate?1:0)*0.2 + (rsvpDone?1:0)*0.2 + taskPct*0.3 + packPct*0.15 + (budgetHas?1:0)*0.15 )*100);
-    progressText.textContent=`Planning Progress: ${score}%`;
+    const haveDate   = true; // make dynamic if you expose a date control
+    const rsvpDone   = people.some(p => p.status.includes('In'));
+    const tasksTotal = tasks.length;
+    const tasksDone  = tasks.filter(t => t.done).length;
+    const taskPct    = tasksTotal ? (tasksDone / tasksTotal) : 0;
+    const packState  = store.get(K.packing, {});
+    const packPct    = (Object.values(packState).filter(Boolean).length) / (Object.keys(packState).length || 1);
+    const budgetHas  = budget.length > 0;
+
+    const parts = [];
+    if (flags.date)                parts.push({ w:0.20, v: haveDate ? 1 : 0 });
+    if (flags.rsvp)                parts.push({ w:0.20, v: rsvpDone ? 1 : 0 });
+    if (flags.tasks)               parts.push({ w:0.30, v: taskPct }); // include even if 0 tasks so user sees 0 count
+    if (flags.pack)                parts.push({ w:0.15, v: packPct });
+    if (flags.budget)              parts.push({ w:0.15, v: budgetHas ? 1 : 0 });
+
+    if (!parts.length){
+      progressText.textContent = 'Planning Progress: 0%';
+      return;
+    }
+    const wSum = parts.reduce((s,p)=> s + p.w, 0) || 1;
+    const score = Math.round(100 * parts.reduce((s,p)=> s + p.w * p.v, 0) / wSum);
+    progressText.textContent = `Planning Progress: ${score}%`;
   }
+
+  // Expose a quick dev helper if you want to wipe stored data
+  window.resetAllTripData = function(){
+    [K.people,K.tasks,K.notes,K.budget,K.packing,FLAGS,'garcia.version','garcia.tasks.version'].forEach(store.del);
+    location.reload();
+  };
+
   updateProgress();
 </script>
 </body>
