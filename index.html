@@ -77,34 +77,50 @@
   [data-anim="zoom-in"]    { transform:scale(.96); }
   .reveal{ transition-delay: var(--d, 0s); }
 
-  /* Flip clock */
-  .flip-clock{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap }
-  .flip-clock .unit{ display:flex; flex-direction:column; align-items:center; }
-  .flip-clock small{ color:var(--ink-soft); margin-top:.35rem; letter-spacing:.02em }
-  .flip{
-    --tileGrad: linear-gradient(135deg,#fffaf0 0%,#f4efe6 60%,#efe6d9 100%);
-    --edge: rgba(0,0,0,.12);
-    position:relative; width:110px; height:72px; border-radius:14px;
-    background:var(--tileGrad); border:1px solid var(--line);
-    box-shadow: 0 2px 0 var(--edge) inset, 0 1px 0 #fff inset,
-                0 8px 18px rgba(0,0,0,.10), 0 3px 6px rgba(0,0,0,.06);
-    display:flex; align-items:center; justify-content:center; overflow:hidden;
-    perspective:1000px; transform-style:preserve-3d;
-    transition:transform .2s ease, box-shadow .2s ease;
-    filter: drop-shadow(0 8px 16px rgba(0,0,0,.08));
+  /* Countdown (replacement for flip clock) */
+  .countdown{
+    display:grid;
+    grid-template-columns: repeat(4, minmax(120px,1fr));
+    gap:clamp(10px,2vw,16px);
+    align-items:stretch;
   }
-  .flip:hover{ transform: translateY(-2px) scale(1.01); }
+  .cd-card{
+    background:linear-gradient(#fff, var(--paper));
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+    padding:14px 10px;
+    text-align:center;
+    position:relative;
+  }
+  .cd-val{
+    font-weight:800;
+    font-size:clamp(28px,6vw,54px);
+    line-height:1;
+    margin:0 auto;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings:"tnum" 1,"lnum" 1;
+    letter-spacing:.02em;
+    min-width:7ch;
+    color:var(--ink);
+  }
+  .cd-label{display:block; margin-top:8px; color:var(--ink-soft); font-weight:700}
+  .cd-bump{animation:cd-bump .22s ease both}
+  @keyframes cd-bump{0%{transform:translateY(-6px);opacity:.35}100%{transform:none;opacity:1}}
 
-  .flip::before, .flip::after{ content:""; position:absolute; left:0; right:0; height:50%; pointer-events:none; }
-  .flip::before{ top:0; background:linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0)); border-bottom:1px solid rgba(0,0,0,.06); }
-  .flip::after{ bottom:0; background:linear-gradient(to top, rgba(0,0,0,.08), rgba(0,0,0,0)); }
-  .flip .curr, .flip .next{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:2.1rem; letter-spacing:.5px; color:var(--ink); backface-visibility:hidden; }
+  @media (max-width:640px){
+    .countdown{grid-template-columns:repeat(2,1fr)}
+    .cd-val{min-width:6ch}
+  }
 
-  /* To top */
-  .to-top{position:fixed; right:14px; bottom:18px; padding:.65rem .8rem; border-radius:12px; border:1px solid var(--line); background:#faf7f1; color:var(--ink); box-shadow:var(--shadow); cursor:pointer; display:none}
-  .to-top.show{display:block}
+  @media (prefers-reduced-motion:reduce){
+    .cd-bump{animation:none}
+  }
 
-  /* Widgets */
+  /* Print and responsive */
+  @media print{ .hero,.nav,.to-top,.carousel-controls,.btn,.lightbox{display:none !important} .wrap{padding:0} .card{box-shadow:none; border:1px solid #ddd} }
+  @media (max-width:1100px){ .w{grid-column: span 12;} .w.small{grid-column: span 6;} }
+  @media (max-width:720px){ .hero{height:68vh} .gallery{grid-template-columns:repeat(3,1fr)} }
   .widgets{display:grid; grid-template-columns: repeat(12, 1fr); gap:1rem}
   .w{grid-column: span 6;}
   .w.small{grid-column: span 4;}
@@ -129,25 +145,6 @@
   .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:999}
   .lightbox.show{display:flex}
   .lightbox img{max-width:90vw; max-height:80vh; border-radius:12px; box-shadow:var(--shadow)}
-
-  /* Print and responsive */
-  @media print{ .hero,.nav,.to-top,.carousel-controls,.btn,.lightbox{display:none !important} .wrap{padding:0} .card{box-shadow:none; border:1px solid #ddd} }
-  @media (max-width:1100px){ .w{grid-column: span 12;} .w.small{grid-column: span 6;} }
-  @media (max-width:720px){ .hero{height:68vh} .gallery{grid-template-columns:repeat(3,1fr)} .flip{ width:88px; height:60px; border-radius:12px } .flip .curr,.flip .next{ font-size:1.8rem } }
-
-  /* Flip clock mobile */
-  .flip-clock{ gap:.8rem; }
-  .flip{ width: clamp(64px, 22vw, 110px); height: clamp(44px, 14vw, 72px); border-radius:12px; }
-  .flip .curr, .flip .next{ font-size: clamp(1.25rem, 7vw, 2.1rem); letter-spacing:.4px; }
-  .flip-clock small{ font-size: clamp(.66rem, 2.3vw, .85rem); }
-  @media (max-width: 480px){
-    .flip-clock{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap:.75rem; row-gap:.75rem; align-items:start; }
-    .flip-clock .unit{ align-items:center; }
-  }
-  @media (max-width: 360px){
-    .flip-clock{ column-gap:.6rem; row-gap:.6rem; }
-    .flip{ box-shadow:0 6px 12px rgba(0,0,0,.10); }
-  }
 </style>
 </head>
 <body>
@@ -190,7 +187,6 @@
     <a href="#budget">Budget</a>
     <a href="#health">Health & Visas</a>
     <a href="#gallery">Gallery</a>
-    <a href="#contact">Contact</a>
     <span class="spacer"></span>
     <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle theme">🌓 Theme</button>
     <button id="printBtn" class="btn" title="Print / Save PDF">🖨️ Print</button>
@@ -208,25 +204,8 @@
       <div class="muted" style="flex:0 0 auto; min-width:170px">Trip start date:</div>
       <div class="pill" style="flex:0 0 auto; padding:.6rem 1rem; font-weight:600">June 1, 2027</div>
 
-      <!-- Flip Clock -->
-      <div id="flipClock" class="flip-clock" aria-live="polite">
-        <div class="unit" data-label="Days">
-          <div class="flip"><span class="curr">000</span><span class="next">000</span></div>
-          <small>Days</small>
-        </div>
-        <div class="unit" data-label="Hours">
-          <div class="flip"><span class="curr">00</span><span class="next">00</span></div>
-          <small>Hours</small>
-        </div>
-        <div class="unit" data-label="Minutes">
-          <div class="flip"><span class="curr">00</span><span class="next">00</span></div>
-          <small>Minutes</small>
-        </div>
-        <div class="unit" data-label="Seconds">
-          <div class="flip"><span class="curr">00</span><span class="next">00</span></div>
-          <small>Seconds</small>
-        </div>
-      </div>
+      <!-- Countdown -->
+      <div id="countdown" class="countdown" aria-live="polite" data-start="2027-06-01T00:00:00-06:00"></div>
     </div>
 
 <table class="reveal" data-anim="fade-up" style="--d:.12s">
@@ -643,61 +622,66 @@
   });
   printBtn.addEventListener('click', ()=> window.print());
 
-  // Flip clock countdown
-  const TARGET_DATE = new Date(2027, 5, 1, 0, 0, 0);
-  const flipClock = document.getElementById('flipClock');
-  function pad(n, len){ return String(n).padStart(len, '0'); }
-  function diffParts(){
-    const now = new Date();
-    let ms = Math.max(0, TARGET_DATE - now);
-    const s = Math.floor(ms / 1000);
-    const days = Math.floor(s / 86400);
-    const hours = Math.floor((s % 86400) / 3600);
-    const minutes = Math.floor((s % 3600) / 60);
-    const seconds = s % 60;
-    return { days, hours, minutes, seconds };
-  }
-  const refs = [...flipClock.querySelectorAll('.unit')].map((u,i)=>({
-    flip: u.querySelector('.flip'),
-    curr: u.querySelector('.curr'),
-    next: u.querySelector('.next'),
-    len: i===0 ? 3 : 2,
-    name: ['days','hours','minutes','seconds'][i]
-  }));
-  let last = {};
-  function tick(){
-    const d = diffParts();
-    refs.forEach(ref=>{
-      const val = d[ref.name];
-      const text = pad(val, ref.len);
-      if(last[ref.name] !== text){
-        ref.next.textContent = text;
-        ref.flip.classList.remove('animate');
-        void ref.flip.offsetWidth;
-        ref.flip.classList.add('animate');
-        setTimeout(()=>{ ref.curr.textContent = text; }, 580);
-        last[ref.name] = text;
-      }
-    });
-  }
-  tick();
-  setInterval(tick, 1000);
+  // ===== Countdown (replaces flip clock) =====
+  const cdRoot = document.getElementById('countdown');
+  const startISO = cdRoot.dataset.start || '2027-06-01T00:00:00-06:00';
+  const START = new Date(startISO);
 
-  // Abbreviate flip labels on very small screens
-  const labelMap = { Days: 'Days', Hours: 'Hours', Minutes: 'Min', Seconds: 'Sec' };
-  const shortMap = { Days: 'D', Hours: 'H', Minutes: 'M', Seconds: 'S' };
-  const units = [...document.querySelectorAll('#flipClock .unit')];
-  function relabel(){
-    const useShort = window.matchMedia('(max-width: 420px)').matches;
-    units.forEach(u=>{
-      const sm = u.querySelector('small');
-      if(!sm) return;
-      const key = sm.textContent.trim();
-      sm.textContent = useShort ? (shortMap[key] || sm.textContent) : (labelMap[key] || sm.textContent);
+  const unitDefs = [
+    {k:'days',    labelWide:'Days',    labelNarrow:'Days'},
+    {k:'hours',   labelWide:'Hours',   labelNarrow:'Hours'},
+    {k:'minutes', labelWide:'Minutes', labelNarrow:'Min'},
+    {k:'seconds', labelWide:'Seconds', labelNarrow:'Sec'}
+  ];
+  const cdNodes = {};
+  unitDefs.forEach(u=>{
+    const card = document.createElement('div'); card.className='cd-card'; card.dataset.unit=u.k;
+    const val  = document.createElement('span'); val.className='cd-val'; val.textContent='--';
+    const lab  = document.createElement('span'); lab.className='cd-label'; lab.textContent=u.labelWide;
+    card.append(val, lab); cdRoot.appendChild(card);
+    cdNodes[u.k] = { val, lab, def: u };
+  });
+
+  function setLabels(){
+    const narrow = window.matchMedia('(max-width: 420px)').matches;
+    Object.values(cdNodes).forEach(n=>{
+      n.lab.textContent = narrow ? n.def.labelNarrow : n.def.labelWide;
     });
   }
-  relabel();
-  window.addEventListener('resize', relabel);
+  setLabels();
+  window.addEventListener('resize', setLabels);
+
+  const pad2 = n => String(n).padStart(2,'0');
+
+  function render(){
+    const now = new Date();
+    let ms = Math.max(0, START - now);
+    const s = Math.floor(ms/1000);
+    const d = Math.floor(s/86400);
+    const h = Math.floor((s%86400)/3600);
+    const m = Math.floor((s%3600)/60);
+    const sec = s%60;
+
+    setVal('days', String(d).padStart(3,'0'));
+    setVal('hours', pad2(h));
+    setVal('minutes', pad2(m));
+    setVal('seconds', pad2(sec));
+  }
+
+  function setVal(k, next){
+    const el = cdNodes[k].val;
+    if(el.textContent !== next){
+      el.textContent = next;
+      el.classList.remove('cd-bump'); void el.offsetWidth; el.classList.add('cd-bump');
+    }
+  }
+
+  let last = 0;
+  function loop(ts){
+    if(ts - last > 250){ render(); last = ts; }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
 
   // ===== FAMILY HUB: RSVP & ROLES =====
   const peopleList = document.getElementById('peopleList');
@@ -709,7 +693,7 @@
   const VERSION_KEY = 'garcia.version';
 
   const DEFAULT_PEOPLE = [
-    {name:'Primrose',     status:'🤩 In', role:'Trip Captain'},
+    {name:'Primrose',     status:'🤩 In', role:'🧭 Trip Captain'},
     {name:'Shae',         status:'👍 In', role:'Showing up :)'},
     {name:'Tracy',        status:'🍸 In', role:'Food & Vibes'},
     {name:'LeRoy',        status:'👍 In', role:'Food & Vibes'},
@@ -722,14 +706,12 @@
   function migratePeople(force=false){
     const current = store.get(VERSION_KEY, 0);
     if (!force && current >= APP_VERSION) return;
-    // Start from existing but ensure defaults exist
     const byName = new Map(people.map(p => [String(p.name||'').toLowerCase(), p]));
     let changed = false;
     DEFAULT_PEOPLE.forEach(p=>{
       const key = String(p.name).toLowerCase();
       if(!byName.has(key)){ people.push({...p}); changed = true; }
     });
-    // Normalize Trip Captain emoji
     people = people.map(p => {
       const role = String(p.role||'').trim();
       const isCaptain = /(^|\s)trip\s*captain$/i.test(role.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,''));
@@ -810,7 +792,7 @@
   const seedTasksBtn = document.getElementById('seedTasks');
 
   const TASKS_VERSION_KEY = 'garcia.tasks.version';
-  const TASKS_VERSION = 2; // bump to force update
+  const TASKS_VERSION = 2;
   const DEFAULT_TASKS = [
     {text:'Confirm number of people going', done:false},
     {text:'Book flights', done:false},
@@ -1004,7 +986,7 @@
   // ===== PROGRESS =====
   const progressText=document.getElementById('progressText');
   function updateProgress(){
-    const haveDate   = true; // make dynamic if you expose a date control
+    const haveDate   = true;
     const rsvpDone   = people.some(p => p.status.includes('In'));
     const tasksTotal = tasks.length;
     const tasksDone  = tasks.filter(t => t.done).length;
@@ -1016,7 +998,7 @@
     const parts = [];
     if (flags.date)                parts.push({ w:0.20, v: haveDate ? 1 : 0 });
     if (flags.rsvp)                parts.push({ w:0.20, v: rsvpDone ? 1 : 0 });
-    if (flags.tasks)               parts.push({ w:0.30, v: taskPct }); // include even if 0 tasks so user sees 0 count
+    if (flags.tasks)               parts.push({ w:0.30, v: taskPct });
     if (flags.pack)                parts.push({ w:0.15, v: packPct });
     if (flags.budget)              parts.push({ w:0.15, v: budgetHas ? 1 : 0 });
 
@@ -1029,7 +1011,6 @@
     progressText.textContent = `Planning Progress: ${score}%`;
   }
 
-  // Expose a quick dev helper if you want to wipe stored data
   window.resetAllTripData = function(){
     [K.people,K.tasks,K.notes,K.budget,K.packing,FLAGS,'garcia.version','garcia.tasks.version'].forEach(store.del);
     location.reload();
