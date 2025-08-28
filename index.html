@@ -2,26 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Cape Town → Kruger Safari → Victoria Falls | Garcia Gang</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cape Town → Kruger Safari → Victoria Falls — Garcia Gang Takes on Africa!</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#81572f; --paper:#F2EEE6; --ink:#3E3B34; --ink-soft:#6E6256; --line:#C7BEB0;
+    --bg:#E9E4DC; --paper:#F2EEE6; --ink:#3E3B34; --ink-soft:#6E6256; --line:#C7BEB0;
     --accent:#7D8B6A; --accent-2:#C6A664; --accent-3:#8DA3A6;
     --brown:#5a3e1b; --brown-dark:#3b2610; --shadow:0 18px 45px rgba(0,0,0,.12);
-    --radius:16px; --gap:12px;
-    --fs-0: clamp(14px, 3.5vw, 16px);
-    --fs-1: clamp(16px, 4.5vw, 18px);
-    --fs-2: clamp(18px, 5.5vw, 22px);
-    --fs-3: clamp(22px, 7vw, 30px);
-    --page-gutter: clamp(12px, 4vw, 20px);
   }
   [data-theme="dark"]{
     --bg:#1f1b16; --paper:#2a251f; --ink:#efe9df; --ink-soft:#c8bcae; --line:#4a4136;
     --accent:#9cc07e; --accent-2:#d8b56a; --accent-3:#88b8bd; --brown:#f7e1c0; --brown-dark:#ffe8c8;
   }
-
   *{box-sizing:border-box}
   html, body { min-height:100%; height:auto; }
   body{
@@ -30,204 +23,128 @@
     background:linear-gradient(180deg, var(--bg), #EFEAE2 50%, var(--bg));
     color:var(--ink);
     -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    font-size: var(--fs-0); line-height:1.45;
-  }
-  /* iPhone safe areas (adds gutter on both sides) */
-  @supports (padding: max(0px)) {
-    body{
-      padding-left: max(0px, env(safe-area-inset-left));
-      padding-right: max(0px, env(safe-area-inset-right));
-    }
+    transition:background .3s ease,color .3s ease;
   }
 
-  /* Keep containers within viewport width */
-  .hero, .slides, .slide, .nav, .nav-inner, .wrap { max-width:100vw; }
-  img, table { max-width:100%; }
-
-  /* ========= HERO ========= */
-  .hero{
-    position:relative; height:62vh; min-height:420px;
-    overflow:hidden; border-bottom:1px solid var(--line); margin-bottom:0; z-index:1;
-  }
-  /* Full-bleed color behind the hero */
-  .hero::before{
-    content:""; position:absolute; inset:0;
-    left:50%; transform:translateX(-50%); width:100vw;
-    background:var(--bg); z-index:0;
-  }
-  /* IMPORTANT: slides themselves must be absolute with inset:0 AND above ::before */
-  .slides{ position:absolute; inset:0; z-index:1; }
-  .slide{ position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity .9s; }
-  .slide.active{ opacity:1; }
-  .slide::after{ content:""; position:absolute; inset:0;
-    background:linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.10) 40%, rgba(0,0,0,.20));
-  }
-  .slide-caption{
-    position:absolute; left:16px; right:16px; bottom:18px; z-index:2;
-    background:rgba(255,255,255,.72); color:var(--brown);
-    padding:12px 14px; border-radius:12px; border:1px solid rgba(0,0,0,.08);
-    box-shadow:0 6px 20px rgba(0,0,0,.12);
-    max-width: min(820px, calc(100vw - 32px));
-  }
+  /* HERO */
+  .hero{position:relative; height:72vh; min-height:520px; overflow:hidden; border-bottom:1px solid var(--line); margin-bottom:0; z-index:1;}
+  .hero + *{margin-top:0 !important; padding-top:0 !important;}
+  .slides{position:absolute; inset:0}
+  .slide{position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity .9s ease-in-out;}
+  .slide.active{opacity:1}
+  .slide::after{content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.10) 40%, rgba(0,0,0,.20));}
+  .slide-caption{ position:absolute; left:20px; bottom:22px; z-index:2; background:rgba(255,255,255,.72); color:var(--brown);
+    padding:12px 16px; border-radius:10px; border:1px solid rgba(0,0,0,.08); box-shadow:0 6px 20px rgba(0,0,0,.12); max-width:76vw; }
   .slide-caption h2{margin:0 0 6px 0; font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(1rem,.7rem + 1.4vw,1.6rem)}
   .slide-caption a{color:var(--brown-dark); text-decoration:none; font-weight:700; border-bottom:1px dashed rgba(58,38,16,.35)}
-
-  .carousel-controls{
-    position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
-    display:flex; gap:.45rem; z-index:3; max-width:100vw; overflow:hidden;
-  }
+  .slide-caption a:hover{border-bottom-color:rgba(58,38,16,.65)}
+  .carousel-controls{position:absolute; left:50%; bottom:10px; transform:translateX(-50%); display:flex; gap:.45rem; z-index:3;}
   .dot{width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.55); border:1px solid rgba(0,0,0,.15); cursor:pointer}
   .dot.active{background:rgba(255,255,255,.95)}
 
-  /* ========= NAV ========= */
-  .nav{position:sticky; top:0; z-index:1000; backdrop-filter:saturate(140%) blur(6px); border-bottom:none;}
-  .nav::before{
-    content:""; position:absolute; inset:0; left:50%; transform:translateX(-50%);
-    width:100vw; background:rgba(242,238,230,.86); border-bottom:1px solid var(--line); z-index:-1;
-  }
-  .nav-inner{max-width:1200px; margin:0 auto; display:flex; gap:.6rem; align-items:center; padding:.6rem 1rem; overflow:auto}
+  /* NAV + LAYOUT */
+  .nav{position:sticky; top:0; z-index:1000; backdrop-filter:saturate(140%) blur(6px); background:rgba(242,238,230,.86); border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1200px; margin:0 auto; display:flex; gap:.6rem; align-items:center; padding:.6rem 1.25rem; overflow:auto}
   .nav a{color:var(--ink-soft); text-decoration:none; padding:.4rem .65rem; border-radius:10px; border:1px solid transparent; white-space:nowrap}
   .nav a.active, .nav a:hover{border-color:var(--line); color:var(--ink)}
   .nav .spacer{flex:1}
-  .btn{font-family:inherit; font-weight:600; border:1px solid var(--line); background:var(--paper); padding:.5rem .7rem; border-radius:12px; cursor:pointer}
-  @supports (padding: max(0px)) {
-    .slide-caption{
-      padding-left: max(12px, env(safe-area-inset-left));
-      padding-right: max(12px, env(safe-area-inset-right));
-    }
-    .nav-inner{
-      padding-left: max(.6rem, env(safe-area-inset-left));
-      padding-right: max(.6rem, env(safe-area-inset-right));
-    }
-  }
+  .btn{font-family:inherit; font-weight:600; border:1px solid var(--line); background:var(--paper); padding:.45rem .7rem; border-radius:10px; cursor:pointer}
+  .btn[aria-pressed="true"]{outline:2px solid var(--accent)}
 
-  /* ========= MAIN WRAP ========= */
-  .wrap{
-    max-width:1200px; width:100%; margin:0 auto;
-    padding:1.25rem var(--page-gutter) 3rem;
-    display:grid; gap:1rem;
-  }
-  @supports (padding: max(0px)) {
-    .wrap{
-      padding-left: calc(var(--page-gutter) + env(safe-area-inset-left));
-      padding-right: calc(var(--page-gutter) + env(safe-area-inset-right));
-    }
-  }
-
+  .wrap{max-width:1200px; margin:0 auto; padding:1.5rem 1.25rem 3rem; display:grid; gap:1.25rem}
   .card{background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:clamp(1rem,1.6vw,1.4rem)}
   h1,h2{font-family:'Playfair Display',serif}
   .section-title{margin:.2rem 0 1rem}
   .muted{color:var(--ink-soft)}
   table{border-collapse:collapse; width:100%} th,td{border:1px solid var(--line); padding:.65rem .6rem; text-align:left} th{background:#EEE7DC}
   [data-theme="dark"] th{background:#3a332b}
-  .pill{display:inline-block; padding:.28rem .6rem; border:1px solid var(--line); border-radius:999px; background:#fbf9f5; color:var(--ink-soft); font-size:.9rem}
+  .pill{display:inline-block; padding:.28rem .6rem; border:1px solid var(--line); border-radius:999px; background:#fbf9f5; color:var(--ink-soft); font-size:.85rem}
   .soft-card{background:#fbf9f5; border:1px solid var(--line); border-radius:14px; padding:1rem}
   [data-theme="dark"] .soft-card{background:#221e18}
   .mini{margin:.2rem 0 0} .mini li{margin:.25rem 0}
 
   /* Pair grid */
-  .pair-grid{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 1rem; }
+  .pair-grid{ display:grid; grid-template-columns: 1.2fr .8fr; grid-auto-rows: 1fr; gap: 1rem; }
   .pair-grid .cell{ display:flex; align-items:stretch; }
   .pair-grid .soft-card{ width:100%; display:flex; flex-direction:column; }
 
   /* Scroll animations */
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.show{ opacity:1; transform:none; }
+  [data-anim="fade-up"]    { transform:translateY(16px); }
   [data-anim="fade-left"]  { transform:translateX(18px); }
   [data-anim="fade-right"] { transform:translateX(-18px); }
   [data-anim="zoom-in"]    { transform:scale(.96); }
   .reveal{ transition-delay: var(--d, 0s); }
 
-  /* ===== Countdown ===== */
+  /* Countdown (replacement for flip clock) */
   .countdown{
     display:grid;
-    grid-template-columns: repeat(4, minmax(90px,1fr));
+    grid-template-columns: repeat(4, minmax(120px,1fr));
     gap:clamp(10px,2vw,16px);
     align-items:stretch;
-    width:100%;
-    max-width:100%;
   }
   .cd-card{
     background:linear-gradient(#fff, var(--paper));
     border:1px solid var(--line);
     border-radius:14px;
     box-shadow:0 6px 20px rgba(0,0,0,.08);
-    padding:12px 10px;
+    padding:14px 10px;
     text-align:center;
+    position:relative;
   }
   .cd-val{
-    font-weight:800; font-size:clamp(26px,8vw,48px); line-height:1;
+    font-weight:800;
+    font-size:clamp(28px,6vw,54px);
+    line-height:1;
+    margin:0 auto;
     font-variant-numeric: tabular-nums lining-nums;
     font-feature-settings:"tnum" 1,"lnum" 1;
     letter-spacing:.02em;
+    min-width:7ch;
+    color:var(--ink);
   }
-  .cd-label{display:block; margin-top:6px; color:var(--ink-soft); font-weight:700}
+  .cd-label{display:block; margin-top:8px; color:var(--ink-soft); font-weight:700}
   .cd-bump{animation:cd-bump .22s ease both}
   @keyframes cd-bump{0%{transform:translateY(-6px);opacity:.35}100%{transform:none;opacity:1}}
 
-  /* Widgets */
-  .widgets{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap:1rem;
-    max-width:100%;
+  @media (max-width:640px){
+    .countdown{grid-template-columns:repeat(2,1fr)}
+    .cd-val{min-width:6ch}
   }
-  .w{min-width:0}
-  .w.wide{grid-column: 1 / -1}
-  .widget-head{display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin-bottom:.6rem; flex-wrap:wrap}
+
+  @media (prefers-reduced-motion:reduce){
+    .cd-bump{animation:none}
+  }
+
+  /* Print and responsive */
+  @media print{ .hero,.nav,.to-top,.carousel-controls,.btn,.lightbox{display:none !important} .wrap{padding:0} .card{box-shadow:none; border:1px solid #ddd} }
+  @media (max-width:1100px){ .w{grid-column: span 12;} .w.small{grid-column: span 6;} }
+  @media (max-width:720px){ .hero{height:68vh} .gallery{grid-template-columns:repeat(3,1fr)} }
+  .widgets{display:grid; grid-template-columns: repeat(12, 1fr); gap:1rem}
+  .w{grid-column: span 6;}
+  .w.small{grid-column: span 4;}
+  .w.wide{grid-column: span 12;}
+  .widget-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:.6rem}
   .widget-head h3{margin:0; font-family:'Playfair Display',serif}
-  .input, select, textarea{width:100%; padding:.6rem .7rem; border:1px solid var(--line); border-radius:12px; background:var(--paper); color:var(--ink); font-size:16px}
-  .row{display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; max-width:100%}
-  .row > *{flex:1 1 160px}
-  .list{display:grid; gap:.6rem}
+  .input, select, textarea{width:100%; padding:.55rem .6rem; border:1px solid var(--line); border-radius:10px; background:var(--paper); color:var(--ink)}
+  .row{display:flex; gap:.6rem; align-items:center}
+  .row > *{flex:1}
+  .list{display:grid; gap:.4rem}
   .chip{display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .6rem; border:1px solid var(--line); border-radius:999px; background:#fff7ec}
   [data-theme="dark"] .chip{background:#2c251e}
   .progress{height:10px; background:#e7dfd3; border-radius:999px; overflow:hidden}
   .progress > span{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0}
 
-  .checklist{display:grid; gap:.5rem}
-  .check{display:flex; align-items:center; gap:.6rem}
+  .checklist{display:grid; gap:.4rem}
+  .check{display:flex; align-items:center; gap:.5rem}
   .check input[type="checkbox"]{width:18px; height:18px}
 
-  .gallery{display:grid; grid-template-columns:repeat(6,1fr); gap:.5rem; max-width:100%}
+  .gallery{display:grid; grid-template-columns:repeat(6,1fr); gap:.5rem}
   .gallery img{width:100%; height:120px; object-fit:cover; border-radius:10px; cursor:pointer; border:1px solid var(--line)}
   .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:999}
   .lightbox.show{display:flex}
   .lightbox img{max-width:90vw; max-height:80vh; border-radius:12px; box-shadow:var(--shadow)}
-
-  /* Tables */
-  .table-wrap{overflow:auto; -webkit-overflow-scrolling:touch}
-  .table-wrap table{min-width:520px}
-
-  /* Health visa row */
-  #health .visa-row{
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0,1fr));
-    gap: 1rem;
-    align-items: stretch;
-    margin-top: 1rem;
-    max-width:100%;
-  }
-  #health .visa-row .soft-card{ display:flex; flex-direction:column; height:100%; }
-
-  /* Print */
-  @media print{
-    .hero,.nav,.to-top,.carousel-controls,.btn,.lightbox{display:none !important}
-    .wrap{padding:0}
-    .card{box-shadow:none; border:1px solid #ddd}
-  }
-
-  /* Mobile */
-  @media (max-width: 820px){
-    .pair-grid{ grid-template-columns: 1fr; }
-  }
-  @media (max-width: 640px){
-    .hero{height:56vh; min-height:360px}
-    .countdown{grid-template-columns: repeat(2, 1fr);}
-    .gallery{grid-template-columns:repeat(3,1fr)}
-    #health .visa-row{ grid-template-columns: 1fr; }
-  }
 </style>
 </head>
 <body>
@@ -235,19 +152,19 @@
 <header class="hero" aria-label="Destination banners">
   <div class="slides" aria-hidden="true">
     <div class="slide active" style="background-image:url('images/cape-town-africa.jpg')">
-      <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
+      <div class="slide-caption reveal" data-anim="fade-up" style="--d:.1s">
         <h2>Cape Town — Table Mountain</h2>
         <a href="#family-hub">Plan with the Garcia Gang</a>
       </div>
     </div>
     <div class="slide" style="background-image:url('images/kruger-big5.jpg')">
-      <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
+      <div class="slide-caption reveal" data-anim="fade-up" style="--d:.1s">
         <h2>Kruger National Park — Big Five</h2>
         <a href="#highlights">Explore Highlights</a>
       </div>
     </div>
     <div class="slide" style="background-image:url('images/victoria-falls.jpg')">
-      <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
+      <div class="slide-caption reveal" data-anim="fade-up" style="--d:.1s">
         <h2>Victoria Falls — The Smoke That Thunders</h2>
         <a href="#family-hub">RSVP & Checklist</a>
       </div>
@@ -260,7 +177,7 @@
   </div>
 </header>
 
-<nav class="nav" aria-label="Section navigation">
+<nav class="nav reveal" data-anim="fade-down" style="--d:.05s" aria-label="Section navigation">
   <div class="nav-inner">
     <a href="#glance">At a Glance</a>
     <a href="#flights">Flights & Costs</a>
@@ -279,56 +196,69 @@
 
 <main class="wrap">
   <!-- AT A GLANCE -->
-  <section id="glance" class="card reveal" data-anim="fade-right" style="--d:.05s" aria-labelledby="glance-title">
+  <section id="glance" class="card reveal" data-anim="fade-up" style="--d:.05s" aria-labelledby="glance-title">
     <h2 id="glance-title" class="section-title">At a Glance</h2>
     <p class="muted"><span class="pill reveal" data-anim="zoom-in" style="--d:.12s">9 nights</span> <span class="pill reveal" data-anim="zoom-in" style="--d:.18s">Family Fun</span> <span class="pill reveal" data-anim="zoom-in" style="--d:.24s">Garcia Gang</span></p>
 
     <div class="row" style="margin:.6rem 0 1rem">
-      <div class="muted" style="flex:0 0 auto; min-width:170px">Trip start date</div>
+      <div class="muted" style="flex:0 0 auto; min-width:170px">Trip start date:</div>
       <div class="pill" style="flex:0 0 auto; padding:.6rem 1rem; font-weight:600">June 1, 2027</div>
+
+      <!-- Countdown -->
+      <div id="countdown" class="countdown" aria-live="polite" data-start="2027-06-01T00:00:00-06:00"></div>
     </div>
 
-    <div id="countdown" class="countdown" aria-live="polite" data-start="2027-06-01T00:00:00-06:00"></div>
-
-    <div class="table-wrap reveal" data-anim="fade-right" style="--d:.12s; margin-top:1rem">
-      <table>
-        <thead><tr><th>Days</th><th>Where</th><th>Key Notes</th></tr></thead>
-        <tbody>
-          <tr><td>1–3</td><td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Cape+Town,+South+Africa">Cape Town</a></td><td>Table Mountain, Robben Island, Cape of Good Hope, Penguins</td></tr>
-          <tr><td>4–6</td><td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Kruger+National+Park">Kruger Safari</a></td><td>Big Five game drives, luxury lodge, all meals</td></tr>
-          <tr><td>7–8</td><td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Victoria+Falls">Victoria Falls</a></td><td>Guided Falls tour, Zambezi sunset cruise, helicopter optional</td></tr>
-          <tr><td>9</td><td>Return</td><td>Fly to Johannesburg, connect to Denver</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+<table class="reveal" data-anim="fade-up" style="--d:.12s">
+  <thead><tr><th>Days</th><th>Where</th><th>Key Notes</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>1–3</td>
+      <td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Cape+Town,+South+Africa">Cape Town</a></td>
+      <td>Table Mountain, Robben Island, Cape of Good Hope, Penguins</td>
+    </tr>
+    <tr>
+      <td>4–6</td>
+      <td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Kruger+National+Park">Kruger Safari</a></td>
+      <td>Big Five game drives, luxury lodge, all meals</td>
+    </tr>
+    <tr>
+      <td>7–8</td>
+      <td><a class="maplink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Victoria+Falls">Victoria Falls</a></td>
+      <td>Guided Falls tour, Zambezi sunset cruise, helicopter optional</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Return</td>
+      <td>Fly to Johannesburg, connect to Denver</td>
+    </tr>
+  </tbody>
+</table>
+</section>
 
   <!-- FLIGHTS & COSTS -->
-  <section id="flights" class="card reveal" data-anim="fade-right" style="--d:.08s" aria-labelledby="flights-title">
+  <section id="flights" class="card reveal" data-anim="fade-up" style="--d:.08s" aria-labelledby="flights-title">
     <h2 id="flights-title" class="section-title">Flights & Costs</h2>
-    <div class="table-wrap reveal" data-anim="fade-right" style="--d:.16s">
-      <table aria-describedby="flights-title">
-        <thead><tr><th>Route</th><th>Estimated Cost (USD, Economy)</th></tr></thead>
-        <tbody>
-          <tr><td>Denver → Cape Town</td><td>$1,400</td></tr>
-          <tr><td>Victoria Falls → Denver (via Johannesburg)</td><td>$1,500</td></tr>
-          <tr><td>Cape Town → Kruger</td><td>Included in internal flight budget</td></tr>
-          <tr><td>Kruger → Victoria Falls (via Johannesburg)</td><td>~$700 total internal flights</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="muted reveal" data-anim="fade-right" style="--d:.22s"><em>Estimated Mid Level Total: $4,850–$6,500 per person (incl. flights)</em></p>
+    <table class="reveal" data-anim="fade-up" style="--d:.16s" aria-describedby="flights-title">
+      <thead><tr><th>Route</th><th>Estimated Cost (USD, Economy)</th></tr></thead>
+      <tbody>
+        <tr><td>Denver → Cape Town</td><td>$1,400</td></tr>
+        <tr><td>Victoria Falls → Denver (via Johannesburg)</td><td>$1,500</td></tr>
+        <tr><td>Cape Town → Kruger</td><td>Included in internal flight budget</td></tr>
+        <tr><td>Kruger → Victoria Falls (via Johannesburg)</td><td>~$700 total internal flights</td></tr>
+      </tbody>
+    </table>
+    <p class="muted reveal" data-anim="fade-up" style="--d:.22s"><em>Estimated Mid Level Total: $4,850–$6,500 per person (incl. flights)</em></p>
   </section>
 
   <!-- HIGHLIGHTS -->
   <section id="highlights" class="card" aria-labelledby="highlights-title">
-    <h2 id="highlights-title" class="section-title reveal" data-anim="fade-right">Highlights & Why They’re Famous</h2>
+    <h2 id="highlights-title" class="section-title reveal" data-anim="fade-up">Highlights & Why They’re Famous</h2>
 
     <!-- CAPE TOWN -->
     <div id="cape-town-highlights" style="scroll-margin-top:80px; margin-bottom:1.2rem">
       <h3 class="reveal" data-anim="fade-right">🇿🇦 Cape Town</h3>
       <div class="pair-grid">
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.06s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.06s">
           <strong>Why it’s famous</strong>
           <ul class="mini">
             <li><em>Table Mountain</em> one of the New7Wonders of Nature, framing the city with epic views.</li>
@@ -337,7 +267,7 @@
             <li><em>Food & Wine</em> world class restaurants; easy Winelands access.</li>
           </ul>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.12s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.12s">
           <strong>Perfect Day (Mini Itinerary)</strong>
           <ul class="mini">
             <li>Morning Cable car up Table Mountain; coffee with views.</li>
@@ -346,7 +276,7 @@
             <li>Evening Sundowners on Signal Hill; dinner on Waterfront.</li>
           </ul>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.18s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.18s">
           <strong>Top 3 Must Dos</strong>
           <ol class="mini">
             <li>Sunrise or sunset on Table Mountain or Lion’s Head.</li>
@@ -354,7 +284,7 @@
             <li>Robben Island tour with ex political prisoner guides.</li>
           </ol>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.24s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.24s">
           <strong>Insider Tips</strong>
           <ul class="mini">
             <li>Book Robben Island early; weather can shift sailings.</li>
@@ -370,7 +300,7 @@
     <div id="kruger-highlights" style="scroll-margin-top:80px; margin-bottom:1.2rem">
       <h3 class="reveal" data-anim="fade-right">🦁 Kruger Safari</h3>
       <div class="pair-grid">
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.06s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.06s">
           <strong>Why it’s famous</strong>
           <ul class="mini">
             <li><em>Big Five</em> density with reliable sightings (private reserves like Sabi Sands).</li>
@@ -378,7 +308,7 @@
             <li><em>All inclusive lodges</em> twice daily drives, great food, stargazing.</li>
           </ul>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.12s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.12s">
           <strong>Perfect Day (Mini Itinerary)</strong>
           <ul class="mini">
             <li>Pre dawn Coffee and rusks; morning drive.</li>
@@ -387,7 +317,7 @@
             <li>Night Dinner by fire; Southern Cross overhead.</li>
           </ul>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.18s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.18s">
           <strong>Top 3 Must Dos</strong>
           <ol class="mini">
             <li>Sunrise drive for predators and elephants.</li>
@@ -395,7 +325,7 @@
             <li>Optional bush walk with armed ranger.</li>
           </ol>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.24s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.24s">
           <strong>Insider Tips</strong>
           <ul class="mini">
             <li>June is dry season start: cooler mornings; pack layers.</li>
@@ -411,7 +341,7 @@
     <div id="victoria-falls-highlights" style="scroll-margin-top:80px">
       <h3 class="reveal" data-anim="fade-right">🌊 Victoria Falls</h3>
       <div class="pair-grid">
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.06s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.06s">
           <strong>Why it’s famous</strong>
           <ul class="mini">
             <li>Among the largest waterfalls by width times height on Earth.</li>
@@ -419,7 +349,7 @@
             <li>Adventure hub: cruises, heli flips, seasonal Devil’s Pool.</li>
           </ul>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.12s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.12s">
           <strong>Perfect Day (Mini Itinerary)</strong>
           <ul class="mini">
             <li>Morning Falls walk on the Zimbabwe side before crowds.</li>
@@ -428,7 +358,7 @@
             <li>Evening Zambezi sunset cruise; dinner with local cuisine.</li>
           </ul>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.18s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.18s">
           <strong>Top 3 Must Dos</strong>
           <ol class="mini">
             <li>Guided Falls walk with a raincoat for spray.</li>
@@ -436,7 +366,7 @@
             <li>Helicopter Flight of Angels.</li>
           </ol>
         </div></div>
-        <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.24s">
+        <div class="cell"><div class="soft-card reveal" data-anim="fade-up" style="--d:.24s">
           <strong>Insider Tips</strong>
           <ul class="mini">
             <li>Park fee is per entry so plan one focused visit.</li>
@@ -448,7 +378,7 @@
   </section>
 
   <!-- FAMILY HUB -->
-  <section id="family-hub" class="card reveal" data-anim="fade-right" aria-labelledby="hub-title">
+  <section id="family-hub" class="card reveal" data-anim="fade-up" aria-labelledby="hub-title">
     <div class="widget-head">
       <h2 id="hub-title" class="section-title">Family Hub - Garcia Gang</h2>
       <div class="row" style="gap:.5rem">
@@ -457,6 +387,7 @@
     </div>
 
     <div class="widgets">
+      <!-- RSVP & Roles -->
       <div class="w" id="rsvpCard">
         <div class="soft-card">
           <div class="widget-head">
@@ -470,6 +401,7 @@
         </div>
       </div>
 
+      <!-- Task Board -->
       <div class="w" id="tasksCard">
         <div class="soft-card">
           <div class="widget-head">
@@ -484,41 +416,68 @@
           <div class="progress" style="margin-top:.6rem"><span id="taskProgress"></span></div>
         </div>
       </div>
+
+      <!-- Notes -->
+      <div class="w wide" id="notesCard">
+        <div class="soft-card">
+          <div class="widget-head"><h3>Shared Notes</h3>
+            <button class="btn" id="clearNotes">Clear</button></div>
+          <textarea id="notes" rows="5" placeholder="Drop any ideas, links, preferences here…"></textarea>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- PACKING -->
-  <section id="packing" class="card reveal" data-anim="fade-right" aria-labelledby="pack-title">
+  <section id="packing" class="card reveal" data-anim="fade-up" aria-labelledby="pack-title">
     <h2 id="pack-title" class="section-title">Packing Checklist</h2>
     <div class="widgets">
-      <div class="w"><div class="soft-card"><div class="widget-head"><h3>Essentials</h3></div><div class="checklist" id="packEssentials"></div></div></div>
-      <div class="w"><div class="soft-card"><div class="widget-head"><h3>Safari</h3></div><div class="checklist" id="packSafari"></div></div></div>
-      <div class="w"><div class="soft-card"><div class="widget-head"><h3>Falls & Water</h3></div><div class="checklist" id="packFalls"></div></div></div>
-      <div class="w"><div class="soft-card"><div class="widget-head"><h3>Med/Docs</h3></div><div class="checklist" id="packDocs"></div></div></div>
+      <div class="w small">
+        <div class="soft-card">
+          <div class="widget-head"><h3>Essentials</h3></div>
+          <div class="checklist" id="packEssentials"></div>
+        </div>
+      </div>
+      <div class="w small">
+        <div class="soft-card">
+          <div class="widget-head"><h3>Safari</h3></div>
+          <div class="checklist" id="packSafari"></div>
+        </div>
+      </div>
+      <div class="w small">
+        <div class="soft-card">
+          <div class="widget-head"><h3>Falls & Water</h3></div>
+          <div class="checklist" id="packFalls"></div>
+        </div>
+      </div>
+      <div class="w small">
+        <div class="soft-card">
+          <div class="widget-head"><h3>Med/Docs</h3></div>
+          <div class="checklist" id="packDocs"></div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- BUDGET -->
-  <section id="budget" class="card reveal" data-anim="fade-right" aria-labelledby="budget-title">
+  <section id="budget" class="card reveal" data-anim="fade-up" aria-labelledby="budget-title">
     <div class="widget-head">
       <h2 id="budget-title" class="section-title">Budget Planner</h2>
-      <div class="row" style="max-width:720px">
+      <div class="row" style="max-width:520px">
         <input id="budgetItem" class="input" placeholder="Item e.g., Robben Island tickets" />
         <input id="budgetAmt" class="input" type="number" min="0" step="0.01" placeholder="Amount USD" />
         <button class="btn" id="addBudget">Add</button>
       </div>
     </div>
-    <div class="table-wrap">
-      <table aria-label="Budget table">
-        <thead><tr><th>Item</th><th style="width:160px">Amount</th><th style="width:120px">Actions</th></tr></thead>
-        <tbody id="budgetBody"></tbody>
-        <tfoot><tr><th>Total</th><th id="budgetTotal">$0.00</th><th></th></tr></tfoot>
-      </table>
-    </div>
+    <table aria-label="Budget table">
+      <thead><tr><th>Item</th><th style="width:160px">Amount</th><th style="width:120px">Actions</th></tr></thead>
+      <tbody id="budgetBody"></tbody>
+      <tfoot><tr><th>Total</th><th id="budgetTotal">$0.00</th><th></th></tr></tfoot>
+    </table>
   </section>
 
   <!-- HEALTH & VISAS -->
-  <section id="health" class="card reveal" data-anim="fade-right" aria-labelledby="health-title">
+  <section id="health" class="card reveal" data-anim="fade-up" aria-labelledby="health-title">
     <h2 id="health-title" class="section-title">Health & Entry Info U.S. Citizens</h2>
     <div class="widgets">
       <div class="w wide">
@@ -533,7 +492,7 @@
         </div>
       </div>
 
-      <div class="visa-row">
+      <div class="w">
         <div class="soft-card">
           <div class="widget-head"><h3>Visas South Africa</h3></div>
           <ul class="mini">
@@ -541,9 +500,11 @@
             <li>Passport validity: at least 30 days beyond departure, with 2 blank pages.</li>
           </ul>
         </div>
+      </div>
 
+      <div class="w">
         <div class="soft-card">
-          <div class="widget-head"><h3>Visas Zimbabwe &amp; Zambia</h3></div>
+          <div class="widget-head"><h3>Visas Zimbabwe & Zambia</h3></div>
           <ul class="mini">
             <li>Zimbabwe: visa on arrival available in most cases.</li>
             <li>Zambia: if crossing, consider KAZA Univisa ~ $50 covering both for 30 days.</li>
@@ -554,9 +515,9 @@
   </section>
 
   <!-- GALLERY -->
-  <section id="gallery" class="card reveal" data-anim="fade-right" aria-labelledby="gallery-title">
+  <section id="gallery" class="card reveal" data-anim="fade-up" aria-labelledby="gallery-title">
     <div class="widget-head"><h2 id="gallery-title" class="section-title">Inspiration Gallery</h2>
-      <div class="muted">Tap any image to view larger</div></div>
+      <div class="muted">Click any image to view larger</div></div>
     <div class="gallery" id="galleryGrid">
       <img src="images/cape-town-africa.jpg" alt="Cape Town" />
       <img src="images/kruger-big5.jpg" alt="Kruger" />
@@ -571,7 +532,7 @@
   </section>
 </main>
 
-<button class="to-top btn" aria-label="Back to top" style="position:fixed; right:12px; bottom:12px; display:none">▲ Top</button>
+<button class="to-top" aria-label="Back to top">▲ Top</button>
 
 <script>
   // ===== Utilities =====
@@ -580,20 +541,29 @@
     set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
     del: (k) => localStorage.removeItem(k)
   };
-  const K = { theme:'garcia.theme', people:'garcia.people', tasks:'garcia.tasks', budget:'garcia.budget', packing:'garcia.packing' };
+  const K = {
+    theme:'garcia.theme',
+    people:'garcia.people',
+    tasks:'garcia.tasks',
+    notes:'garcia.notes',
+    budget:'garcia.budget',
+    packing:'garcia.packing'
+  };
 
-  // Flags for progress
+  // Flags - only count progress after interaction
   const FLAGS = 'garcia.flags';
   let flags = store.get(FLAGS, { rsvp:false, tasks:false, pack:false, budget:false, date:false });
   function saveFlags(){ store.set(FLAGS, flags); }
 
-  // Smooth scroll + active link
+  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
       const href=a.getAttribute('href');
       if(href.length>1){ e.preventDefault(); const target=document.querySelector(href); if(target) target.scrollIntoView({behavior:'smooth'}); }
     });
   });
+
+  // Active link highlight
   const sections=[...document.querySelectorAll('main section')];
   const navLinks=[...document.querySelectorAll('.nav a')];
   function onScroll(){
@@ -605,11 +575,11 @@
 
   // Back-to-top
   const toTop=document.querySelector('.to-top');
-  function toggleTop(){ toTop.style.display = window.scrollY>500 ? 'block' : 'none'; }
+  function toggleTop(){ toTop.classList.toggle('show', window.scrollY>500); }
   document.addEventListener('scroll', toggleTop, {passive:true});
   toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
 
-  // ===== HERO CAROUSEL =====
+  // HERO CAROUSEL
   (function(){
     const slides=[...document.querySelectorAll('.slide')];
     const dots=[...document.querySelectorAll('.dot')];
@@ -643,19 +613,20 @@
   const themeToggle=document.getElementById('themeToggle');
   const shareBtn=document.getElementById('shareBtn');
   const printBtn=document.getElementById('printBtn');
-  function applyTheme(t){ document.documentElement.setAttribute('data-theme', t); themeToggle?.setAttribute('aria-pressed', t==='dark'); store.set(K.theme, t); }
+  function applyTheme(t){ document.documentElement.setAttribute('data-theme', t); themeToggle.setAttribute('aria-pressed', t==='dark'); store.set(K.theme, t); }
   applyTheme(store.get(K.theme,'light'));
-  themeToggle?.addEventListener('click', ()=>{ const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; applyTheme(t); });
-  shareBtn?.addEventListener('click', async ()=>{
+  themeToggle.addEventListener('click', ()=>{ const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; applyTheme(t); });
+  shareBtn.addEventListener('click', async ()=>{
     const data={ title:document.title, text:'Garcia Gang trip dossier', url:location.href };
     try{ if(navigator.share){ await navigator.share(data); } else { await navigator.clipboard.writeText(location.href); alert('Link copied to clipboard!'); } }catch(e){ console.warn(e); }
   });
-  printBtn?.addEventListener('click', ()=> window.print());
+  printBtn.addEventListener('click', ()=> window.print());
 
-  // ===== Countdown =====
+  // ===== Countdown (replaces flip clock) =====
   const cdRoot = document.getElementById('countdown');
   const startISO = cdRoot.dataset.start || '2027-06-01T00:00:00-06:00';
   const START = new Date(startISO);
+
   const unitDefs = [
     {k:'days',    labelWide:'Days',    labelNarrow:'Days'},
     {k:'hours',   labelWide:'Hours',   labelNarrow:'Hours'},
@@ -670,12 +641,18 @@
     card.append(val, lab); cdRoot.appendChild(card);
     cdNodes[u.k] = { val, lab, def: u };
   });
+
   function setLabels(){
     const narrow = window.matchMedia('(max-width: 420px)').matches;
-    Object.values(cdNodes).forEach(n=>{ n.lab.textContent = narrow ? n.def.labelNarrow : n.def.labelWide; });
+    Object.values(cdNodes).forEach(n=>{
+      n.lab.textContent = narrow ? n.def.labelNarrow : n.def.labelWide;
+    });
   }
-  setLabels(); window.addEventListener('resize', setLabels);
+  setLabels();
+  window.addEventListener('resize', setLabels);
+
   const pad2 = n => String(n).padStart(2,'0');
+
   function render(){
     const now = new Date();
     let ms = Math.max(0, START - now);
@@ -684,11 +661,13 @@
     const h = Math.floor((s%86400)/3600);
     const m = Math.floor((s%3600)/60);
     const sec = s%60;
+
     setVal('days', String(d).padStart(3,'0'));
     setVal('hours', pad2(h));
     setVal('minutes', pad2(m));
     setVal('seconds', pad2(sec));
   }
+
   function setVal(k, next){
     const el = cdNodes[k].val;
     if(el.textContent !== next){
@@ -696,6 +675,7 @@
       el.classList.remove('cd-bump'); void el.offsetWidth; el.classList.add('cd-bump');
     }
   }
+
   let last = 0;
   function loop(ts){
     if(ts - last > 250){ render(); last = ts; }
@@ -708,6 +688,7 @@
   const addPersonBtn = document.getElementById('addPersonBtn');
   const seedPeopleBtn = document.getElementById('seedPeople');
 
+  // Bump to force migrate on this version
   const APP_VERSION = 3;
   const VERSION_KEY = 'garcia.version';
 
@@ -745,38 +726,37 @@
     peopleList.innerHTML = '';
     people.forEach((p, idx) => {
       const row = document.createElement('div');
-      row.className = 'soft-card';
+      row.className = 'row';
       const isCaptain = /trip\s*captain/i.test(String(p.role||''));
       const roleDisplay = isCaptain ? '🧭 Trip Captain' : (p.role || '');
       row.innerHTML = `
-        <div class="row">
-          <input class="input" value="${p.name}" aria-label="name" />
-          <select class="input" aria-label="status">
-            <option ${p.status==='🤩 In'?'selected':''}>🤩 In</option>
-            <option ${p.status==='🍸 In'?'selected':''}>🍸 In</option>
-            <option ${p.status==='👍 In'?'selected':''}>👍 In</option>
-            <option ${p.status==='🤔 Maybe'?'selected':''}>🤔 Maybe</option>
-            <option ${p.status==='❌ Out'?'selected':''}>❌ Out</option>
-          </select>
-        </div>
-        <div class="row">
-          <input class="input" value="${roleDisplay}" placeholder="Role e.g., Flights" aria-label="role" />
-          <button class="btn" aria-label="Delete" data-del>🗑️</button>
-        </div>`;
+        <input class="input" value="${p.name}" aria-label="name" />
+        <select class="input" aria-label="status">
+          <option ${p.status==='🤩 In'?'selected':''}>🤩 In</option>
+          <option ${p.status==='🍸 In'?'selected':''}>🍸 In</option>
+          <option ${p.status==='👍 In'?'selected':''}>👍 In</option>
+          <option ${p.status==='🤔 Maybe'?'selected':''}>🤔 Maybe</option>
+          <option ${p.status==='❌ Out'?'selected':''}>❌ Out</option>
+        </select>
+        <input class="input" value="${roleDisplay}" placeholder="Role e.g., Flights" aria-label="role" />
+        <button class="btn" aria-label="Delete" data-del>🗑️</button>`;
       row.querySelector('[data-del]').addEventListener('click', () => {
-        people.splice(idx, 1); savePeople();
-        flags.rsvp = true; saveFlags(); renderPeople(); updateProgress();
+        people.splice(idx, 1);
+        savePeople();
+        flags.rsvp = true; saveFlags();
+        renderPeople();
+        updateProgress();
       });
       row.querySelectorAll('input,select').forEach((el) =>
         el.addEventListener('input', () => {
-          const [nameEl, statusEl] = row.querySelectorAll('.row:first-child input, .row:first-child select');
-          const roleEl = row.querySelector('.row:last-child input');
+          const [nameEl, statusEl, roleEl] = row.querySelectorAll('input,select');
           let roleVal = roleEl.value.trim();
           const plain = roleVal.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,'').trim();
           if (/^trip\s*captain$/i.test(plain)) roleVal = '🧭 Trip Captain';
           people[idx] = { name: nameEl.value.trim(), status: statusEl.value, role: roleVal };
           savePeople();
-          flags.rsvp = true; saveFlags(); updateProgress();
+          flags.rsvp = true; saveFlags();
+          updateProgress();
         })
       );
       peopleList.appendChild(row);
@@ -784,15 +764,24 @@
   }
   function savePeople(){ store.set(K.people, people); }
 
-  addPersonBtn?.addEventListener('click', () => {
-    people.push({name:'', status:'🤔 Maybe', role:''}); savePeople();
-    flags.rsvp = true; saveFlags(); renderPeople(); updateProgress();
+  addPersonBtn.addEventListener('click', () => {
+    people.push({name:'', status:'🤔 Maybe', role:''});
+    savePeople();
+    flags.rsvp = true; saveFlags();
+    renderPeople();
+    updateProgress();
   });
-  seedPeopleBtn?.addEventListener('click', ()=>{
-    people = JSON.parse(JSON.stringify(DEFAULT_PEOPLE)); savePeople();
-    store.set(VERSION_KEY, APP_VERSION); flags.rsvp = true; saveFlags();
-    renderPeople(); updateProgress();
+
+  // Force reset seeds for people
+  seedPeopleBtn.addEventListener('click', ()=>{
+    people = JSON.parse(JSON.stringify(DEFAULT_PEOPLE));
+    savePeople();
+    store.set(VERSION_KEY, APP_VERSION);
+    flags.rsvp = true; saveFlags();
+    renderPeople();
+    updateProgress();
   });
+
   renderPeople();
 
   // ===== TASK BOARD =====
@@ -817,14 +806,22 @@
   function migrateTasks(force=false){
     const current = store.get(TASKS_VERSION_KEY, 0);
     if (!force && current >= TASKS_VERSION) return;
+
     const wanted = DEFAULT_TASKS.map(t => t.text.toLowerCase());
     const doneMap = new Map(
       (Array.isArray(tasks) ? tasks : []).map(t => [String(t.text || '').toLowerCase(), !!t.done])
     );
-    const nextDefaults = DEFAULT_TASKS.map(t => ({ text: t.text, done: doneMap.get(t.text.toLowerCase()) || false }));
-    const extras = (Array.isArray(tasks) ? tasks : []).filter(t => !wanted.includes(String(t.text || '').toLowerCase()));
+    const nextDefaults = DEFAULT_TASKS.map(t => ({
+      text: t.text,
+      done: doneMap.get(t.text.toLowerCase()) || false
+    }));
+    const extras = (Array.isArray(tasks) ? tasks : []).filter(
+      t => !wanted.includes(String(t.text || '').toLowerCase())
+    );
     tasks = [...nextDefaults, ...extras];
-    store.set(K.tasks, tasks); store.set(TASKS_VERSION_KEY, TASKS_VERSION);
+
+    store.set(K.tasks, tasks);
+    store.set(TASKS_VERSION_KEY, TASKS_VERSION);
   }
   migrateTasks(false);
 
@@ -832,47 +829,62 @@
     taskList.innerHTML = '';
     tasks.forEach((t, idx) => {
       const el = document.createElement('div');
-      el.className = 'soft-card';
+      el.className = 'check';
       el.innerHTML = `
-        <div class="row">
-          <input type="checkbox" ${t.done ? 'checked' : ''} aria-label="toggle task" style="flex:0 0 auto; width:20px; height:20px">
-          <input class="input" value="${t.text}" aria-label="task text">
-          <button class="btn" aria-label="Delete">🗑️</button>
-        </div>`;
-      const cb = el.querySelector('input[type="checkbox"]');
-      const txt = el.querySelector('.input');
-      const del = el.querySelector('button');
+        <input type="checkbox" ${t.done ? 'checked' : ''} aria-label="toggle task">
+        <input class="input" value="${t.text}" aria-label="task text">
+        <button class="btn" aria-label="Delete">🗑️</button>`;
+      const [cb, txt, del] = el.querySelectorAll('input,button');
 
       cb.addEventListener('change', () => {
-        tasks[idx].done = cb.checked; saveTasks(); flags.tasks = true; saveFlags();
-        updateTaskProgress(); updateProgress();
+        tasks[idx].done = cb.checked;
+        saveTasks();
+        flags.tasks = true; saveFlags();
+        updateTaskProgress();
+        updateProgress();
       });
       txt.addEventListener('input', () => {
-        tasks[idx].text = txt.value; saveTasks(); flags.tasks = true; saveFlags(); updateProgress();
+        tasks[idx].text = txt.value;
+        saveTasks();
+        flags.tasks = true; saveFlags();
+        updateProgress();
       });
       del.addEventListener('click', () => {
-        tasks.splice(idx, 1); saveTasks(); flags.tasks = true; saveFlags();
-        renderTasks(); updateTaskProgress(); updateProgress();
+        tasks.splice(idx, 1);
+        saveTasks();
+        flags.tasks = true; saveFlags();
+        renderTasks();
+        updateTaskProgress();
+        updateProgress();
       });
 
       taskList.appendChild(el);
     });
     updateTaskProgress();
   }
+
   function saveTasks(){ store.set(K.tasks, tasks); }
 
-  addTaskBtn?.addEventListener('click', () => {
+  addTaskBtn.addEventListener('click', () => {
     if (taskInput.value.trim()){
       tasks.unshift({text: taskInput.value.trim(), done:false});
       taskInput.value = '';
-      saveTasks(); flags.tasks = true; saveFlags();
-      renderTasks(); updateTaskProgress(); updateProgress();
+      saveTasks();
+      flags.tasks = true; saveFlags();
+      renderTasks();
+      updateTaskProgress();
+      updateProgress();
     }
   });
-  seedTasksBtn?.addEventListener('click', ()=>{
-    tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS)); saveTasks();
-    store.set(TASKS_VERSION_KEY, TASKS_VERSION); flags.tasks = true; saveFlags();
-    renderTasks(); updateTaskProgress(); updateProgress();
+
+  seedTasksBtn.addEventListener('click', ()=>{
+    tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+    saveTasks();
+    store.set(TASKS_VERSION_KEY, TASKS_VERSION);
+    flags.tasks = true; saveFlags();
+    renderTasks();
+    updateTaskProgress();
+    updateProgress();
   });
 
   function updateTaskProgress(){
@@ -881,14 +893,30 @@
     const pct = Math.round(done / total * 100);
     taskProgress.style.width = pct + '%';
   }
+
   renderTasks();
+
+  // ===== NOTES =====
+  const notes=document.getElementById('notes');
+  const clearNotes=document.getElementById('clearNotes');
+  notes.value=store.get(K.notes,'');
+  notes.addEventListener('input', ()=> store.set(K.notes, notes.value));
+  clearNotes.addEventListener('click', ()=>{ if(confirm('Clear all notes?')){ notes.value=''; store.set(K.notes, ''); } });
 
   // ===== PACKING =====
   const checklistData={
-    packEssentials:['Passport + visas','Credit cards / USD cash','Travel insurance','Universal adapter','Phone + charger','Sunscreen SPF 30+','Sunglasses','Comfortable shoes'],
-    packSafari:['Neutral layers khaki or olive','Light down jacket','Wide brim hat','Binoculars','Camera + batteries','Insect repellent','Small torch or headlamp'],
-    packFalls:['Light rain jacket','Quick dry clothes','Waterproof pouch','Sandals or water shoes','Spare SD cards'],
-    packDocs:['Malaria meds','Prescription meds','Copies of docs','Emergency contacts','Lodge confirmations']
+    packEssentials:[
+      'Passport + visas','Credit cards / USD cash','Travel insurance','Universal adapter','Phone + charger','Sunscreen SPF 30+','Sunglasses','Comfortable shoes'
+    ],
+    packSafari:[
+      'Neutral layers khaki or olive','Light down jacket','Wide brim hat','Binoculars','Camera + batteries','Insect repellent','Small torch or headlamp'
+    ],
+    packFalls:[
+      'Light rain jacket','Quick dry clothes','Waterproof pouch','Sandals or water shoes','Spare SD cards'
+    ],
+    packDocs:[
+      'Malaria meds','Prescription meds','Copies of docs','Emergency contacts','Lodge confirmations'
+    ]
   };
   const packingState=store.get(K.packing, {});
   function renderChecklist(id, items){
@@ -968,20 +996,23 @@
     const budgetHas  = budget.length > 0;
 
     const parts = [];
-    if (flags.date)   parts.push({ w:0.20, v: haveDate ? 1 : 0 });
-    if (flags.rsvp)   parts.push({ w:0.20, v: rsvpDone ? 1 : 0 });
-    if (flags.tasks)  parts.push({ w:0.30, v: taskPct });
-    if (flags.pack)   parts.push({ w:0.15, v: packPct });
-    if (flags.budget) parts.push({ w:0.15, v: budgetHas ? 1 : 0 });
+    if (flags.date)                parts.push({ w:0.20, v: haveDate ? 1 : 0 });
+    if (flags.rsvp)                parts.push({ w:0.20, v: rsvpDone ? 1 : 0 });
+    if (flags.tasks)               parts.push({ w:0.30, v: taskPct });
+    if (flags.pack)                parts.push({ w:0.15, v: packPct });
+    if (flags.budget)              parts.push({ w:0.15, v: budgetHas ? 1 : 0 });
 
-    if (!parts.length){ progressText.textContent = 'Planning Progress: 0%'; return; }
+    if (!parts.length){
+      progressText.textContent = 'Planning Progress: 0%';
+      return;
+    }
     const wSum = parts.reduce((s,p)=> s + p.w, 0) || 1;
     const score = Math.round(100 * parts.reduce((s,p)=> s + p.w * p.v, 0) / wSum);
     progressText.textContent = `Planning Progress: ${score}%`;
   }
 
   window.resetAllTripData = function(){
-    [K.people,K.tasks,K.budget,K.packing,FLAGS,'garcia.version','garcia.tasks.version'].forEach(store.del);
+    [K.people,K.tasks,K.notes,K.budget,K.packing,FLAGS,'garcia.version','garcia.tasks.version'].forEach(store.del);
     location.reload();
   };
 
