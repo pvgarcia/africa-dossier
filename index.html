@@ -183,6 +183,37 @@
   @media (max-width: 640px){
     #health .visa-row{ grid-template-columns: 1fr; }
   }
+
+  /* --- Top section edge-to-edge fix (hero + nav) --- */
+.hero,
+.nav {
+  /* Make backgrounds span the full device width, regardless of page padding */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* Re-center the carousel dots on all screens */
+.carousel-controls {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Respect iOS safe-area so nothing hugs the notch or side swipe area */
+@supports (padding: max(0px)) {
+  .slide-caption {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .nav-inner {
+    padding-left: max(.6rem, env(safe-area-inset-left));
+    padding-right: max(.6rem, env(safe-area-inset-right));
+  }
+}
+
+/* Keep any accidental overflow from causing side scroll bars */
+html, body { overflow-x: hidden; }
+
 </style>
 </head>
 <body>
