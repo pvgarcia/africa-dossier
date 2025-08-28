@@ -229,6 +229,54 @@
     #health .visa-row{ grid-template-columns: 1fr; }
   }
 </style>
+<header class="hero" aria-label="Destination banners">
+  <div class="slides" aria-hidden="true">
+    <div class="slide active" style="background-image:url('images/cape-town-africa.jpg')">
+      <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
+        <h2>Cape Town — Table Mountain</h2>
+        <a href="#family-hub">Plan with the Garcia Gang</a>
+      </div>
+    </div>
+    <div class="slide" style="background-image:url('images/kruger-big5.jpg')">
+      <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
+        <h2>Kruger National Park — Big Five</h2>
+        <a href="#highlights">Explore Highlights</a>
+      </div>
+    </div>
+    <div class="slide" style="background-image:url('images/victoria-falls.jpg')">
+      <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
+        <h2>Victoria Falls — The Smoke That Thunders</h2>
+        <a href="#family-hub">RSVP & Checklist</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dots -->
+  <div class="carousel-controls" role="tablist" aria-label="Hero destination slides">
+    <button class="dot active" role="tab" aria-selected="true" aria-label="Cape Town"></button>
+    <button class="dot" role="tab" aria-selected="false" aria-label="Kruger"></button>
+    <button class="dot" role="tab" aria-selected="false" aria-label="Victoria Falls"></button>
+  </div>
+</header>
+
+<nav class="nav reveal" data-anim="zoom-in" style="--d:.05s" aria-label="Section navigation">
+  <div class="nav-inner">
+    <a href="#glance">At a Glance</a>
+    <a href="#flights">Flights & Costs</a>
+    <a href="#highlights">Highlights</a>
+    <a href="#family-hub">Family Hub</a>
+    <a href="#packing">Packing</a>
+    <a href="#budget">Budget</a>
+    <a href="#health">Health & Visas</a>
+    <a href="#gallery">Gallery</a>
+    <span class="spacer"></span>
+    <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle theme">🌓 Theme</button>
+    <button id="printBtn" class="btn" title="Print / Save PDF">🖨️ Print</button>
+    <button id="shareBtn" class="btn" title="Share">🔗 Share</button>
+  </div>
+</nav>
+
+<main class="wrap">
 
 
   <!-- FLIGHTS & COSTS -->
