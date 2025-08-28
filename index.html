@@ -145,6 +145,56 @@
   .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:999}
   .lightbox.show{display:flex}
   .lightbox img{max-width:90vw; max-height:80vh; border-radius:12px; box-shadow:var(--shadow)}
+
+  /* === Center everything and stop right-edge clipping === */
+
+/* You can tweak this to taste */
+:root { --content-max: 940px; }
+
+/* Make the main column a centered container */
+.wrap{
+  /* keep your existing padding vars */
+  max-width: none;            /* let the children clamp themselves */
+  display: grid;
+  gap: 1rem;
+  justify-items: center;      /* center children horizontally */
+  padding-inline: var(--page-gutter);
+}
+
+/* Every direct child (your big cards/sections) centers and clamps */
+.wrap > *{
+  width: min(100%, var(--content-max));
+  margin-inline: auto;        /* belt-and-suspenders centering */
+  box-sizing: border-box;
+}
+
+/* Match the nav inner width to the same column */
+.nav-inner{ max-width: var(--content-max); }
+
+/* Safety: prevent flex/grid children from forcing overflow */
+.card, .soft-card, .row, .widgets, .pair-grid, .table-wrap{ min-width: 0; }
+.row > *{ min-width: 0; }            /* inputs/selects won’t push wider than the card */
+img, video{ height:auto; display:block; }
+
+/* Tables stay inside the card on phones */
+.table-wrap{ max-width:100%; overflow:auto; -webkit-overflow-scrolling: touch; }
+.table-wrap table{ min-width:520px; } /* you already had this—kept for clarity */
+
+/* Kill any phantom horizontal scroll (especially on iOS) */
+html, body{ overflow-x:hidden; }
+
+/* iPhone safe areas on BOTH sides (works with Dynamic Island) */
+@supports (padding: max(0px)) {
+  .wrap{
+    padding-left:  calc(var(--page-gutter) + env(safe-area-inset-left));
+    padding-right: calc(var(--page-gutter) + env(safe-area-inset-right));
+  }
+  .nav-inner{
+    padding-left:  max(.6rem, env(safe-area-inset-left));
+    padding-right: max(.6rem, env(safe-area-inset-right));
+  }
+}
+
 </style>
 </head>
 <body>
