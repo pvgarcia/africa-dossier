@@ -252,40 +252,43 @@ html, body{ overflow-x:hidden; }
     padding-right: max(.6rem, env(safe-area-inset-right));
   }
 }
-/* Fix Task Board input row overflow */
-#tasksCard .row {
-  flex-wrap: wrap;       /* allow wrapping */
-  gap: 0.5rem;           /* spacing between items */
-}
-
-#tasksCard .row input,
-#tasksCard .row button {
-  flex: 1 1 auto;        /* allow shrinking and wrapping */
-  min-width: 100px;      /* prevent collapsing too small */
-}
-
-#tasksCard .row button {
-  flex: 0 0 auto;        /* buttons keep their natural size */
-}
-/* Task Board input row styling */
-#tasksCard .row.add-task {
+/* Task Board toolbar: center + same width as task cards */
+#tasksCard .widget-head {
   display: flex;
-  flex-direction: column; /* stack input above buttons */
+  flex-direction: column;      /* put the toolbar under the title */
   align-items: stretch;
-  gap: 0.5rem;
+  gap: .6rem;
 }
 
-/* Full-width input like other tasks */
-#tasksCard .row.add-task .input {
+/* The toolbar row with the input + buttons */
+#tasksCard .widget-head .row {
+  order: 2;
   width: 100%;
-  flex: none;
+  justify-content: center;     /* center the whole toolbar */
+  gap: .5rem;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+  max-width: 720px;            /* matches visual width of task rows */
 }
 
-/* Keep buttons aligned and contained */
-#tasksCard .row.add-task .btn {
-  flex: 0 0 auto;
-  align-self: flex-start; /* buttons hug the left */
+/* Make the "Add a task" input the same width feel as task items */
+#tasksCard .widget-head .row .input {
+  flex: 1 1 520px;             /* grows nicely but doesn't explode */
+  min-width: 0;                /* prevents overflow on tiny phones */
 }
+
+/* Keep Add / Reset next to each other and tidy */
+#tasksCard .widget-head .row .btn {
+  flex: 0 0 auto;
+}
+
+/* Small screens: if it gets tight, let buttons wrap under the input */
+@media (max-width: 420px){
+  #tasksCard .widget-head .row { flex-wrap: wrap; }
+  #tasksCard .widget-head .row .input { flex-basis: 100%; }
+  #tasksCard .widget-head .row .btn { margin-top: .25rem; }
+}
+
 
 </style>
 </head>
