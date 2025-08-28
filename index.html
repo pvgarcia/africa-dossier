@@ -252,6 +252,40 @@ html, body{ overflow-x:hidden; }
     padding-right: max(.6rem, env(safe-area-inset-right));
   }
 }
+/* Fix Task Board input row overflow */
+#tasksCard .row {
+  flex-wrap: wrap;       /* allow wrapping */
+  gap: 0.5rem;           /* spacing between items */
+}
+
+#tasksCard .row input,
+#tasksCard .row button {
+  flex: 1 1 auto;        /* allow shrinking and wrapping */
+  min-width: 100px;      /* prevent collapsing too small */
+}
+
+#tasksCard .row button {
+  flex: 0 0 auto;        /* buttons keep their natural size */
+}
+/* Task Board input row styling */
+#tasksCard .row.add-task {
+  display: flex;
+  flex-direction: column; /* stack input above buttons */
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+/* Full-width input like other tasks */
+#tasksCard .row.add-task .input {
+  width: 100%;
+  flex: none;
+}
+
+/* Keep buttons aligned and contained */
+#tasksCard .row.add-task .btn {
+  flex: 0 0 auto;
+  align-self: flex-start; /* buttons hug the left */
+}
 
 </style>
 </head>
@@ -447,11 +481,12 @@ html, body{ overflow-x:hidden; }
         <div class="soft-card">
           <div class="widget-head">
             <h3>Task Board</h3>
-            <div class="row" style="flex:0 0 auto">
-              <input id="taskInput" class="input" placeholder="Add a task" />
-              <button class="btn" id="addTaskBtn">Add</button>
-              <button class="btn" id="seedTasks">Reset</button>
-            </div>
+            <div class="row add-task" style="flex:0 0 auto">
+  <input id="taskInput" class="input" placeholder="Add a task" />
+  <button class="btn" id="addTaskBtn">Add</button>
+  <button class="btn" id="seedTasks">Reset</button>
+</div>
+
           </div>
           <div class="list" id="taskList"></div>
           <div class="progress" style="margin-top:.6rem"><span id="taskProgress"></span></div>
