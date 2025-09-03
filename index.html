@@ -6,7 +6,7 @@
 <title>Cape Town → Kruger Safari → Victoria Falls | Garcia Gang</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-<!-- Mapbox CSS for the itinerary map. -->
+<!-- Mapbox CSS for the itinerary map -->
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
 
 <style>
@@ -39,7 +39,7 @@
   }
   img, table { max-width:100%; }
 
-  /* Content wrapper */
+  /* Content wrapper with equal left/right gutters + safe areas */
   .wrap{
     max-width:1200px; width:100%;
     margin:0 auto;
@@ -90,7 +90,7 @@
   .nav .spacer{flex:1}
   .btn{font-family:inherit; font-weight:600; border:1px solid var(--line); background:var(--paper); padding:.5rem .7rem; border-radius:12px; cursor:pointer}
 
-  /* Cards/util */
+  /* Cards, tables, utilities */
   .card{background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:clamp(1rem,1.6vw,1.4rem)}
   h1,h2{font-family:'Playfair Display',serif}
   .section-title{margin:.2rem 0 1rem}
@@ -123,14 +123,30 @@
     align-items:stretch;
     width:100%;
   }
-  .cd-card{background:linear-gradient(#fff, var(--paper)); border:1px solid var(--line); border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,.08); padding:12px 10px; text-align:center;}
-  .cd-val{font-weight:800; font-size:clamp(26px,8vw,48px); line-height:1; font-variant-numeric: tabular-nums lining-nums; font-feature-settings:"tnum" 1,"lnum" 1; letter-spacing:.02em;}
+  .cd-card{
+    background:linear-gradient(#fff, var(--paper));
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+    padding:12px 10px;
+    text-align:center;
+  }
+  .cd-val{
+    font-weight:800; font-size:clamp(26px,8vw,48px); line-height:1;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings:"tnum" 1,"lnum" 1;
+    letter-spacing:.02em;
+  }
   .cd-label{display:block; margin-top:6px; color:var(--ink-soft); font-weight:700}
   .cd-bump{animation:cd-bump .22s ease both}
   @keyframes cd-bump{0%{transform:translateY(-6px);opacity:.35}100%{transform:none;opacity:1}}
 
-  /* Widgets layout */
-  .widgets{display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem;}
+  /* Widgets */
+  .widgets{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap:1rem;
+  }
   .w{min-width:0}
   .w.wide{grid-column: 1 / -1}
   .widget-head{display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin-bottom:.6rem; flex-wrap:wrap}
@@ -167,7 +183,14 @@
   [data-theme="dark"] .car-btn{ background:rgba(42,37,31,.8); }
 
   /* Health visa row */
-  #health .visa-row{ grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; align-items: stretch; margin-top: 1rem; }
+  #health .visa-row{
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 1rem;
+    align-items: stretch;
+    margin-top: 1rem;
+  }
   #health .visa-row .soft-card{display:flex; flex-direction:column; height:100%;}
 
   /* Print */
@@ -178,7 +201,9 @@
   }
 
   /* Responsive */
-  @media (max-width: 900px){ .pair-grid{ grid-template-columns: 1fr; } }
+  @media (max-width: 900px){
+    .pair-grid{ grid-template-columns: 1fr; }
+  }
   @media (max-width: 640px){
     .hero{height:56vh; min-height:360px}
     .countdown{grid-template-columns: repeat(2, 1fr);} 
@@ -186,21 +211,72 @@
     #health .visa-row{ grid-template-columns: 1fr; }
   }
 
-  /* Map section styles */
+  /* === Map section styles (stacked: Map on top, Steps below) === */
   #map {}
-  .map-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: stretch; }
-  .map-container { height: 420px; width: 100%; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; position: relative; }
-  .timeline { border: 1px solid var(--line); border-radius: 14px; background: var(--paper); padding: 1rem; overflow-y: auto; }
-  .timeline h4 { margin: 0 0 .6rem; font-family: 'Playfair Display', serif; }
-  .timeline-list { list-style: none; padding: 0; margin: 0; }
-  .timeline-list li { display: flex; align-items: flex-start; margin-bottom: .8rem; }
-  .timeline-list .icon { font-size: 1.3rem; margin-right: .6rem; line-height: 1.2; }
-  .timeline-list span { display: block; font-size: var(--fs-1); }
+  .map-grid {
+    display: grid;
+    grid-template-columns: 1fr;     /* single column everywhere */
+    gap: 1rem;
+    justify-items: center;          /* center children horizontally */
+    align-items: start;
+  }
+  .map-container {
+    height: 420px;
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  .timeline {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper);
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  .timeline h4 {
+    margin: 0 0 .6rem;
+    font-family: 'Playfair Display', serif;
+  }
+  .timeline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .timeline-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: .8rem;
+  }
+  .timeline-list .icon {
+    font-size: 1.3rem;
+    margin-right: .6rem;
+    line-height: 1.2;
+  }
+  .timeline-list span {
+    display: block;
+    font-size: var(--fs-1);
+  }
+  @media (max-width: 420px){
+    .map-container{ height: 460px; } /* a little more height on tiny phones */
+  }
 
-  /* Center column clamp */
+  /* === Center everything and stop right-edge clipping === */
   :root { --content-max: 940px; }
-  .wrap{ max-width: none; display: grid; gap: 1rem; justify-items: center; padding-inline: var(--page-gutter); }
-  .wrap > *{ width: min(100%, var(--content-max)); margin-inline: auto; box-sizing: border-box; }
+  .wrap{
+    max-width: none;
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+    padding-inline: var(--page-gutter);
+  }
+  .wrap > *{
+    width: min(100%, var(--content-max));
+    margin-inline: auto;
+    box-sizing: border-box;
+  }
   .nav-inner{ max-width: var(--content-max); }
   .card, .soft-card, .row, .widgets, .pair-grid, .table-wrap{ min-width: 0; }
   .row > *{ min-width: 0; }
@@ -209,15 +285,21 @@
   .table-wrap table{ min-width:520px; }
   html, body{ overflow-x:hidden; }
   @supports (padding: max(0px)) {
-    .wrap{ padding-left:  calc(var(--page-gutter) + env(safe-area-inset-left)); padding-right: calc(var(--page-gutter) + env(safe-area-inset-right)); }
-    .nav-inner{ padding-left:  max(.6rem, env(safe-area-inset-left)); padding-right: max(.6rem, env(safe-area-inset-right)); }
+    .wrap{
+      padding-left:  calc(var(--page-gutter) + env(safe-area-inset-left));
+      padding-right: calc(var(--page-gutter) + env(safe-area-inset-right));
+    }
+    .nav-inner{
+      padding-left:  max(.6rem, env(safe-area-inset-left));
+      padding-right: max(.6rem, env(safe-area-inset-right));
+    }
   }
 </style>
 </head>
 
 <body>
 
-<!-- ===== HERO ===== -->
+<!-- ===== HERO with slides (carousel) ===== -->
 <header class="hero" aria-label="Destination banners">
   <div class="slides" aria-hidden="true">
     <div class="slide active" style="background-image:url('images/cape-town-africa.jpg')">
@@ -246,7 +328,7 @@
   </div>
 </header>
 
-<!-- ===== NAV ===== -->
+<!-- ===== Sticky nav ===== -->
 <nav class="nav" aria-label="Section navigation">
   <div class="nav-inner">
     <a href="#glance">At a Glance</a>
@@ -292,7 +374,7 @@
     <h2 id="highlights-title" class="section-title reveal" data-anim="fade-right">Highlights & Why They’re Famous</h2>
 
     <div id="cape-town-highlights" style="scroll-margin-top:80px; margin-bottom:1.2rem">
-      <!-- If you don't want the flag emoji, change the next line to just "Cape Town" -->
+      <!-- Remove the flag if you prefer just "Cape Town" -->
       <h3 class="reveal" data-anim="fade-right">🇿🇦 Cape Town</h3>
       <div class="soft-card reveal" data-anim="fade-right" style="--d:.03s">
         <strong>About</strong>
@@ -514,7 +596,7 @@
     </div>
   </section>
 
-  <!-- === ITINERARY MAP & TIMELINE === -->
+  <!-- === ITINERARY MAP & TIMELINE (stacked) === -->
   <section id="map" class="card reveal" data-anim="fade-right" aria-labelledby="map-title">
     <h2 id="map-title" class="section-title">Route Map &amp; Timeline</h2>
     <div class="map-grid">
@@ -715,7 +797,7 @@
   renderChecklist('packFalls', checklistData.packFalls);
   renderChecklist('packDocs', checklistData.packDocs);
 
-  // ===== BUDGET (no visible section yet; JS is safe) =====
+  // ===== BUDGET (safe even if no visible section) =====
   const budgetBody=document.getElementById('budgetBody');
   const budgetTotal=document.getElementById('budgetTotal');
   const addBudget=document.getElementById('addBudget');
@@ -745,7 +827,7 @@
   addBudget?.addEventListener('click', ()=>{ const item=budgetItem.value.trim(); const amt=parseFloat(budgetAmt.value); if(!item||isNaN(amt)) return; budget.push({item, amount:amt}); budgetItem.value=''; budgetAmt.value=''; saveBudget(); flags.budget = true; saveFlags(); renderBudget(); updateBudgetTotal(); updateProgress(); });
   renderBudget();
 
-  // ===== LIGHTBOX =====
+  // ===== LIGHTBOX (works for any gallery) =====
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
   document.addEventListener('click', (e)=>{
