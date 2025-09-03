@@ -6,6 +6,9 @@
 <title>Cape Town → Kruger Safari → Victoria Falls | Garcia Gang</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
+<!-- Mapbox CSS for the itinerary map. -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
+
 <style>
   :root{
     --bg:#81572f; --paper:#F2EEE6; --ink:#3E3B34; --ink-soft:#6E6256; --line:#C7BEB0;
@@ -25,7 +28,7 @@
 
   /* Global */
   *{box-sizing:border-box}
-  html, body { min-height:100%; height:auto; overflow-x:hidden; } /* kill horizontal overflow on iPhone */
+  html, body { min-height:100%; height:auto; overflow-x:hidden; }
   body{
     margin:0;
     font-family: Aptos, "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -36,7 +39,7 @@
   }
   img, table { max-width:100%; }
 
-  /* Content wrapper with equal left/right gutters + safe areas */
+  /* Content wrapper */
   .wrap{
     max-width:1200px; width:100%;
     margin:0 auto;
@@ -52,10 +55,7 @@
 
   /* HERO */
   .hero{position:relative; height:62vh; min-height:420px; overflow:hidden; border-bottom:1px solid var(--line); margin-bottom:0; z-index:1;}
-  .hero::before{ /* full-bleed color behind the image */
-    content:""; position:absolute; inset:0;
-    left:50%; transform:translateX(-50%); width:100vw; background:var(--bg); z-index:0;
-  }
+  .hero::before{content:""; position:absolute; inset:0; left:50%; transform:translateX(-50%); width:100vw; background:var(--bg); z-index:0;}
   .slides{position:absolute; inset:0; z-index:1;}
   .slide{position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity .9s}
   .slide.active{opacity:1}
@@ -90,7 +90,7 @@
   .nav .spacer{flex:1}
   .btn{font-family:inherit; font-weight:600; border:1px solid var(--line); background:var(--paper); padding:.5rem .7rem; border-radius:12px; cursor:pointer}
 
-  /* Cards, tables, utilities */
+  /* Cards/util */
   .card{background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:clamp(1rem,1.6vw,1.4rem)}
   h1,h2{font-family:'Playfair Display',serif}
   .section-title{margin:.2rem 0 1rem}
@@ -123,33 +123,16 @@
     align-items:stretch;
     width:100%;
   }
-  .cd-card{
-    background:linear-gradient(#fff, var(--paper));
-    border:1px solid var(--line);
-    border-radius:14px;
-    box-shadow:0 6px 20px rgba(0,0,0,.08);
-    padding:12px 10px;
-    text-align:center;
-  }
-  .cd-val{
-    font-weight:800; font-size:clamp(26px,8vw,48px); line-height:1;
-    font-variant-numeric: tabular-nums lining-nums;
-    font-feature-settings:"tnum" 1,"lnum" 1;
-    letter-spacing:.02em;
-  }
+  .cd-card{background:linear-gradient(#fff, var(--paper)); border:1px solid var(--line); border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,.08); padding:12px 10px; text-align:center;}
+  .cd-val{font-weight:800; font-size:clamp(26px,8vw,48px); line-height:1; font-variant-numeric: tabular-nums lining-nums; font-feature-settings:"tnum" 1,"lnum" 1; letter-spacing:.02em;}
   .cd-label{display:block; margin-top:6px; color:var(--ink-soft); font-weight:700}
   .cd-bump{animation:cd-bump .22s ease both}
   @keyframes cd-bump{0%{transform:translateY(-6px);opacity:.35}100%{transform:none;opacity:1}}
 
-  /* Widgets */
-  .widgets{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap:1rem;
-  }
+  /* Widgets layout */
+  .widgets{display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem;}
   .w{min-width:0}
   .w.wide{grid-column: 1 / -1}
-
   .widget-head{display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin-bottom:.6rem; flex-wrap:wrap}
   .widget-head h3{margin:0; font-family:'Playfair Display',serif}
 
@@ -157,10 +140,6 @@
   .row{display:flex; gap:.6rem; align-items:center; flex-wrap:wrap}
   .row > *{flex:1 1 160px}
   .list{display:grid; gap:.6rem}
-  .chip{display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .6rem; border:1px solid var(--line); border-radius:999px; background:#fff7ec}
-  [data-theme="dark"] .chip{background:#2c251e}
-  .progress{height:10px; background:#e7dfd3; border-radius:999px; overflow:hidden}
-  .progress > span{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0}
 
   .checklist{display:grid; gap:.5rem}
   .check{display:flex; align-items:center; gap:.6rem}
@@ -175,15 +154,20 @@
   .table-wrap{overflow:auto; -webkit-overflow-scrolling:touch}
   .table-wrap table{min-width:520px}
 
+  /* Carousels for Accommodation galleries */
+  .carousel{ position:relative; }
+  .car-track{ display:flex; gap:.5rem; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding-bottom:.25rem; }
+  .car-slide{ flex:0 0 100%; scroll-snap-align:center; }
+  .carousel img{ width:100%; height:clamp(220px, 36vw, 360px); object-fit:cover; border-radius:12px; border:1px solid var(--line); display:block; }
+  .car-btn{ position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.85); border:1px solid var(--line); border-radius:999px; width:36px; height:36px; display:grid; place-items:center; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.12); }
+  .car-btn.prev{ left:8px; } .car-btn.next{ right:8px; }
+  .car-dots{ display:flex; justify-content:center; gap:.4rem; margin-top:.4rem; }
+  .car-dot{ width:8px; height:8px; border-radius:50%; background:#d7d0c6; border:1px solid var(--line); }
+  .car-dot[aria-selected="true"]{ background:#fff; }
+  [data-theme="dark"] .car-btn{ background:rgba(42,37,31,.8); }
+
   /* Health visa row */
-  #health .visa-row{
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0,1fr));
-    gap: 1rem;
-    align-items: stretch;
-    margin-top: 1rem;
-  }
+  #health .visa-row{ grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; align-items: stretch; margin-top: 1rem; }
   #health .visa-row .soft-card{display:flex; flex-direction:column; height:100%;}
 
   /* Print */
@@ -194,114 +178,52 @@
   }
 
   /* Responsive */
-  @media (max-width: 900px){
-    .pair-grid{ grid-template-columns: 1fr; }
-  }
+  @media (max-width: 900px){ .pair-grid{ grid-template-columns: 1fr; } }
   @media (max-width: 640px){
     .hero{height:56vh; min-height:360px}
-    .countdown{grid-template-columns: repeat(2, 1fr);}
+    .countdown{grid-template-columns: repeat(2, 1fr);} 
     .gallery{grid-template-columns:repeat(3,1fr)}
     #health .visa-row{ grid-template-columns: 1fr; }
   }
 
-  /* === Center everything and stop right-edge clipping === */
+  /* Map section styles */
+  #map {}
+  .map-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: stretch; }
+  .map-container { height: 420px; width: 100%; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; position: relative; }
+  .timeline { border: 1px solid var(--line); border-radius: 14px; background: var(--paper); padding: 1rem; overflow-y: auto; }
+  .timeline h4 { margin: 0 0 .6rem; font-family: 'Playfair Display', serif; }
+  .timeline-list { list-style: none; padding: 0; margin: 0; }
+  .timeline-list li { display: flex; align-items: flex-start; margin-bottom: .8rem; }
+  .timeline-list .icon { font-size: 1.3rem; margin-right: .6rem; line-height: 1.2; }
+  .timeline-list span { display: block; font-size: var(--fs-1); }
 
-/* You can tweak this to taste */
-:root { --content-max: 940px; }
-
-/* Make the main column a centered container */
-.wrap{
-  /* keep your existing padding vars */
-  max-width: none;            /* let the children clamp themselves */
-  display: grid;
-  gap: 1rem;
-  justify-items: center;      /* center children horizontally */
-  padding-inline: var(--page-gutter);
-}
-
-/* Every direct child (your big cards/sections) centers and clamps */
-.wrap > *{
-  width: min(100%, var(--content-max));
-  margin-inline: auto;        /* belt-and-suspenders centering */
-  box-sizing: border-box;
-}
-
-/* Match the nav inner width to the same column */
-.nav-inner{ max-width: var(--content-max); }
-
-/* Safety: prevent flex/grid children from forcing overflow */
-.card, .soft-card, .row, .widgets, .pair-grid, .table-wrap{ min-width: 0; }
-.row > *{ min-width: 0; }            /* inputs/selects won’t push wider than the card */
-img, video{ height:auto; display:block; }
-
-/* Tables stay inside the card on phones */
-.table-wrap{ max-width:100%; overflow:auto; -webkit-overflow-scrolling: touch; }
-.table-wrap table{ min-width:520px; } /* you already had this—kept for clarity */
-
-/* Kill any phantom horizontal scroll (especially on iOS) */
-html, body{ overflow-x:hidden; }
-
-/* iPhone safe areas on BOTH sides (works with Dynamic Island) */
-@supports (padding: max(0px)) {
-  .wrap{
-    padding-left:  calc(var(--page-gutter) + env(safe-area-inset-left));
-    padding-right: calc(var(--page-gutter) + env(safe-area-inset-right));
+  /* Center column clamp */
+  :root { --content-max: 940px; }
+  .wrap{ max-width: none; display: grid; gap: 1rem; justify-items: center; padding-inline: var(--page-gutter); }
+  .wrap > *{ width: min(100%, var(--content-max)); margin-inline: auto; box-sizing: border-box; }
+  .nav-inner{ max-width: var(--content-max); }
+  .card, .soft-card, .row, .widgets, .pair-grid, .table-wrap{ min-width: 0; }
+  .row > *{ min-width: 0; }
+  img, video{ height:auto; display:block; }
+  .table-wrap{ max-width:100%; overflow:auto; -webkit-overflow-scrolling: touch; }
+  .table-wrap table{ min-width:520px; }
+  html, body{ overflow-x:hidden; }
+  @supports (padding: max(0px)) {
+    .wrap{ padding-left:  calc(var(--page-gutter) + env(safe-area-inset-left)); padding-right: calc(var(--page-gutter) + env(safe-area-inset-right)); }
+    .nav-inner{ padding-left:  max(.6rem, env(safe-area-inset-left)); padding-right: max(.6rem, env(safe-area-inset-right)); }
   }
-  .nav-inner{
-    padding-left:  max(.6rem, env(safe-area-inset-left));
-    padding-right: max(.6rem, env(safe-area-inset-right));
-  }
-}
-/* Task Board toolbar: center + same width as task cards */
-#tasksCard .widget-head {
-  display: flex;
-  flex-direction: column;      /* put the toolbar under the title */
-  align-items: stretch;
-  gap: .6rem;
-}
-
-/* The toolbar row with the input + buttons */
-#tasksCard .widget-head .row {
-  order: 2;
-  width: 100%;
-  justify-content: center;     /* center the whole toolbar */
-  gap: .5rem;
-  flex-wrap: nowrap;
-  margin: 0 auto;
-  max-width: 720px;            /* matches visual width of task rows */
-}
-
-/* Make the "Add a task" input the same width feel as task items */
-#tasksCard .widget-head .row .input {
-  flex: 1 1 520px;             /* grows nicely but doesn't explode */
-  min-width: 0;                /* prevents overflow on tiny phones */
-}
-
-/* Keep Add / Reset next to each other and tidy */
-#tasksCard .widget-head .row .btn {
-  flex: 0 0 auto;
-}
-
-/* Small screens: if it gets tight, let buttons wrap under the input */
-@media (max-width: 420px){
-  #tasksCard .widget-head .row { flex-wrap: wrap; }
-  #tasksCard .widget-head .row .input { flex-basis: 100%; }
-  #tasksCard .widget-head .row .btn { margin-top: .25rem; }
-}
-
-
 </style>
 </head>
 
 <body>
 
-<!-- ===== HERO with slides (carousel) ===== -->
+<!-- ===== HERO ===== -->
 <header class="hero" aria-label="Destination banners">
   <div class="slides" aria-hidden="true">
     <div class="slide active" style="background-image:url('images/cape-town-africa.jpg')">
       <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
         <h2>Cape Town — Table Mountain</h2>
-        <a href="#family-hub">Plan with the Garcia Gang</a>
+        <a href="#packing">Packing Checklist</a>
       </div>
     </div>
     <div class="slide" style="background-image:url('images/kruger-big5.jpg')">
@@ -313,7 +235,7 @@ html, body{ overflow-x:hidden; }
     <div class="slide" style="background-image:url('images/victoria-falls.jpg')">
       <div class="slide-caption reveal" data-anim="zoom-in" style="--d:.1s">
         <h2>Victoria Falls — The Smoke That Thunders</h2>
-        <a href="#family-hub">RSVP & Checklist</a>
+        <a href="#itinerary">Daily Itinerary</a>
       </div>
     </div>
   </div>
@@ -324,16 +246,16 @@ html, body{ overflow-x:hidden; }
   </div>
 </header>
 
-<!-- ===== Sticky nav ===== -->
+<!-- ===== NAV ===== -->
 <nav class="nav" aria-label="Section navigation">
   <div class="nav-inner">
     <a href="#glance">At a Glance</a>
-    <a href="#flights">Flights & Costs</a>
     <a href="#highlights">Highlights</a>
-    <a href="#family-hub">Family Hub</a>
+    <a href="#itinerary">Itinerary</a>
+    <a href="#accommodation">Stays</a>
     <a href="#packing">Packing</a>
-    <a href="#budget">Budget</a>
     <a href="#health">Health & Visas</a>
+    <a href="#map">Map</a>
     <a href="#gallery">Gallery</a>
     <span class="spacer"></span>
     <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle theme">🌓 Theme</button>
@@ -365,37 +287,30 @@ html, body{ overflow-x:hidden; }
     </div>
   </section>
 
-  <!-- === FLIGHTS & COSTS === -->
-  <section id="flights" class="card reveal" data-anim="fade-right" style="--d:.08s" aria-labelledby="flights-title">
-    <h2 id="flights-title" class="section-title">Flights & Costs</h2>
-    <div class="table-wrap reveal" data-anim="fade-right" style="--d:.16s">
-      <table aria-describedby="flights-title">
-        <thead><tr><th>Route</th><th>Estimated Cost (USD, Economy)</th></tr></thead>
-        <tbody>
-          <tr><td>Denver → Cape Town</td><td>$1,400</td></tr>
-          <tr><td>Victoria Falls → Denver (via Johannesburg)</td><td>$1,500</td></tr>
-          <tr><td>Cape Town → Kruger</td><td>Included in internal flight budget</td></tr>
-          <tr><td>Kruger → Victoria Falls (via Johannesburg)</td><td>~$700 total internal flights</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="muted reveal" data-anim="fade-right" style="--d:.22s"><em>Estimated Mid Level Total: $4,850–$6,500 per person (incl. flights)</em></p>
-  </section>
-
-  <!-- === HIGHLIGHTS === -->
+  <!-- === HIGHLIGHTS (with “About” blurbs) === -->
   <section id="highlights" class="card" aria-labelledby="highlights-title">
     <h2 id="highlights-title" class="section-title reveal" data-anim="fade-right">Highlights & Why They’re Famous</h2>
 
     <div id="cape-town-highlights" style="scroll-margin-top:80px; margin-bottom:1.2rem">
+      <!-- If you don't want the flag emoji, change the next line to just "Cape Town" -->
       <h3 class="reveal" data-anim="fade-right">🇿🇦 Cape Town</h3>
+      <div class="soft-card reveal" data-anim="fade-right" style="--d:.03s">
+        <strong>About</strong>
+        <p style="margin:.4rem 0 0">
+          Backed by iconic Table Mountain and influenced by both the Atlantic and Indian Oceans, Cape Town blends natural drama with a cosmopolitan pulse. 
+          Powdery beaches, acclaimed wine routes, and mountain trails frame a city of superb restaurants, shopping, heritage sites, and a vibrant waterfront. 
+          Highlights include the Zeitz Museum of Contemporary African Art; Table Mountain’s panoramic views; the African penguin colony at Boulders Beach; 
+          the Kirstenbosch Botanical Garden with its treetop canopy walk; and Robben Island, where Nelson Mandela was imprisoned.
+        </p>
+      </div>
       <div class="pair-grid">
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.06s">
           <strong>Why it’s famous</strong>
-          <ul class="mini"><li><em>Table Mountain</em> one of the New7Wonders of Nature, framing the city with epic views.</li><li><em>Robben Island</em> Mandela’s prison; living museum.</li><li><em>Cape Peninsula</em> Cape of Good Hope & Boulders Beach penguins.</li><li><em>Food & Wine</em> world class; easy Winelands access.</li></ul>
+          <ul class="mini"><li><em>Table Mountain</em>—one of the New7Wonders of Nature.</li><li><em>Robben Island</em>—a living museum.</li><li><em>Cape Peninsula</em>—Cape of Good Hope & Boulders Beach penguins.</li><li>Food & Wine—world-class and close to the Winelands.</li></ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.12s">
           <strong>Perfect Day (Mini Itinerary)</strong>
-          <ul class="mini"><li>Cable car up Table Mountain.</li><li>Bo Kaap walk & Malay lunch.</li><li>Kirstenbosch or V&A Waterfront.</li><li>Sundowners Signal Hill.</li></ul>
+          <ul class="mini"><li>Cable car up Table Mountain.</li><li>Bo-Kaap walk & Cape Malay lunch.</li><li>Kirstenbosch or V&A Waterfront.</li><li>Sundowners at Signal Hill.</li></ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.18s">
           <strong>Top 3 Must Dos</strong>
@@ -403,7 +318,7 @@ html, body{ overflow-x:hidden; }
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.24s">
           <strong>Insider Tips</strong>
-          <ul class="mini"><li>Book Robben Island early.</li><li>Use Uber/driver for Peninsula day.</li></ul>
+          <ul class="mini"><li>Book Robben Island early.</li><li>Use Uber/driver for the Peninsula day.</li></ul>
         </div></div>
       </div>
     </div>
@@ -411,11 +326,19 @@ html, body{ overflow-x:hidden; }
     <hr style="border:none; border-top:1px solid var(--line); margin:1.2rem 0" />
 
     <div id="kruger-highlights" style="scroll-margin-top:80px; margin-bottom:1.2rem">
-      <h3 class="reveal" data-anim="fade-right">🦁 Kruger Safari</h3>
+      <h3 class="reveal" data-anim="fade-right">🦁 Southern Kruger</h3>
+      <div class="soft-card reveal" data-anim="fade-right" style="--d:.03s">
+        <strong>About</strong>
+        <p style="margin:.4rem 0 0">
+          The southern region of South Africa’s Kruger National Park is bordered by the Crocodile River, where crocodiles, playful hippos, and thirsty wildlife gather. 
+          The renowned “Southern Circle” offers excellent rhino and lion sightings, with different prides showing varied hunting behaviors. 
+          Near Hippo Pools you can view ancient San rock paintings. Expect superb game viewing across classic bushveld and savanna landscapes.
+        </p>
+      </div>
       <div class="pair-grid">
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.06s">
           <strong>Why it’s famous</strong>
-          <ul class="mini"><li><em>Big Five</em> density with reliable sightings.</li><li>Guiding & tracking traditions.</li><li>All-inclusive lodges & stargazing.</li></ul>
+          <ul class="mini"><li>High density Big Five sightings.</li><li>Expert guiding & tracking traditions.</li><li>All-inclusive lodges & stargazing.</li></ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.12s">
           <strong>Perfect Day</strong>
@@ -423,11 +346,11 @@ html, body{ overflow-x:hidden; }
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.18s">
           <strong>Top 3 Must Dos</strong>
-          <ol class="mini"><li>Sunrise drive.</li><li>Evening drive + bush dinner.</li><li>Optional bush walk.</li></ol>
+          <ol class="mini"><li>Sunrise game drive.</li><li>Evening drive + bush dinner.</li><li>Optional guided bush walk.</li></ol>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.24s">
           <strong>Insider Tips</strong>
-          <ul class="mini"><li>June is dry season start — pack layers.</li><li>Confirm bush strip timings.</li></ul>
+          <ul class="mini"><li>June marks the start of the dry season—pack layers.</li><li>Confirm airstrip/transfer timings.</li></ul>
         </div></div>
       </div>
     </div>
@@ -436,10 +359,19 @@ html, body{ overflow-x:hidden; }
 
     <div id="victoria-falls-highlights" style="scroll-margin-top:80px">
       <h3 class="reveal" data-anim="fade-right">🌊 Victoria Falls</h3>
+      <div class="soft-card reveal" data-anim="fade-right" style="--d:.03s">
+        <strong>About</strong>
+        <p style="margin:.4rem 0 0">
+          Victoria Falls is one of the world’s most impressive waterfalls, set on the Zambezi River forming the border between Zambia and Zimbabwe. 
+          The falls are easily visited from the Zimbabwean side and create the world’s largest curtain of falling water (about 1,708 meters wide). 
+          The adjacent town of Victoria Falls makes a great base for exploring. Beyond viewpoints, the area offers adrenaline-filled adventures: 
+          scenic helicopter or microlight flights, white-water rafting, bungee jumping, kayaking, and day trips into Botswana’s Chobe National Park.
+        </p>
+      </div>
       <div class="pair-grid">
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.06s">
           <strong>Why it’s famous</strong>
-          <ul class="mini"><li>Among the largest by width × height.</li><li><em>Mosi oa Tunya</em> — Smoke That Thunders.</li><li>Adventure hub: cruises, heli flips, Devil’s Pool (seasonal).</li></ul>
+          <ul class="mini"><li>One of the largest by width × height.</li><li><em>Mosi-oa-Tunya</em>—“The Smoke That Thunders.”</li><li>Adventure hub: cruises, heli flips, Devil’s Pool (seasonal).</li></ul>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.12s">
           <strong>Perfect Day</strong>
@@ -447,55 +379,94 @@ html, body{ overflow-x:hidden; }
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.18s">
           <strong>Top 3 Must Dos</strong>
-          <ol class="mini"><li>Guided Falls walk + raincoat.</li><li>Zambezi sunset cruise.</li><li>Flight of Angels.</li></ol>
+          <ol class="mini"><li>Guided Falls walk + raincoat.</li><li>Zambezi sunset cruise.</li><li>“Flight of Angels” scenic flight.</li></ol>
         </div></div>
         <div class="cell"><div class="soft-card reveal" data-anim="fade-right" style="--d:.24s">
           <strong>Insider Tips</strong>
-          <ul class="mini"><li>Park fee is per entry — plan one focused visit.</li><li>Zim for viewpoints; Zam for Devil’s Pool.</li></ul>
+          <ul class="mini"><li>Park fee is per entry—plan a focused visit.</li><li>Zimbabwe for viewpoints; Zambia for Devil’s Pool.</li></ul>
         </div></div>
       </div>
     </div>
   </section>
 
-  <!-- === FAMILY HUB === -->
-  <section id="family-hub" class="card reveal" data-anim="fade-right" aria-labelledby="hub-title">
-    <div class="widget-head">
-      <h2 id="hub-title" class="section-title">Family Hub - Garcia Gang</h2>
-      <div class="row" style="gap:.5rem">
-        <div class="pill" id="progressText">Planning Progress: 0%</div>
-      </div>
+  <!-- === DAILY ITINERARY === -->
+  <section id="itinerary" class="card reveal" data-anim="fade-right" aria-labelledby="itinerary-title">
+    <h2 id="itinerary-title" class="section-title">Daily Itinerary</h2>
+    <div class="list">
+      <article class="soft-card">
+        <h4 style="margin:.2rem 0">Day 1 — Arrive Cape Town</h4>
+        <p style="margin:.3rem 0 0">Fly to Cape Town (CPT). You’ll be met on arrival and transferred to your hotel for check-in.</p>
+      </article>
+
+      <article class="soft-card">
+        <h4 style="margin:.2rem 0">Day 2 — Full-Day Cape Peninsula Tour</h4>
+        <p style="margin:.3rem 0 0">
+          Bring your camera: we’re headed for Cape Point at the southwestern tip of the Cape Peninsula, with some of the most spectacular coastal views in the world. 
+          The drive itself is inspiring, passing steep mountains, secluded coves, sweeping beaches, and small fishing communities.
+        </p>
+        <p>
+          We start with a scenic drive along the Atlantic coast, through Sea Point and Camps Bay with its views of the Twelve Apostles. 
+          Continue to the fishing village of Hout Bay (optional boat trip to Seal Island, time permitting, for your own account). 
+          From here we travel to the Cape Point Nature Reserve (17,300+ acres of indigenous fauna and flora) where wildlife may include baboons, 
+          rhebok antelope, Cape mountain zebra, bontebok, and the elusive eland. The reserve is also an important breeding area for tortoises and birdlife.
+        </p>
+        <p>
+          The coastline delivers drama worthy of “Nature’s Greatest Show.” As legend has it, this is where the Atlantic and Indian Oceans meet, 
+          and the brisk “Cape Doctor” wind often lives up to its name. Following False Bay, we return via Simon’s Town to visit the penguin colony at Boulders Beach (own account), 
+          then pass Fish Hoek, the University of Cape Town, Rhodes Memorial, and Groote Schuur Hospital on the way back to the city.
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <h4 style="margin:.2rem 0">Day 3 — Half-Day Table Mountain & City Tour</h4>
+        <p style="margin:.3rem 0 0">
+          A city overview past landmarks such as the 17th-century Castle of Good Hope, City Hall, and the Grand Parade. Along Adderley Street, see St. George’s Cathedral, 
+          historically associated with Archbishop Desmond Tutu (Nobel Peace Laureate). We pass the Company’s Garden and the colorful Bo-Kaap, 
+          originally settled by freed slaves from Southeast Asia and elsewhere in the 18th century.
+        </p>
+        <p>
+          Option to visit a diamond-cutting workshop before ascending Table Mountain by revolving cable car (weather permitting). 
+          At the top, explore fynbos like the silver tree and enjoy sweeping views over the city, beaches, Robben Island, and—on clear days—Cape Point.
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <h4 style="margin:.2rem 0">Days 4–6 — Fly to Kruger • Lukimbi Safari Lodge</h4>
+        <p style="margin:.3rem 0 0">
+          Transfer to Cape Town airport for your flight to the Kruger region, then road transfer to Lukimbi Safari Lodge in southern Kruger National Park. 
+          Kruger is home to the Big Five and an extraordinary diversity of wildlife and birds.
+        </p>
+        <p>
+          Lukimbi’s ~15,000-hectare concession is bounded by three river systems, with open grasslands in the north and thicker woodlands and riverine thickets elsewhere—ideal habitat for 
+          zebra, wildebeest, and other plains game. White rhino frequent pans and wallows, while the shyer black rhino prefer dense bush. 
+          Buffalo herds roam the grasslands; elephants are often seen throughout the concession and in front of the lodge. 
+          Lion tracking in open vehicles is a highlight, and leopards are present for the lucky and patient. 
+          <em>Included activities:</em> morning & afternoon/evening game drives and guided bush walks with experienced rangers and trackers.
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <h4 style="margin:.2rem 0">Days 7–8 — Fly to Victoria Falls • Old Drift Lodge</h4>
+        <p style="margin:.3rem 0 0">
+          Transfer to the airport and fly to Victoria Falls (VFA). On arrival, meet your driver for the short transfer to Old Drift Lodge on the Zambezi River.
+        </p>
+        <p>
+          Over two days, enjoy a guided Victoria Falls walking tour (Zimbabwe side) and a Zambezi sunset cruise. 
+          Optional extras include the “Flight of Angels” helicopter ride, microlighting, white-water rafting (seasonal), bungee jumping, or a day trip to Chobe National Park in Botswana.
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <h4 style="margin:.2rem 0">Day 9 — Depart</h4>
+        <p style="margin:.3rem 0 0">Transfer to Victoria Falls Airport for flights via Johannesburg back to Denver.</p>
+      </article>
     </div>
+  </section>
 
-    <div class="widgets">
-      <div class="w" id="rsvpCard">
-        <div class="soft-card">
-          <div class="widget-head">
-            <h3>RSVP & Roles</h3>
-            <div class="row" style="flex:0 0 auto">
-              <button class="btn" id="seedPeople">Reset</button>
-              <button class="btn" id="addPersonBtn">＋ Add Person</button>
-            </div>
-          </div>
-          <div class="list" id="peopleList" aria-live="polite"></div>
-        </div>
-      </div>
-
-      <div class="w" id="tasksCard">
-        <div class="soft-card">
-          <div class="widget-head">
-            <h3>Task Board</h3>
-            <div class="row add-task" style="flex:0 0 auto">
-  <input id="taskInput" class="input" placeholder="Add a task" />
-  <button class="btn" id="addTaskBtn">Add</button>
-  <button class="btn" id="seedTasks">Reset</button>
-</div>
-
-          </div>
-          <div class="list" id="taskList"></div>
-          <div class="progress" style="margin-top:.6rem"><span id="taskProgress"></span></div>
-        </div>
-      </div>
-    </div>
+  <!-- === ACCOMMODATION (auto-rendered with carousels) === -->
+  <section id="accommodation" class="card reveal" data-anim="fade-right" aria-labelledby="accom-title">
+    <h2 id="accom-title" class="section-title">Accommodation & Galleries</h2>
+    <div id="accomGrid" class="list"></div>
   </section>
 
   <!-- === PACKING === -->
@@ -503,28 +474,8 @@ html, body{ overflow-x:hidden; }
     <h2 id="pack-title" class="section-title">Packing Checklist</h2>
     <div class="widgets">
       <div class="w"><div class="soft-card"><div class="widget-head"><h3>Essentials</h3></div><div class="checklist" id="packEssentials"></div></div></div>
-      <div class="w"><div class="soft-card"><div class="widget-head"><h3>Safari</h3></div><div class="checklist" id="packSafari"></div></div></div>
       <div class="w"><div class="soft-card"><div class="widget-head"><h3>Falls & Water</h3></div><div class="checklist" id="packFalls"></div></div></div>
       <div class="w"><div class="soft-card"><div class="widget-head"><h3>Med/Docs</h3></div><div class="checklist" id="packDocs"></div></div></div>
-    </div>
-  </section>
-
-  <!-- === BUDGET === -->
-  <section id="budget" class="card reveal" data-anim="fade-right" aria-labelledby="budget-title">
-    <div class="widget-head">
-      <h2 id="budget-title" class="section-title">Budget Planner</h2>
-      <div class="row" style="max-width:720px">
-        <input id="budgetItem" class="input" placeholder="Item e.g., Robben Island tickets" />
-        <input id="budgetAmt" class="input" type="number" min="0" step="0.01" placeholder="Amount USD" />
-        <button class="btn" id="addBudget">Add</button>
-      </div>
-    </div>
-    <div class="table-wrap">
-      <table aria-label="Budget table">
-        <thead><tr><th>Item</th><th style="width:160px">Amount</th><th style="width:120px">Actions</th></tr></thead>
-        <tbody id="budgetBody"></tbody>
-        <tfoot><tr><th>Total</th><th id="budgetTotal">$0.00</th><th></th></tr></tfoot>
-      </table>
     </div>
   </section>
 
@@ -556,10 +507,32 @@ html, body{ overflow-x:hidden; }
           <div class="widget-head"><h3>Visas Zimbabwe &amp; Zambia</h3></div>
           <ul class="mini">
             <li>Zimbabwe: visa on arrival available in most cases.</li>
-            <li>Zambia: if crossing, consider KAZA Univisa ~ $50 covering both for 30 days.</li>
+            <li>Zambia: if crossing, consider KAZA Univisa (~$50) covering both for 30 days.</li>
           </ul>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- === ITINERARY MAP & TIMELINE === -->
+  <section id="map" class="card reveal" data-anim="fade-right" aria-labelledby="map-title">
+    <h2 id="map-title" class="section-title">Route Map &amp; Timeline</h2>
+    <div class="map-grid">
+      <div id="mapContainer" class="map-container" role="application" aria-label="Trip route map"></div>
+      <aside id="routeTimeline" class="timeline" aria-label="Travel timeline">
+        <h4>Travel Steps</h4>
+        <ul class="timeline-list">
+          <li><span class="icon">✈️</span><span>Flight: Denver (DEN) → Cape Town (CPT) (~20&nbsp;hrs)</span></li>
+          <li><span class="icon">🚐</span><span>Transfer: Cape Town airport → Kensington Place (~20&nbsp;km, ~21&nbsp;min)</span></li>
+          <li><span class="icon">🚕</span><span>Transfer: hotel → Cape Town airport (~20&nbsp;km, ~21&nbsp;min)</span></li>
+          <li><span class="icon">✈️</span><span>Flight: Cape Town (CPT) → Nelspruit (MQP) (~2&nbsp;hrs)</span></li>
+          <li><span class="icon">🚐</span><span>Transfer: Nelspruit → Lukimbi (~88&nbsp;km, ~1&nbsp;hr&nbsp;25&nbsp;min)</span></li>
+          <li><span class="icon">✈️</span><span>Flight: Nelspruit/Skukuza → Victoria Falls (VFA) (~2&nbsp;hrs+)</span></li>
+          <li><span class="icon">🚐</span><span>Transfer: Victoria Falls → Old Drift Lodge (~7&nbsp;km, ~20&nbsp;min)</span></li>
+          <li><span class="icon">🚕</span><span>Transfer: Old Drift Lodge → VFA (~7&nbsp;km, ~20&nbsp;min)</span></li>
+          <li><span class="icon">✈️</span><span>Flight: Victoria Falls (VFA) → Denver (DEN) via Johannesburg (~20&nbsp;hrs)</span></li>
+        </ul>
+      </aside>
     </div>
   </section>
 
@@ -582,6 +555,8 @@ html, body{ overflow-x:hidden; }
 
 <button class="to-top btn" aria-label="Back to top" style="position:fixed; right:12px; bottom:12px; display:none">▲ Top</button>
 
+<!-- Mapbox JS -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
 <script>
   // ===== Utilities =====
   const store = {
@@ -591,7 +566,7 @@ html, body{ overflow-x:hidden; }
   };
   const K = { theme:'garcia.theme', people:'garcia.people', tasks:'garcia.tasks', budget:'garcia.budget', packing:'garcia.packing' };
 
-  // Flags for progress
+  // Flags (safe even if some UI is hidden)
   const FLAGS = 'garcia.flags';
   let flags = store.get(FLAGS, { rsvp:false, tasks:false, pack:false, budget:false, date:false });
   function saveFlags(){ store.set(FLAGS, flags); }
@@ -711,144 +686,18 @@ html, body{ overflow-x:hidden; }
     requestAnimationFrame(loop);
   }
 
-  // ===== RSVP =====
-  const peopleList = document.getElementById('peopleList');
-  const addPersonBtn = document.getElementById('addPersonBtn');
-  const seedPeopleBtn = document.getElementById('seedPeople');
-  const APP_VERSION = 3;
-  const VERSION_KEY = 'garcia.version';
-  const DEFAULT_PEOPLE = [
-    {name:'Primrose',     status:'🤩 In', role:'🧭 Trip Captain'},
-    {name:'Shae',         status:'👍 In', role:'Showing up :)'},
-    {name:'Tracy',        status:'🍸 In', role:'Food & Vibes'},
-    {name:'LeRoy',        status:'👍 In', role:'Food & Vibes'},
-    {name:'Ash',          status:'🤔 Maybe', role:'Wakanda :)'},
-    {name:'Miss Ellison', status:'🤔 Maybe', role:'Food & Vibes'}
-  ];
-  let people = store.get(K.people, DEFAULT_PEOPLE);
-  function migratePeople(force=false){
-    const current = store.get(VERSION_KEY, 0);
-    if (!force && current >= APP_VERSION) return;
-    const byName = new Map(people.map(p => [String(p.name||'').toLowerCase(), p]));
-    let changed = false;
-    DEFAULT_PEOPLE.forEach(p=>{ const key = String(p.name).toLowerCase(); if(!byName.has(key)){ people.push({...p}); changed = true; }});
-    people = people.map(p => {
-      const role = String(p.role||'').trim();
-      const isCaptain = /(^|\s)trip\s*captain$/i.test(role.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,'')); 
-      return isCaptain && !role.includes('🧭') ? {...p, role:'🧭 Trip Captain'} : p;
-    });
-    if (changed || force){ store.set(K.people, people); }
-    store.set(VERSION_KEY, APP_VERSION);
-  }
-  migratePeople(false);
-  function renderPeople(){
-    if(!peopleList) return;
-    peopleList.innerHTML = '';
-    people.forEach((p, idx) => {
-      const row = document.createElement('div');
-      row.className = 'soft-card';
-      const isCaptain = /trip\s*captain/i.test(String(p.role||''));
-      const roleDisplay = isCaptain ? '🧭 Trip Captain' : (p.role || '');
-      row.innerHTML = `
-        <div class="row">
-          <input class="input" value="${p.name}" aria-label="name" />
-          <select class="input" aria-label="status">
-            <option ${p.status==='🤩 In'?'selected':''}>🤩 In</option>
-            <option ${p.status==='🍸 In'?'selected':''}>🍸 In</option>
-            <option ${p.status==='👍 In'?'selected':''}>👍 In</option>
-            <option ${p.status==='🤔 Maybe'?'selected':''}>🤔 Maybe</option>
-            <option ${p.status==='❌ Out'?'selected':''}>❌ Out</option>
-          </select>
-        </div>
-        <div class="row">
-          <input class="input" value="${roleDisplay}" placeholder="Role e.g., Flights" aria-label="role" />
-          <button class="btn" aria-label="Delete" data-del>🗑️</button>
-        </div>`;
-      row.querySelector('[data-del]').addEventListener('click', () => {
-        people.splice(idx, 1); savePeople(); flags.rsvp = true; saveFlags(); renderPeople(); updateProgress();
-      });
-      row.querySelectorAll('input,select').forEach((el) =>
-        el.addEventListener('input', () => {
-          const [nameEl, statusEl] = row.querySelectorAll('.row:first-child input, .row:first-child select');
-          const roleEl = row.querySelector('.row:last-child input');
-          let roleVal = roleEl.value.trim();
-          const plain = roleVal.replace(/^([\p{Extended_Pictographic}])+(\s)*/u,'').trim();
-          if (/^trip\s*captain$/i.test(plain)) roleVal = '🧭 Trip Captain';
-          people[idx] = { name: nameEl.value.trim(), status: statusEl.value, role: roleVal };
-          savePeople(); flags.rsvp = true; saveFlags(); updateProgress();
-        })
-      );
-      peopleList.appendChild(row);
-    });
-  }
-  function savePeople(){ store.set(K.people, people); }
-  addPersonBtn?.addEventListener('click', () => { people.push({name:'', status:'🤔 Maybe', role:''}); savePeople(); flags.rsvp = true; saveFlags(); renderPeople(); updateProgress(); });
-  seedPeopleBtn?.addEventListener('click', ()=>{ people = JSON.parse(JSON.stringify(DEFAULT_PEOPLE)); savePeople(); store.set(VERSION_KEY, APP_VERSION); flags.rsvp = true; saveFlags(); renderPeople(); updateProgress(); });
-  renderPeople();
-
-  // ===== TASKS =====
-  const taskInput = document.getElementById('taskInput');
-  const addTaskBtn = document.getElementById('addTaskBtn');
-  const taskList = document.getElementById('taskList');
-  const taskProgress = document.getElementById('taskProgress');
-  const seedTasksBtn = document.getElementById('seedTasks');
-  const TASKS_VERSION_KEY = 'garcia.tasks.version';
-  const TASKS_VERSION = 2;
-  const DEFAULT_TASKS = [
-    {text:'Confirm number of people going', done:false},
-    {text:'Book flights', done:false},
-    {text:'Book vacation package', done:false},
-    {text:'Confirm Cape Town excursions', done:false},
-    {text:'Confirm Zambezi cruise', done:false}
-  ];
-  let tasks = store.get(K.tasks, DEFAULT_TASKS);
-  function migrateTasks(force=false){
-    const current = store.get(TASKS_VERSION_KEY, 0);
-    if (!force && current >= TASKS_VERSION) return;
-    const wanted = DEFAULT_TASKS.map(t => t.text.toLowerCase());
-    const doneMap = new Map((Array.isArray(tasks) ? tasks : []).map(t => [String(t.text || '').toLowerCase(), !!t.done]));
-    const nextDefaults = DEFAULT_TASKS.map(t => ({ text: t.text, done: doneMap.get(t.text.toLowerCase()) || false }));
-    const extras = (Array.isArray(tasks) ? tasks : []).filter(t => !wanted.includes(String(t.text || '').toLowerCase()));
-    tasks = [...nextDefaults, ...extras];
-    store.set(K.tasks, tasks); store.set(TASKS_VERSION_KEY, TASKS_VERSION);
-  }
-  migrateTasks(false);
-  function renderTasks(){
-    if(!taskList) return;
-    taskList.innerHTML = '';
-    tasks.forEach((t, idx) => {
-      const el = document.createElement('div');
-      el.className = 'soft-card';
-      el.innerHTML = `
-        <div class="row">
-          <input type="checkbox" ${t.done ? 'checked' : ''} aria-label="toggle task" style="flex:0 0 auto; width:20px; height:20px">
-          <input class="input" value="${t.text}" aria-label="task text">
-          <button class="btn" aria-label="Delete">🗑️</button>
-        </div>`;
-      const cb = el.querySelector('input[type="checkbox"]');
-      const txt = el.querySelector('.input');
-      const del = el.querySelector('button');
-      cb.addEventListener('change', () => { tasks[idx].done = cb.checked; saveTasks(); flags.tasks = true; saveFlags(); updateTaskProgress(); updateProgress(); });
-      txt.addEventListener('input', () => { tasks[idx].text = txt.value; saveTasks(); flags.tasks = true; saveFlags(); updateProgress(); });
-      del.addEventListener('click', () => { tasks.splice(idx, 1); saveTasks(); flags.tasks = true; saveFlags(); renderTasks(); updateTaskProgress(); updateProgress(); });
-      taskList.appendChild(el);
-    });
-    updateTaskProgress();
-  }
-  function saveTasks(){ store.set(K.tasks, tasks); }
-  function updateTaskProgress(){ const total = tasks.length || 1; const done = tasks.filter(t => t.done).length; const pct = Math.round(done / total * 100); taskProgress && (taskProgress.style.width = pct + '%'); }
-  addTaskBtn?.addEventListener('click', () => { if (taskInput.value.trim()){ tasks.unshift({text: taskInput.value.trim(), done:false}); taskInput.value = ''; saveTasks(); flags.tasks = true; saveFlags(); renderTasks(); updateTaskProgress(); updateProgress(); }});
-  seedTasksBtn?.addEventListener('click', ()=>{ tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS)); saveTasks(); store.set(TASKS_VERSION_KEY, TASKS_VERSION); flags.tasks = true; saveFlags(); renderTasks(); updateTaskProgress(); updateProgress(); });
-  renderTasks();
-
   // ===== PACKING =====
   const checklistData={
-    packEssentials:['Passport + visas','Credit cards / USD cash','Travel insurance','Universal adapter','Phone + charger','Sunscreen SPF 30+','Sunglasses','Comfortable shoes'],
-    packSafari:['Neutral layers khaki or olive','Light down jacket','Wide brim hat','Binoculars','Camera + batteries','Insect repellent','Small torch or headlamp'],
+    packEssentials:['Passport + visas','Credit cards / USD cash','Travel insurance','Universal adapter','Wide brim hat','Sunscreen SPF 30+','Sunglasses','Comfortable shoes'],
     packFalls:['Light rain jacket','Quick dry clothes','Waterproof pouch','Sandals or water shoes','Spare SD cards'],
     packDocs:['Malaria meds','Prescription meds','Copies of docs','Emergency contacts','Lodge confirmations']
   };
-  const packingState=store.get(K.packing, {});
+  const packingState = store.get(K.packing, {}) || {};
+  (function purgeOldSafariKeys(){
+    let changed=false;
+    Object.keys(packingState).forEach(k=>{ if(k.startsWith('packSafari:')){ delete packingState[k]; changed=true; }});
+    if(changed) store.set(K.packing, packingState);
+  })();
   function renderChecklist(id, items){
     const box=document.getElementById(id);
     if(!box) return;
@@ -863,11 +712,10 @@ html, body{ overflow-x:hidden; }
     });
   }
   renderChecklist('packEssentials', checklistData.packEssentials);
-  renderChecklist('packSafari', checklistData.packSafari);
   renderChecklist('packFalls', checklistData.packFalls);
   renderChecklist('packDocs', checklistData.packDocs);
 
-  // ===== BUDGET =====
+  // ===== BUDGET (no visible section yet; JS is safe) =====
   const budgetBody=document.getElementById('budgetBody');
   const budgetTotal=document.getElementById('budgetTotal');
   const addBudget=document.getElementById('addBudget');
@@ -898,14 +746,19 @@ html, body{ overflow-x:hidden; }
   renderBudget();
 
   // ===== LIGHTBOX =====
-  const gallery=document.getElementById('galleryGrid');
-  const lightbox=document.getElementById('lightbox');
-  const lightboxImg=document.getElementById('lightboxImg');
-  gallery?.addEventListener('click', (e)=>{ const img=e.target.closest('img'); if(!img) return; lightboxImg.src=img.src; lightboxImg.alt=img.alt; lightbox.classList.add('show'); });
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  document.addEventListener('click', (e)=>{
+    const img = e.target.closest('[data-gallery] img, #galleryGrid img');
+    if(!img) return;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt || '';
+    lightbox.classList.add('show');
+  });
   lightbox?.addEventListener('click', ()=> lightbox.classList.remove('show'));
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') lightbox?.classList.remove('show'); });
 
-  // ===== PROGRESS =====
+  // ===== PROGRESS (no visible pill; harmless) =====
   const progressText=document.getElementById('progressText');
   function updateProgress(){
     const haveDate   = true;
@@ -935,6 +788,186 @@ html, body{ overflow-x:hidden; }
     location.reload();
   };
   updateProgress();
+
+  // ===== ACCOMMODATION GALLERIES with CAROUSELS =====
+  const ACCOM = [
+    {
+      key: 'kensington',
+      title: 'Kensington Place',
+      where: 'Cape Town • Days 1–4',
+      basis: 'B&B — Bed & Breakfast',
+      roomsText: '3 × Superior Rooms',
+      blurb: 'Design-forward boutique base beneath Table Mountain; easy access to Peninsula, Robben Island, Winelands.',
+      rooms:  ['images/kensington/room-1.jpg','images/kensington/room-2.jpg','images/kensington/room-3.jpg'],
+      venue:  ['images/kensington/venue-1.jpg','images/kensington/venue-2.jpg','images/kensington/venue-3.jpg']
+    },
+    {
+      key: 'lukimbi',
+      title: 'Lukimbi Safari Lodge',
+      where: 'Southern Kruger • Days 4–7',
+      basis: 'FB+ — Full Board Plus (meals, non-premium drinks, activities & fees)',
+      roomsText: '3 × Classic Suites',
+      blurb: 'Big Five territory bounded by three river systems; game drives + guided walks.',
+      rooms:  ['images/lukimbi/room-1.jpg','images/lukimbi/room-2.jpg','images/lukimbi/room-3.jpg'],
+      venue:  ['images/lukimbi/venue-1.jpg','images/lukimbi/venue-2.jpg','images/lukimbi/venue-3.jpg']
+    },
+    {
+      key: 'old-drift',
+      title: 'Old Drift Lodge',
+      where: 'Victoria Falls (Zimbabwe) • Days 7–9',
+      basis: 'FI — Fully Inclusive (meals, local drinks, park fees, activities, laundry)',
+      roomsText: '3 × Luxury Tented Suites',
+      blurb: 'On the Zambezi a few km above the Falls; included game drive, boat cruise, guided Falls tour.',
+      rooms:  ['images/old-drift/room-1.jpg','images/old-drift/room-2.jpg','images/old-drift/room-3.jpg'],
+      venue:  ['images/old-drift/venue-1.jpg','images/old-drift/venue-2.jpg','images/old-drift/venue-3.jpg']
+    }
+  ];
+
+  function imgCarousel(list, cid, label){
+    if(!list || !list.length) return '<div class="muted">Add images to /images/... to populate.</div>';
+    const id = cid || ('car-' + Math.random().toString(36).slice(2,9));
+    const controls = list.length > 1 ? `
+      <button class="car-btn prev" aria-label="Previous slide">‹</button>
+      <button class="car-btn next" aria-label="Next slide">›</button>
+      <div class="car-dots" role="tablist">
+        ${list.map((_,i)=>`<button class="car-dot" role="tab" aria-selected="${i===0?'true':'false'}" aria-label="Go to slide ${i+1}" data-idx="${i}"></button>`).join('')}
+      </div>` : '';
+
+    return `
+      <div class="carousel" id="${id}" data-gallery aria-roledescription="carousel" aria-label="${label||'Image carousel'}">
+        <div class="car-track" tabindex="0">
+          ${list.map(src => `<div class="car-slide"><img src="${src}" alt="" loading="lazy"></div>`).join('')}
+        </div>
+        ${controls}
+      </div>`;
+  }
+
+  function accomCard(a){
+    return `
+    <article class="soft-card" id="stay-${a.key}" style="margin-bottom:1rem">
+      <div class="widget-head">
+        <h3 style="margin:0">${a.title}</h3>
+        <span class="pill">${a.where}</span>
+      </div>
+      <p class="muted" style="margin:.3rem 0 .8rem"><strong>${a.basis}</strong> · ${a.roomsText}</p>
+      <p style="margin:.2rem 0 1rem">${a.blurb}</p>
+
+      <div class="widgets">
+        <div class="w">
+          <div class="soft-card">
+            <div class="widget-head"><h4 style="margin:0">Rooms</h4></div>
+            ${imgCarousel(a.rooms, `${a.key}-rooms`, `${a.title} rooms`)}
+          </div>
+        </div>
+        <div class="w">
+          <div class="soft-card">
+            <div class="widget-head"><h4 style="margin:0">Venue & Grounds</h4></div>
+            ${imgCarousel(a.venue, `${a.key}-venue`, `${a.title} venue`)}
+          </div>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  (function renderAccommodation(){
+    const root = document.getElementById('accomGrid');
+    if(!root) return;
+    root.innerHTML = ACCOM.map(accomCard).join('');
+    initCarousels();
+  })();
+
+  function initCarousels(){
+    document.querySelectorAll('.carousel').forEach(root=>{
+      const track = root.querySelector('.car-track');
+      const slides = [...root.querySelectorAll('.car-slide')];
+      const prev = root.querySelector('.car-btn.prev');
+      const next = root.querySelector('.car-btn.next');
+      const dots = [...root.querySelectorAll('.car-dot')];
+
+      if (!track || slides.length <= 1){
+        root.querySelector('.car-dots')?.remove();
+        prev?.remove(); next?.remove();
+        return;
+      }
+
+      let index = 0;
+      function goTo(i){
+        index = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
+        dots.forEach((d,di)=> d.setAttribute('aria-selected', di===index ? 'true':'false'));
+      }
+
+      prev?.addEventListener('click', ()=> goTo(index - 1));
+      next?.addEventListener('click', ()=> goTo(index + 1));
+      dots.forEach((d,di)=> d.addEventListener('click', ()=> goTo(di)));
+
+      track.addEventListener('scroll', ()=>{
+        const i = Math.round(track.scrollLeft / track.clientWidth);
+        if (i !== index){
+          index = i;
+          dots.forEach((d,di)=> d.setAttribute('aria-selected', di===index ? 'true':'false'));
+        }
+      }, {passive:true});
+
+      track.addEventListener('keydown', (e)=>{
+        if (e.key === 'ArrowRight'){ e.preventDefault(); goTo(index + 1); }
+        if (e.key === 'ArrowLeft'){  e.preventDefault(); goTo(index - 1); }
+      });
+
+      new ResizeObserver(()=> goTo(index)).observe(track);
+    });
+  }
+
+  // ===== MAP =====
+  (function initTripMap(){
+    const mapEl = document.getElementById('mapContainer');
+    if (!mapEl || typeof mapboxgl === 'undefined') return;
+
+    // Replace with your own token if needed.
+    mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbTMwNyIsImEiOiJjbWYyeWp5ZHgydDFoMmtvbmtndGdoaG5jIn0.t7weB06h0r8E8LXwt0rl_g';
+
+    const routeCoords = [
+      [18.6021,  -33.9706],     // Cape Town International Airport (CPT)
+      [31.683832, -25.364658],  // Lukimbi Safari Lodge / Nelspruit (MQP)
+      [25.791062, -17.875765],  // Old Drift Lodge / Victoria Falls (VFA)
+      [28.2500,  -26.1333],     // Johannesburg (JNB)
+    ];
+
+    const map = new mapboxgl.Map({
+      container: mapEl,
+      style: 'mapbox://styles/mapbox/standard',
+      center: routeCoords[0],
+      zoom: 4
+    });
+
+    map.on('load', () => {
+      map.addSource('trip-route', {
+        type: 'geojson',
+        data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: routeCoords } }
+      });
+      map.addLayer({
+        id: 'trip-route-line',
+        type: 'line',
+        source: 'trip-route',
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#C6A664', 'line-width': 4, 'line-opacity': 0.8 }
+      });
+
+      const markerNames = ['Cape Town','Lukimbi','Victoria Falls','Johannesburg (JNB)'];
+      const markerSubtitles = ['First stop in Africa','Safari stop','Falls stop','Major hub for connections'];
+      routeCoords.forEach((lngLat, idx) => {
+        const name = markerNames[idx] || `Stop ${idx+1}`;
+        const note = markerSubtitles[idx] || '';
+        new mapboxgl.Marker({ color: '#5a3e1b' })
+          .setLngLat(lngLat)
+          .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${name}</strong><br>${note}`))
+          .addTo(map);
+      });
+
+      const bounds = routeCoords.reduce((b, coord) => b.extend(coord), new mapboxgl.LngLatBounds(routeCoords[0], routeCoords[0]));
+      map.fitBounds(bounds, { padding: 60 });
+    });
+  })();
 </script>
 </body>
 </html>
